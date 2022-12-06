@@ -8,7 +8,7 @@ final class StorageBucketTest extends TestCase
 {
     public function testListBucket(): void
     {
-        $storage = new \Supabase\Storage\StorageClient('https://gpdefvsxamnscceccczu.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc']);
+        $storage = new \Supabase\Storage\StorageClient();
 
         $result = $storage->listBuckets();
 
@@ -17,7 +17,7 @@ final class StorageBucketTest extends TestCase
 
     public function testGetBucketWithId(): void
     {
-        $storage = new \Supabase\Storage\StorageClient('https://gpdefvsxamnscceccczu.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc']);
+        $storage = new \Supabase\Storage\StorageClient();
 
         $result = $storage->getBucket('test');
 
@@ -27,7 +27,7 @@ final class StorageBucketTest extends TestCase
 
     public function testGetBucketWithInvalidId(): void
     {
-        $storage = new \Supabase\Storage\StorageClient('https://gpdefvsxamnscceccczu.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc']);
+        $storage = new \Supabase\Storage\StorageClient();
 
         $result = $storage->getBucket('not-a-real-bucket-id');
 
@@ -37,7 +37,7 @@ final class StorageBucketTest extends TestCase
 
     public function testCreateBucket(): void
     {
-        $storage = new \Supabase\Storage\StorageClient('https://gpdefvsxamnscceccczu.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc']);
+        $storage = new \Supabase\Storage\StorageClient();
 
         $result = $storage->createBucket('my-new-storage-bucket');
         $this->assertNull($result['error']);
@@ -48,7 +48,7 @@ final class StorageBucketTest extends TestCase
     public function testCreatePublicBucket(): void
     {
 
-        $storage = new \Supabase\Storage\StorageClient('https://gpdefvsxamnscceccczu.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc']);
+        $storage = new \Supabase\Storage\StorageClient();
 
         $result = $storage->createBucket('my-new-storage-bucket-public', ['public' => true]);
         $this->assertNull($result['error']);
@@ -59,7 +59,7 @@ final class StorageBucketTest extends TestCase
     public function testUpdateBucket(): void
     {
 
-        $storage = new \Supabase\Storage\StorageClient('https://gpdefvsxamnscceccczu.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc']);
+        $storage = new \Supabase\Storage\StorageClient();
 
         $result = $storage->updateBucket('my-new-storage-bucket-public', ['public' => false]);
         $this->assertNull($result['error']);
@@ -70,7 +70,7 @@ final class StorageBucketTest extends TestCase
     public function testEmptyBucket()
     {
 
-        $storage = new \Supabase\Storage\StorageClient('https://gpdefvsxamnscceccczu.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc']);
+        $storage = new \Supabase\Storage\StorageClient();
 
         $result = $storage->emptyBucket('my-new-storage-bucket-public');
         $this->assertNull($result['error']);
@@ -81,7 +81,7 @@ final class StorageBucketTest extends TestCase
 
     public function testDeleteBucket()
     {
-        $storage = new \Supabase\Storage\StorageClient('https://gpdefvsxamnscceccczu.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc']);
+        $storage = new \Supabase\Storage\StorageClient();
 
         $result = $storage->deleteBucket('my-new-storage-bucket-public');
 
