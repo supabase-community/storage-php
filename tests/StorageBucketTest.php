@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
+// TODO: Make StorageClient init with supplied secrets.
+// i.e. StorageClient('https://abc.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'SECRET])
+
 final class StorageBucketTest extends TestCase
 {
     public function testListBucket(): void
