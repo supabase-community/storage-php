@@ -4,6 +4,8 @@ Install the library
 
 `composer require supabase/storage-php`
 
+'TEST'
+
 Import the library
 
 `use Supabase\Storage;`
