@@ -28,15 +28,14 @@ composer require supabase/storage-php
 ### Connecting to the storage backend
 
 ```php
-import { StorageClient } from '@supabase/storage-js'
 
-const STORAGE_URL = 'https://<project_ref>.supabase.co/storage/v1'
-const SERVICE_KEY = '<service_role>' //! service key, not anon key
+use Supabase\Storage;
 
-const storageClient = new StorageClient(STORAGE_URL, {
-  apikey: SERVICE_KEY,
-  Authorization: `Bearer ${SERVICE_KEY}`,
-})
+$url = 'https://<project_ref>.supabase.co/storage/v1';
+$service_key = '<service_role>';
+$storage = new Storage\StorageClient($url, [
+ 'Authorization' => 'Bearer ' . $service_key,
+]);
 ```
 
 ### Handling resources
@@ -46,43 +45,40 @@ const storageClient = new StorageClient(STORAGE_URL, {
 - Create a new Storage bucket:
 
   ```php
-  const { data, error } = await storageClient.createBucket(
-    'test_bucket', // Bucket name (must be unique)
-    { public: false } // Bucket options
-  )
+    $opts = [ 'public' => true ]; //Bucket options
+    $result = $storage->createBucket('my-new-storage-bucket', $opts);
   ```
 
 - Retrieve the details of an existing Storage bucket:
 
   ```php
-  const { data, error } = await storageClient.getBucket('test_bucket')
+  $result = $storage->getBucket('test_bucket');
   ```
 
 - Update a new Storage bucket:
 
   ```php
-  const { data, error } = await storageClient.updateBucket(
-    'test_bucket', // Bucket name
-    { public: false } // Bucket options
-  )
+   $opts = [ 'public' => true ]; //Bucket options.
+   $result = $storage->updateBucket('test_bucket' /* Bucket name */,
+    $opts);
   ```
 
 - Remove all objects inside a single bucket:
 
   ```php
-  const { data, error } = await storageClient.emptyBucket('test_bucket')
+  $result = $storage->emptyBucket('test_bucket');
   ```
 
 - Delete an existing bucket (a bucket can't be deleted with existing objects inside it):
 
   ```php
-  const { data, error } = await storageClient.deleteBucket('test_bucket')
+  $result = $storage->deleteBucket('test_bucket');
   ```
 
 - Retrieve the details of all Storage buckets within an existing project:
 
   ```php
-  const { data, error } = await storageClient.listBuckets()
+  $result = $storage->listBuckets();
   ```
 
 #### Handling Files
@@ -90,9 +86,9 @@ const storageClient = new StorageClient(STORAGE_URL, {
 - Upload a file to an existing bucket:
 
   ```php
-  const fileBody = ... // load your file here
-
-  const { data, error } = await storageClient.from('bucket').upload('path/to/file', fileBody)
+  $file_body = $file; // load your file here
+  $opts = $options; //The options for the upload.
+  $result = $storage->from('bucket')->upload('path/to/file', $file_body, $opts)
   ```
 
   > Note:  
@@ -124,11 +120,9 @@ const storageClient = new StorageClient(STORAGE_URL, {
 - Replace an existing file at the specified path with a new one:
 
   ```php
-  const fileBody = ... // load your file here
-
-  const { data, error } = await storageClient
-    .from('bucket')
-    .update('path/to/file', fileBody)
+  $file_body = $file; // load your file here
+  $opts = $options; //The options for the upload.
+  $result = $storage->from('bucket')->update('path/to/file', $file_body, $opts);
   ```
 
   > Note: The `upload` method also accepts a map of optional parameters. For a complete list see the [Supabase API reference](https://supabase.com/docs/reference/javascript/storage-from-upload).
@@ -136,31 +130,28 @@ const storageClient = new StorageClient(STORAGE_URL, {
 - Move an existing file:
 
   ```php
-  const { data, error } = await storageClient
-    .from('bucket')
-    .move('old/path/to/file', 'new/path/to/file')
+  $result = $storage->from('bucket')->move('path/to/file', 'new/path/to/file');
   ```
 
 - Delete files within the same bucket:
 
   ```php
-  const { data, error } = await storageClient.from('bucket').remove(['path/to/file'])
+    $result = $storage->from('bucket')->remove('path/to/file');
   ```
 
 - Create signed URL to download file without requiring permissions:
 
   ```php
-  const expireIn = 60
-
-  const { data, error } = await storageClient
-    .from('bucket')
-    .createSignedUrl('path/to/file', expireIn)
+    $expire_in = 60;
+    $opts = $options; //The options for the download.[ 'download' => TRUE ]
+    $result = $storage->from('bucket')->createSignedUrl('path/to/file', $expire_in, $opts);
   ```
 
 - Retrieve URLs for assets in public buckets:
 
   ```php
-  const { data, error } = await storageClient.from('public-bucket').getPublicUrl('path/to/file')
+    $opts = $options; //The options for the download.[ 'download' => TRUE ]
+    $result = $storage->from('public-bucket')->getPublicUrl('path/to/file', $opts);
   ```
 
 

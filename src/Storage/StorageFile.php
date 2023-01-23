@@ -1,14 +1,17 @@
 <?php
 
 namespace Supabase\Storage;
+use Supabase\Util\Constants;
+use Supabase\Util\Request;
+use Supabase\Util\StorageError;
 
-class StorageClient
+class StorageFile
 {
     protected string $url;
     protected array $headers = [];
     protected string $bucketId;
 
-    protected array DEFAULT_SEARCH_OPTIONS = [
+    protected array $DEFAULT_SEARCH_OPTIONS = [
         'limit' => 100,
         'offset' => 0,
         'sortBy' => [
@@ -17,17 +20,17 @@ class StorageClient
         ],
     ];
 
-    protected DEFAULT_FILE_OPTIONS = [
+    protected $DEFAULT_FILE_OPTIONS = [
         'cacheControl' => 3600,
         'upsert' => false,
         'contentType' => 'text/plain;charset=UTF-8',
     ];
 
     public function __construct($url, $headers, $bucketId)
-    {
-        $this->url = $opts['url'];
+    {        
+        $this->url = $url;
         $this->headers = array_merge(Constants::getDefaultHeaders(), $headers);
-        $this->bucketId = $bucketId
+        $this->bucketId = $bucketId;
     }
 
     /**
@@ -57,7 +60,7 @@ class StorageClient
             return $response;
         } catch (\Exception $e) {
             if (StorageError::isStorageError($e)) {
-                return  [ 'data' => null, 'error' => $e ]
+                return  [ 'data' => null, 'error' => $e ];
             }
 
             throw $e;
@@ -108,12 +111,12 @@ class StorageClient
 
             $response = Request::request('POST', $this->url . '/object/move', $headers);
             return [
-            'data': $response,
-            'error': null
+            'data'=> $response,
+            'error'=> null
             ];
         } catch (\Exception $e) {
             if (StorageError::isStorageError($e)) {
-                return  [ 'data' => null, 'error' => $e ]
+                return  [ 'data' => null, 'error' => $e ];
             }
 
             throw $e;
@@ -138,18 +141,19 @@ class StorageClient
 
             $response = Request::request('POST', $this->url . '/object/copy', $headers);
             return [
-            'data': [
+            'data'=> [
                 'path' => $response->Key
             ],
-            'error': null
+            'error' => null
             ];
         } catch (\Exception $e) {
             if (StorageError::isStorageError($e)) {
-                return  [ 'data' => null, 'error' => $e ]
+                return  [ 'data' => null, 'error' => $e ];
             }
 
             throw $e;
         }
+    }
 
         /**
          * Creates signed url for limited time sharing of file.
@@ -171,15 +175,15 @@ class StorageClient
 
                 $downloadQueryParam = $opts['download'] ? '?download=true' : '';
 
-                $signedUrl = urlencode($this->url . $response->signedUrl . $downloadQueryParam)
+                $signedUrl = urlencode($this->url . $response->signedUrl . $downloadQueryParam);
 
                 return [
-                'data': ['signedUrl' => $signedUrls],
-                'error': null
-                ]
+                'data'=> ['signedUrl' => $signedUrls],
+                'error'=> null
+                ];
             } catch (\Exception $e) {
                 if (StorageError::isStorageError($e)) {
-                    return  [ 'data' => null, 'error' => $e ]
+                    return  [ 'data' => null, 'error' => $e ];
                 }
 
                 throw $e;
@@ -197,27 +201,28 @@ class StorageClient
         public function createSignedUrls($paths, $expiresIn, $opts)
         {
             try {
-                $body = {
-                'paths': $paths,
-                'expires_in': $expiresIn
-                };
-                $fullUrl = $this->url . '/object/sign' . $this->bucketId
+                $body = [
+                'paths'=> $paths,
+                'expires_in'=> $expiresIn
+                ];
+                $fullUrl = $this->url . '/object/sign' . $this->bucketId;
                 $response = Request::request('POST', $fullUrl, $this->headers, $opts, $body);
 
                 $downloadQueryParam = $opts['download'] ? '?download=true' : '';
 
-                $signedUrls = array_map(fn($d) => {
+                
+            $signedUrls = array_map(function ($d) {
                 $d['signed_url'] = urlencode($this->url . $d['signed_url'] . $downloadQueryParam);
-                return $d;
-            }, $response);
+                 return $d; 
+                }, $response);
 
                 return [
-                    'data': $signedUrls,
-                    'error': null
-                ]
+                    'data'=> $signedUrls,
+                    'error'=> null
+                ];
             } catch (\Exception $e) {
                 if (StorageError::isStorageError($e)) {
-                    return  [ 'data' => null, 'error' => $e ]
+                    return  [ 'data' => null, 'error' => $e ];
                 }
 
                 throw $e;
@@ -240,7 +245,7 @@ class StorageClient
             'data' => [
                 'publicUrl' => urlencode($this->url . '/object/' . $storagePath . $downloadQueryParam)
             ]
-            ]
+            ];
         }
 
         /**
@@ -258,7 +263,7 @@ class StorageClient
                 return $response;
             } catch (\Exception $e) {
                 if (StorageError::isStorageError($e)) {
-                    return  [ 'data' => null, 'error' => $e ]
+                    return  [ 'data' => null, 'error' => $e ];
                 }
 
                 throw $e;
@@ -279,4 +284,3 @@ class StorageClient
             return $this->bucketId . '/' . $p;
         }
     }
-}
