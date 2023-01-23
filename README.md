@@ -2,8 +2,6 @@
 
 PHP Client library to interact with Supabase Storage.
 
-- Documentation: https://supabase.io/docs/reference/javascript/storage-createbucket
-
 ## Quick Start Guide
 
 ### Installing the module
