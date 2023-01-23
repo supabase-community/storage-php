@@ -1,16 +1,3 @@
-# storage-php
-## Usage
-Install the library
-
-`composer require supabase/storage-php`
-
-'TEST'
-
-Import the library
-
-`use Supabase\Storage;`
-
-########################
 # `storage-php`
 
 PHP Client library to interact with Supabase Storage.
