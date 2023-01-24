@@ -4,6 +4,8 @@ namespace Supabase\Storage;
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
 use Supabase\Util\StorageError;
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 
 class StorageFile
 {
@@ -103,6 +105,7 @@ class StorageFile
     public function move($fromPath, $toPath)
     {
         $headers = $this->headers;
+        $headers['content-type'] = 'application/json';
         try {
             $body = [
             'bucketId' => $this->bucketId,
@@ -166,20 +169,20 @@ class StorageFile
 
         public function createSignedUrl($path, $expires, $opts)
         {
+            $headers = $this->headers;
+            $headers['content-type'] = 'application/json';
+
             try {
                 $body = [
-                'expires' => $expires,
+                'expiresIn' => $expires,
                 ];
                 $storagePath = $this->_storagePath($path);
-                $fullUrl = $this->url . '/object/sign' . $storagePath;
-                $response = Request::request('POST', $fullUrl, $this->headers, $opts, $body);
-
-                $downloadQueryParam = $opts['download'] ? '?download=true' : '';
-
-                $signedUrl = urlencode($this->url . $response->signedUrl . $downloadQueryParam);
-
+                $fullUrl = $this->url . '/object/sign/' . $storagePath;
+                $response = Request::request('POST', $fullUrl, $headers, json_encode($body));
+                $downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
+                $signedUrl = urlencode($this->url . $response['data']['signedURL'] . $downloadQueryParam);
                 return [
-                'data'=> ['signedUrl' => $signedUrls],
+                'data'=> ['signedUrl' => $signedUrl],
                 'error'=> null
                 ];
             } catch (\Exception $e) {
@@ -236,17 +239,86 @@ class StorageFile
          * @param string $path The full path and file name of the file to be downloaded. For example `folder/image.png`.
          * @param array  $options Transform the asset before serving it to the client.
         */
-        
+
         public function download($path, $options)
         {
             $headers = $this->headers;
             $url = $this->url . '/object/' . $this->bucketId .'/'. $path;
-            //$headers['x-upsert'] = $options['upsert'] ? 'true' : 'false';
+            $headers['stream'] = true;
+            
+            try {
+
+                $storagePath = $this->_storagePath($path);
+                $response = Request::request('GET', $url, $headers);                
+
+                $imageFilePath = 'C:\Users\Adolfo\Documents\image.jpg';
+                $imageFileResource = fopen($imageFilePath, 'w+');
+
+                $httpClient = new Client();
+                $response = $httpClient->get(
+                    $url,
+                    [
+                        RequestOptions::HEADERS =>$headers,
+                        RequestOptions::SINK => $imageFileResource,
+                    ]
+                );
+
+                if ($response->getStatusCode() === 200) {
+                    echo 'The image has been successfully downloaded: ' . $imageFilePath;
+                }
+                return $response;
+
+            } catch (\Exception $e) {
+                if (StorageError::isStorageError($e)) {
+                    return  [ 'data' => null, 'error' => $e ];
+                }
+
+                throw $e;
+            }
+        }
+        
+        public function download2($path, $options)
+        {
+            $headers = $this->headers;
+            $url = $this->url . '/object/' . $this->bucketId .'/'. $path;
+            $headers['stream'] = true;
             
             try {
 
                 $storagePath = $this->_storagePath($path);
                 $response = Request::request('GET', $url, $headers);
+                
+
+                $imageFilePath = 'C:\Users\Adolfo\Documents\image.jpg';
+                $imageFileResource = fopen($imageFilePath, 'w+');
+
+                $httpClient = new Client();
+                $response = $httpClient->get(
+                    'https://www.creasis.mx/wp-content/uploads/2020/06/Logo-2.png',
+                    [
+                        RequestOptions::SINK => $imageFileResource,
+                    ]
+                );
+
+                if ($response->getStatusCode() === 200) {
+                    echo 'The image has been successfully downloaded: ' . $imageFilePath;
+                }
+                
+                //$curlHandler = curl_init();
+
+                //curl_setopt_array($curlHandler, [
+                //    CURLOPT_URL => 'https://www.creasis.mx/wp-content/uploads/2020/06/Logo-2.png',
+                //    CURLOPT_FILE => fopen($imageFilePath, 'w+')
+                //]);
+
+                //curl_exec($curlHandler);
+
+                //if (curl_errno($curlHandler) === CURLE_OK) {
+                  //  print_r('The image has been successfully downloaded: ' . $imageFilePath);
+                //}
+
+                //curl_close($curlHandler);
+
                 print_r($response);
                 return $response;
 
@@ -269,11 +341,11 @@ class StorageFile
         public function getPublicUrl($path, $opts)
         {
             $storagePath = $this->_storagePath($path);
-            $downloadQueryParam = $opts['download'] ? '?download=true' : '';
+            $downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
 
             return [
             'data' => [
-                'publicUrl' => urlencode($this->url . '/object/' . $storagePath . $downloadQueryParam)
+                'publicUrl' => urlencode($this->url . '/object/public/' . $storagePath . $downloadQueryParam)
             ]
             ];
         }
@@ -286,10 +358,12 @@ class StorageFile
 
         public function remove($paths)
         {
+            $headers = $this->headers;
+            $headers['content-type'] = 'application/json';
             try {
                 $options = ['prefixes' => $paths];
                 $fullUrl = $this->url . '/object/' . $this->bucketId;
-                $response = Request::request('DELETE', $fullUrl, $this->headers, $options);
+                $response = Request::request('DELETE', $fullUrl, $headers, json_encode($options));
                 return $response;
             } catch (\Exception $e) {
                 if (StorageError::isStorageError($e)) {
