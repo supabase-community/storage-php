@@ -5,89 +5,65 @@ declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
 // TODO: Make StorageClient init with supplied secrets.
-// i.e. StorageClient('https://abc.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'SECRET'])
+// i.e. StorageClient('https://abc.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'SECRET])
 
-final class StorageBucketTest extends TestCase
+final class StorageFileTest extends TestCase
 {
-    public function testListBucket(): void
+    public function testUpload(): void
     {
-        $storage = new \Supabase\Storage\StorageClient();
+        $url = 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1';
+        $service_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc';
+        $storage = new \Supabase\Storage\StorageFile($url, [
+            'Authorization' => 'Bearer ' . $service_key,
+           ], 'my-new-storage-bucket-public-test');
+        
+        //$file = file_get_contents('/home/tesillos/Documents/Adolfo/test.txt', true);
+        $result = $storage->upload('public/imagen.bmp', 'C:\Users\Adolfo\Documents\imagen.bmp', []);
+        fwrite(STDERR, print_r($result, TRUE));
 
-        $result = $storage->listBuckets();
-
-        $this->assertGreaterThan(0, count($result['data']));
-    }
-
-    public function testGetBucketWithId(): void
-    {
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->getBucket('test');
-
-        $this->assertArrayHasKey('data', $result);
-        $this->assertNull($result['error']);
-    }
-
-    public function testGetBucketWithInvalidId(): void
-    {
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->getBucket('not-a-real-bucket-id');
-
-        $this->assertArrayHasKey('error', $result);
-        $this->assertNull($result['data']);
-    }
-
-    public function testCreateBucket(): void
-    {
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->createBucket('my-new-storage-bucket');
         $this->assertNull($result['error']);
         $this->assertArrayHasKey('data', $result);
-        $this->assertEquals($result['data']['id'], 'my-new-storage-bucket');
     }
 
-    public function testCreatePublicBucket(): void
-    {
-
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->createBucket('my-new-storage-bucket-public', ['public' => true]);
+    public function testDownload(): void
+    {   //Pendiente
+        $url = 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1';
+        $service_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc';
+        $bucketId = 'my-new-storage-bucket-public-test';
+        $storage = new \Supabase\Storage\StorageFile($url, [
+            'Authorization' => 'Bearer ' . $service_key,
+           ], $bucketId);
+        $result = $storage->download('public/imagen.bmp', []);
         $this->assertNull($result['error']);
         $this->assertArrayHasKey('data', $result);
-        $this->assertEquals($result['data'], 'my-new-storage-bucket-public');
     }
 
-    public function testUpdateBucket(): void
+    public function testUpdate(): void
     {
-
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->updateBucket('my-new-storage-bucket-public', ['public' => false]);
+        $url = 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1';
+        $service_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc';
+        $storage = new \Supabase\Storage\StorageFile($url, [
+            'Authorization' => 'Bearer ' . $service_key,
+           ], 'my-new-storage-bucket-public-test');
+        
+        //$file = file_get_contents('/home/tesillos/Documents/Adolfo/test.txt', true);
+        $result = $storage->update('public/imagen.bmp', 'C:\Users\Adolfo\Documents\imagen.bmp', []);
         $this->assertNull($result['error']);
         $this->assertArrayHasKey('data', $result);
-        $this->assertEquals($result['data'], 'my-new-storage-bucket-public');
     }
 
-    public function testEmptyBucket()
+    public function testMove(): void
     {
-
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->emptyBucket('my-new-storage-bucket-public');
+        $url = 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1';
+        $service_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc';
+        $storage = new \Supabase\Storage\StorageFile($url, [
+            'Authorization' => 'Bearer ' . $service_key,
+           ], 'my-new-storage-bucket-public-test');
+        
+        //$file = file_get_contents('/home/tesillos/Documents/Adolfo/test.txt', true);
+        $result = $storage->move('public/imagen.bmp', 'public/imagen.bmp');
         $this->assertNull($result['error']);
         $this->assertArrayHasKey('data', $result);
-        echo var_dump($result['data']);
-        $this->assertEquals($result['data'], 'my-new-storage-bucket-public');
     }
-
-    public function testDeleteBucket()
-    {
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->deleteBucket('my-new-storage-bucket-public');
-
-        $this->assertNull($result['error']);
-    }
+    
 }

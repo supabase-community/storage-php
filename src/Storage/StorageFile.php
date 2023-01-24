@@ -56,7 +56,7 @@ class StorageFile
 
             $storagePath = $this->_storagePath($path);
 
-            $response = Request::request($method, $this->url . '/object/' . $storagePath, $headers, $options, $body);
+            $response = Request::request($method, $this->url . '/object/' . $storagePath, $headers, $body);
             return $response;
         } catch (\Exception $e) {
             if (StorageError::isStorageError($e)) {
@@ -102,14 +102,15 @@ class StorageFile
 
     public function move($fromPath, $toPath)
     {
+        $headers = $this->headers;
         try {
             $body = [
             'bucketId' => $this->bucketId,
             'sourceKey' => $fromPath,
-            'destinationKey' => $toPath
+            'destinationKey' => $toPath,
             ];
 
-            $response = Request::request('POST', $this->url . '/object/move', $headers);
+            $response = Request::request('POST', $this->url . '/object/move', $headers, json_encode($body));
             return [
             'data'=> $response,
             'error'=> null
@@ -220,6 +221,35 @@ class StorageFile
                     'data'=> $signedUrls,
                     'error'=> null
                 ];
+            } catch (\Exception $e) {
+                if (StorageError::isStorageError($e)) {
+                    return  [ 'data' => null, 'error' => $e ];
+                }
+
+                throw $e;
+            }
+        }
+
+        /**
+         * Downloads a file from a private bucket. For public buckets, make a request to the URL returned from `getPublicUrl` instead.
+         *
+         * @param string $path The full path and file name of the file to be downloaded. For example `folder/image.png`.
+         * @param array  $options Transform the asset before serving it to the client.
+        */
+        
+        public function download($path, $options)
+        {
+            $headers = $this->headers;
+            $url = $this->url . '/object/' . $this->bucketId .'/'. $path;
+            //$headers['x-upsert'] = $options['upsert'] ? 'true' : 'false';
+            
+            try {
+
+                $storagePath = $this->_storagePath($path);
+                $response = Request::request('GET', $url, $headers);
+                print_r($response);
+                return $response;
+
             } catch (\Exception $e) {
                 if (StorageError::isStorageError($e)) {
                     return  [ 'data' => null, 'error' => $e ];
