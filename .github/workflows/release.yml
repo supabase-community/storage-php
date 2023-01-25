@@ -1,0 +1,25 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install PHP
+        uses: shivammathur/setup-php@2.22.0
+        with:
+          php-version: '8.1'
+          extensions: curl
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: Lint Code
+        run: ./vendor/bin/phpcbf -h
+
+      - name: Test Code
+        run: ./vendor/bin/phpunit
