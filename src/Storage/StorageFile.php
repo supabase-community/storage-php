@@ -251,7 +251,7 @@ class StorageFile
                 $storagePath = $this->_storagePath($path);
                 $response = Request::request('GET', $url, $headers);                
 
-                $imageFilePath = 'C:\Users\Adolfo\Documents\image.jpg';
+                $imageFilePath = $path;
                 $imageFileResource = fopen($imageFilePath, 'w+');
 
                 $httpClient = new Client();
@@ -263,9 +263,6 @@ class StorageFile
                     ]
                 );
 
-                if ($response->getStatusCode() === 200) {
-                    echo 'The image has been successfully downloaded: ' . $imageFilePath;
-                }
                 return $response;
 
             } catch (\Exception $e) {
@@ -277,60 +274,6 @@ class StorageFile
             }
         }
         
-        public function download2($path, $options)
-        {
-            $headers = $this->headers;
-            $url = $this->url . '/object/' . $this->bucketId .'/'. $path;
-            $headers['stream'] = true;
-            
-            try {
-
-                $storagePath = $this->_storagePath($path);
-                $response = Request::request('GET', $url, $headers);
-                
-
-                $imageFilePath = 'C:\Users\Adolfo\Documents\image.jpg';
-                $imageFileResource = fopen($imageFilePath, 'w+');
-
-                $httpClient = new Client();
-                $response = $httpClient->get(
-                    'https://www.creasis.mx/wp-content/uploads/2020/06/Logo-2.png',
-                    [
-                        RequestOptions::SINK => $imageFileResource,
-                    ]
-                );
-
-                if ($response->getStatusCode() === 200) {
-                    echo 'The image has been successfully downloaded: ' . $imageFilePath;
-                }
-                
-                //$curlHandler = curl_init();
-
-                //curl_setopt_array($curlHandler, [
-                //    CURLOPT_URL => 'https://www.creasis.mx/wp-content/uploads/2020/06/Logo-2.png',
-                //    CURLOPT_FILE => fopen($imageFilePath, 'w+')
-                //]);
-
-                //curl_exec($curlHandler);
-
-                //if (curl_errno($curlHandler) === CURLE_OK) {
-                  //  print_r('The image has been successfully downloaded: ' . $imageFilePath);
-                //}
-
-                //curl_close($curlHandler);
-
-                print_r($response);
-                return $response;
-
-            } catch (\Exception $e) {
-                if (StorageError::isStorageError($e)) {
-                    return  [ 'data' => null, 'error' => $e ];
-                }
-
-                throw $e;
-            }
-        }
-
         /**
          * Returns public url for specified file.
          * @access public
