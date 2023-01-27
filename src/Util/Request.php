@@ -23,6 +23,29 @@ class Request
         }
     }
 
+    public static function request_file($method, $url, $headers, $body = null)
+    {
+        try {
+            $imageFilePath = $path;
+            $imageFileResource = fopen($imageFilePath, 'w+');
+
+            $httpClient = new Client();
+            $response = $httpClient->get(
+                $url,
+                [
+                    RequestOptions::HEADERS =>$headers,
+                    RequestOptions::SINK => $imageFileResource,
+                ]
+            );
+
+            
+
+            return [ 'data' => $response, 'error' => null ];
+        } catch (\Exception $e) {
+            throw self::handleError($e);
+        }
+    }
+
     public static function handleError($error)
     {
         if (method_exists($error, 'getResponse')) {

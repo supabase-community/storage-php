@@ -48,8 +48,8 @@ final class StorageFileTest extends TestCase
 
     public function testMove(): void
     {
-        $url = 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1';
-        $service_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc';
+        $url = 'https://<project_ref>.supabase.co/storage/v1';
+        $service_key = '<service_role>';
         $storage = new \Supabase\Storage\StorageFile($url, [
             'Authorization' => 'Bearer ' . $service_key,
            ], 'my-new-storage-bucket-public-test');
@@ -62,8 +62,8 @@ final class StorageFileTest extends TestCase
 
     public function testRemove(): void
     {
-        $url = 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1';
-        $service_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc';
+        $url = 'https://<project_ref>.supabase.co/storage/v1';
+        $service_key = '<service_role>';
         $storage = new \Supabase\Storage\StorageFile($url, [
             'Authorization' => 'Bearer ' . $service_key,
            ], 'my-new-storage-bucket-public-test');
@@ -76,8 +76,8 @@ final class StorageFileTest extends TestCase
 
     public function testCreateSignedUrl(): void
     {
-        $url = 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1';
-        $service_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc';
+        $url = 'https://<project_ref>.supabase.co/storage/v1';
+        $service_key = '<service_role>';
         $expires = 60;
         $storage = new \Supabase\Storage\StorageFile($url, [
             'Authorization' => 'Bearer ' . $service_key,
@@ -91,8 +91,8 @@ final class StorageFileTest extends TestCase
 
     public function testGetPublicUrl(): void
     {
-        $url = 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1';
-        $service_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc';
+        $url = 'https://<project_ref>.supabase.co/storage/v1';
+        $service_key = '<service_role>';
         $expires = 60;
         $storage = new \Supabase\Storage\StorageFile($url, [
             'Authorization' => 'Bearer ' . $service_key,
