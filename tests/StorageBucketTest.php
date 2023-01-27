@@ -15,12 +15,36 @@ final class StorageBucketTest extends TestCase
     *
     * @return void
     */
+    private $client;
+
+    public function setup(): void {
+        $authHeader = ['Authorization' => 'Bearer ' . 'SECRET'];
+        $this->client = new \Supabase\SupabaseClient('https://abc.supabase.co');
+    }
+
+     /**
+    * Test Retrieves the details of all Storage buckets within an existing project function.
+    *
+    * @return void
+    */
+
+    public function testListBucket(): void
+    {
+        $result =  $this->client->listBuckets();
+        $this->assertGreaterThan(0, count($result['data']));
+    }
+
+    /**
+     * Test Creates a new Storage bucket function
+     *
+     * @return void
+     */
 
    public function testCreateBucket(): void
    {
        $storage = new \Supabase\Storage\StorageClient();
 
-       $result = $storage->createBucket('my-new-storage-bucket');
+       $result = $this->client->createBucket('my-new-storage-bucket');
        $this->assertNull($result['error']);
        $this->assertArrayHasKey('data', $result);
        $this->assertEquals($result['data']['id'], 'my-new-storage-bucket');
@@ -34,28 +58,14 @@ final class StorageBucketTest extends TestCase
 
    public function testGetBucketWithId(): void
     {
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->getBucket('test');
+        $result = $this->client->getBucket('test');
 
         $this->assertArrayHasKey('data', $result);
         $this->assertNull($result['error']);
     }
 
-    /**
-    * Test Retrieves the details of all Storage buckets within an existing project function.
-    *
-    * @return void
-    */
+   
 
-    public function testListBucket(): void
-    {
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->listBuckets();
-
-        $this->assertGreaterThan(0, count($result['data']));
-    }
 
     /**
     * Test Updates a Storage bucket function.
@@ -65,10 +75,7 @@ final class StorageBucketTest extends TestCase
 
     public function testUpdateBucket(): void
     {
-
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->updateBucket('my-new-storage-bucket-public', ['public' => false]);
+        $result = $this->client->updateBucket('my-new-storage-bucket-public', ['public' => false]);
         $this->assertNull($result['error']);
         $this->assertArrayHasKey('data', $result);
         $this->assertEquals($result['data'], 'my-new-storage-bucket-public');
@@ -97,13 +104,9 @@ final class StorageBucketTest extends TestCase
 
     public function testEmptyBucket()
     {
-
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->emptyBucket('my-new-storage-bucket-public');
+        $result = $this->client->emptyBucket('my-new-storage-bucket-public');
         $this->assertNull($result['error']);
         $this->assertArrayHasKey('data', $result);
-        echo var_dump($result['data']);
         $this->assertEquals($result['data'], 'my-new-storage-bucket-public');
     }
     
