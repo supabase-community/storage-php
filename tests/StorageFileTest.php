@@ -4,108 +4,124 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
-// TODO: Make StorageClient init with supplied secrets.
-// i.e. StorageClient('https://abc.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'SECRET])
-
 final class StorageFileTest extends TestCase
 {
+    private $client;
+
     /**
+     * The setUp runs for each fuction
+     */
+
+     public function setup(): void {
+        parent::setUp();
+        $authHeader = ['Authorization' => 'Bearer ' . '<service_role>'];
+        $bucket_id = '<existing-storage-bucket>';
+        $this->client = new  \Supabase\Storage\StorageFile('https://<project_ref>.supabase.co/storage/v1',
+            $authHeader, $bucket_id);
+    }
+
+    /**
+     * Test uploads a file to an existing bucket.
      * @dataProvider additionProvider
      */
 
     public function testUpload(string $path, string $file_path, array $options): void
     {
-        $storage = $this->createStub(\Supabase\Storage\StorageFile::class);
-        $storage->method('upload')
-             ->willReturn('url');
-        $this->assertSame('url', $storage->upload($path, $file_path, $options));
+        $result =  $this->client->upload($path, $file_path, $options);
+        $this->assertNull($result['error']);
+        $this->assertArrayHasKey('data', $result);
     }
 
     /**
+     * Test Downloads a file from a private bucket.
      * @dataProvider additionProvider
      */
 
     public function testDownload(string $path, string $file_path, array $options): void
     {   
-        $storage = $this->createStub(\Supabase\Storage\StorageFile::class);
-        $storage->method('download')
-             ->willReturn('url');
-        $this->assertSame('url', $storage->download($path, $options));
+        $result = $this->client->download($path, $options);
+        $this->assertNull($result['error']);
+        $this->assertArrayHasKey('data', $result);
     }
 
     /**
+     * Test Replaces an existing file at the specified path with a new one.
      * @dataProvider additionProvider
      */
 
     public function testUpdate(string $path, string $file_path, array $options): void
     {
-        $storage = $this->createStub(\Supabase\Storage\StorageFile::class);
-        $storage->method('update')
-             ->willReturn('url');
-        print_r($storage);
-        $this->assertSame('url', $storage->update($path, $file_path, $options ));
-    }
-
-    public function testMove(): void
-    {
-        $url = 'https://<project_ref>.supabase.co/storage/v1';
-        $service_key = '<service_role>';
-        $storage = new \Supabase\Storage\StorageFile($url, [
-            'Authorization' => 'Bearer ' . $service_key,
-           ], 'my-new-storage-bucket-public-test');
-        
-        //$file = file_get_contents('/home/tesillos/Documents/Adolfo/test.txt', true);
-        $result = $storage->move('nuevo/imagen.bmp', 'new/imagen-change.bmp');
+        $result = $this->client->update($path, $file_path, $options);
         $this->assertNull($result['error']);
         $this->assertArrayHasKey('data', $result);
     }
 
-    public function testRemove(): void
+    /**
+     * Test Moves an existing file to a new path in the same bucket.
+     * @dataProvider additionProvider
+     */
+
+    public function testMove(string $from_path, string $to_path): void
     {
-        $url = 'https://<project_ref>.supabase.co/storage/v1';
-        $service_key = '<service_role>';
-        $storage = new \Supabase\Storage\StorageFile($url, [
-            'Authorization' => 'Bearer ' . $service_key,
-           ], 'my-new-storage-bucket-public-test');
-        
-        //$file = file_get_contents('/home/tesillos/Documents/Adolfo/test.txt', true);
-        $result = $storage->remove('new/imagen-change.bmp');
+        $result = $this->client->move($from_path, $to_path);
         $this->assertNull($result['error']);
         $this->assertArrayHasKey('data', $result);
     }
 
-    public function testCreateSignedUrl(): void
+    /**
+     * Test Copies an existing file to a new path in the same bucket.
+     * @dataProvider additionProvider
+     */
+
+     public function testCopy(string $from_path, string $to_path): void
+     {
+         $result = $this->client->copy($from_path, $to_path);
+         $this->assertNull($result['error']);
+         $this->assertArrayHasKey('data', $result);
+     }
+
+     /**
+     * Test Deletes files within the same bucket.
+     * @dataProvider additionProvider
+     */
+
+    public function testRemove($path): void
     {
-        $url = 'https://<project_ref>.supabase.co/storage/v1';
-        $service_key = '<service_role>';
-        $expires = 60;
-        $storage = new \Supabase\Storage\StorageFile($url, [
-            'Authorization' => 'Bearer ' . $service_key,
-           ], 'my-new-storage-bucket-public-test');
-        
-        //$file = file_get_contents('/home/tesillos/Documents/Adolfo/test.txt', true);
-        $result = $storage->createSignedUrl('public/imagen.bmp', $expires, []);
+        $result = $this->client->remove($path);
         $this->assertNull($result['error']);
         $this->assertArrayHasKey('data', $result);
     }
 
-    public function testGetPublicUrl(): void
+    /**
+     * Test Creates a signed URL. Use a signed URL to share a file for a fixed amount of time.
+     * @dataProvider additionProviderSignedUrl
+     */
+
+    public function testCreateSignedUrl($path, $expires, $options): void
     {
-        $url = 'https://<project_ref>.supabase.co/storage/v1';
-        $service_key = '<service_role>';
-        $expires = 60;
-        $storage = new \Supabase\Storage\StorageFile($url, [
-            'Authorization' => 'Bearer ' . $service_key,
-           ], 'my-new-storage-bucket-public-test');
-        $result = $storage->getPublicUrl('public/imagen.bmp', []);
+        $result = $this->client->createSignedUrl($path, $expires, $options);
+        $this->assertNull($result['error']);
+        $this->assertArrayHasKey('data', $result);
+    }
+
+    public function testGetPublicUrl($path, $expires, $options): void
+    {
+        $result = $this->getPublicUrl($path, $options);
         $this->assertArrayHasKey('data', $result);
     }
 
     public function additionProvider(): array
     {
         return [
-            ['path/to/file', 'local/path/to/file/', ['public' => true]],
+            ['public/copy-imagen2.jpg', 'public/copy-imagen2.jpg', ['public' => true]],
         ];
     }
+
+    public function additionProviderSignedUrl(): array
+    {
+        return [
+            ['public/image.jpg', 60, ['public' => true]],
+        ];
+    }    
     
 }

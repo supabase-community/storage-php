@@ -23,23 +23,20 @@ class Request
         }
     }
 
-    public static function request_file($method, $url, $headers, $body = null)
+    public static function request_file($url, $headers)
     {
         try {
-            $imageFilePath = $path;
-            $imageFileResource = fopen($imageFilePath, 'w+');
 
-            $httpClient = new Client();
+            $file_name = basename($url);
+            $httpClient = new \GuzzleHttp\Client();
             $response = $httpClient->get(
                 $url,
                 [
-                    RequestOptions::HEADERS =>$headers,
-                    RequestOptions::SINK => $imageFileResource,
+                    \GuzzleHttp\RequestOptions::HEADERS =>$headers,
                 ]
             );
-
-            
-
+            $stream = \GuzzleHttp\Psr7\Utils::streamFor($response->getBody());
+            file_put_contents($file_name, $stream->getContents());
             return [ 'data' => $response, 'error' => null ];
         } catch (\Exception $e) {
             throw self::handleError($e);

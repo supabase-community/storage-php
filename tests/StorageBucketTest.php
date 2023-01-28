@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
-// TODO: Make StorageClient init with supplied secrets.
-// i.e. StorageClient('https://abc.supabase.co/storage/v1', ['Authorization' => 'Bearer ' . 'SECRET'])
-
 final class StorageBucketTest extends TestCase
 {
 
-    /**
-    * Test Creates a new Storage bucket function.
-    *
-    * @return void
-    */
+    
     private $client;
 
+    /**
+     * 
+     */
+
     public function setup(): void {
-        $authHeader = ['Authorization' => 'Bearer ' . 'SECRET'];
-        $this->client = new \Supabase\SupabaseClient('https://abc.supabase.co');
+        parent::setUp();
+        $authHeader = ['Authorization' => 'Bearer ' . '<service_role>'];
+        $this->client = new  \Supabase\Storage\StorageClient('https://<project_ref>.supabase.co', $authHeader);
     }
 
      /**
@@ -35,10 +33,10 @@ final class StorageBucketTest extends TestCase
     }
 
     /**
-     * Test Creates a new Storage bucket function
-     *
-     * @return void
-     */
+    * Test Creates a new Storage bucket function.
+    *
+    * @return void
+    */
 
    public function testCreateBucket(): void
    {
@@ -119,10 +117,7 @@ final class StorageBucketTest extends TestCase
 
     public function testGetBucketWithInvalidId(): void
     {
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->getBucket('not-a-real-bucket-id');
-
+        $result = $this->client->getBucket('not-a-real-bucket-id');
         $this->assertArrayHasKey('error', $result);
         $this->assertNull($result['data']);
     }
@@ -135,10 +130,7 @@ final class StorageBucketTest extends TestCase
 
     public function testCreatePublicBucket(): void
     {
-
-        $storage = new \Supabase\Storage\StorageClient();
-
-        $result = $storage->createBucket('my-new-storage-bucket-public', ['public' => true]);
+        $result = $this->client->createBucket('my-new-storage-bucket-public', ['public' => true]);
         $this->assertNull($result['error']);
         $this->assertArrayHasKey('data', $result);
         $this->assertEquals($result['data'], 'my-new-storage-bucket-public');

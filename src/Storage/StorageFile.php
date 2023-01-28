@@ -4,8 +4,6 @@ namespace Supabase\Storage;
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
 use Supabase\Util\StorageError;
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
 
 class StorageFile
 {
@@ -136,6 +134,8 @@ class StorageFile
 
     public function copy($fromPath, $toPath)
     {
+        $headers = $this->headers;
+        $headers['content-type'] = 'application/json';
         try {
             $body = [
             'bucketId' => $this->bucketId,
@@ -143,10 +143,10 @@ class StorageFile
             'destinationKey' => $toPath
             ];
 
-            $response = Request::request('POST', $this->url . '/object/copy', $headers);
+            $response = Request::request('POST', $this->url . '/object/copy', $headers, json_encode($body));
             return [
             'data'=> [
-                'path' => $response->Key
+                'path' => $response
             ],
             'error' => null
             ];
@@ -240,29 +240,14 @@ class StorageFile
          * @param array  $options Transform the asset before serving it to the client.
         */
 
-        public function download($path, $options)
+        public function download( $path, $options)
         {
             $headers = $this->headers;
             $url = $this->url . '/object/' . $this->bucketId .'/'. $path;
             $headers['stream'] = true;
-            
-            try {
 
-                $storagePath = $this->_storagePath($path);
-                $response = Request::request('GET', $url, $headers);                
-
-                $imageFilePath = $path;
-                $imageFileResource = fopen($imageFilePath, 'w+');
-
-                $httpClient = new Client();
-                $response = $httpClient->get(
-                    $url,
-                    [
-                        RequestOptions::HEADERS =>$headers,
-                        RequestOptions::SINK => $imageFileResource,
-                    ]
-                );
-
+            try {                
+                $response = Request::request_file($url, $headers);                
                 return $response;
 
             } catch (\Exception $e) {
