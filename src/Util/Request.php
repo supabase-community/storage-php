@@ -33,10 +33,10 @@ class Request
                 $url,
                 [
                     \GuzzleHttp\RequestOptions::HEADERS =>$headers,
+                    \GuzzleHttp\RequestOptions::SINK => $file_name,
                 ]
             );
-            $stream = \GuzzleHttp\Psr7\Utils::streamFor($response->getBody());
-            file_put_contents($file_name, $stream->getContents());
+            
             return [ 'data' => $response, 'error' => null ];
         } catch (\Exception $e) {
             throw self::handleError($e);
