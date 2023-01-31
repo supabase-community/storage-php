@@ -4,6 +4,7 @@ namespace Supabase\Util;
 
 use Supabase\Util\StorageError;
 
+
 class Request
 {
     public static function request($method, $url, $headers, $body = null)
@@ -14,6 +15,8 @@ class Request
             $promise = $client->sendAsync($request)->then(function ($response) {
                 return json_decode($response->getBody(), true);
             });
+
+            //print_r( $request);
 
             $response = $promise->wait();
 
@@ -48,6 +51,8 @@ class Request
         if (method_exists($error, 'getResponse')) {
             $response = $error->getResponse();
             $data = json_decode($response->getBody(), true);
+
+            print_r( $data);
 
             $error = new StorageApiError($data['message'], intval($data['statusCode']) || 500);
         } else {
