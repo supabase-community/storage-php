@@ -1,2 +1,5 @@
 .phpunit.result.cache
 /vendor
+.env
+.env.backup
+phpunit.xml

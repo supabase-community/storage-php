@@ -1,0 +1,70 @@
+
+-
+    request:
+        method: GET
+        url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket'
+        headers:
+            Host: gpdefvsxamnscceccczu.supabase.co
+            Accept-Encoding: ''
+            User-Agent: GuzzleHttp/7
+            X-Client-Info: storage-php/0.0.1
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc'
+            Accept: ''
+    response:
+        status:
+            code: 200
+            message: OK
+        headers:
+            Date: 'Tue, 31 Jan 2023 02:03:06 GMT'
+            Content-Type: 'application/json; charset=utf-8'
+            Content-Length: '1061'
+            Connection: keep-alive
+            CF-Ray: 791ede6ffe771549-QRO
+            Access-Control-Allow-Origin: '*'
+            Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
+            CF-Cache-Status: DYNAMIC
+            sb-gateway-mode: direct
+            sb-gateway-version: '1'
+            Server: cloudflare
+            alt-svc: 'h3=":443"; ma=86400, h3-29=":443"; ma=86400'
+        body: '[{"id":"test","name":"test","owner":"","public":false,"created_at":"2022-12-02T19:38:21.715155+00:00","updated_at":"2022-12-02T19:38:21.715155+00:00"},{"id":"my-new-storage-bucket","name":"my-new-storage-bucket","owner":"","public":false,"created_at":"2022-12-05T14:55:18.244496+00:00","updated_at":"2022-12-05T14:55:18.244496+00:00"},{"id":"test-2","name":"test-2","owner":"","public":false,"created_at":"2023-01-21T16:56:45.953527+00:00","updated_at":"2023-01-21T16:56:45.953527+00:00"},{"id":"my-new-storage-bucket-non-public-test","name":"my-new-storage-bucket-non-public-test","owner":"","public":false,"created_at":"2023-01-21T18:24:00.067864+00:00","updated_at":"2023-01-21T18:24:00.067864+00:00"},{"id":"my-new-storage-bucket-public-test","name":"my-new-storage-bucket-public-test","owner":"","public":false,"created_at":"2023-01-21T18:23:40.85091+00:00","updated_at":"2023-01-21T18:23:40.85091+00:00"},{"id":"name","name":"name","owner":"","public":false,"created_at":"2023-01-27T02:11:49.711719+00:00","updated_at":"2023-01-27T02:11:49.711719+00:00"}]'
+        curl_info:
+            url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket'
+            content_type: 'application/json; charset=utf-8'
+            http_code: 200
+            header_size: 422
+            request_size: 378
+            filetime: -1
+            ssl_verify_result: 0
+            redirect_count: 0
+            total_time: 0.982356
+            namelookup_time: 0.035388
+            connect_time: 0.061534
+            pretransfer_time: 0.301916
+            size_upload: 0.0
+            size_download: 1061.0
+            speed_download: 1080.0
+            speed_upload: 0.0
+            download_content_length: 1061.0
+            upload_content_length: 0.0
+            starttransfer_time: 0.982303
+            redirect_time: 0.0
+            redirect_url: ''
+            primary_ip: 104.18.26.135
+            certinfo: {  }
+            primary_port: 443
+            local_ip: 192.168.1.78
+            local_port: 60076
+            http_version: 2
+            protocol: 2
+            ssl_verifyresult: 0
+            scheme: HTTPS
+            appconnect_time_us: 301846
+            connect_time_us: 61534
+            namelookup_time_us: 35388
+            pretransfer_time_us: 301916
+            redirect_time_us: 0
+            starttransfer_time_us: 982303
+            total_time_us: 982356
+            effective_method: GET
+    index: 0
