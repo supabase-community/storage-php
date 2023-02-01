@@ -68,35 +68,42 @@ $storage = new Storage\StorageClient($url, [
 
 #### Handling Files
 
+### Connecting to the storage backend
+
+```php
+
+use Supabase\Storage\StorageFile;
+
+$url = 'https://<project_ref>.supabase.co/storage/v1';
+$service_key = '<service_role>';
+$bucket_id = '<storage-bucket-id';
+$storage = new StorageFile($url, [
+ 'Authorization' => 'Bearer ' . $service_key,
+], $bucket_id);
+```
+
 - Upload a file to an existing bucket:
 
   ```php
+  $file_path = $path; // where to uploaded [folder with file name]
   $file_body = $file; // load your file here
   $opts = $options; //The options for the upload.
-  $result = $storage->from('bucket')->upload('path/to/file', $file_body, $opts)
+  $result = $storage->upload($file_path, $file_body, $options);
   ```
-
-  > Note:  
-  > The path in `data.Key` is prefixed by the bucket ID and is not the value which should be passed to the `download` method in order to fetch the file.  
-  > To fetch the file via the `download` method, use `data.path` and `data.bucketId` as follows:
-  >
-  > ```php
-  > const { data, error } = await storageClient.from('bucket').upload('/folder/file.txt', fileBody)
-  > // check for errors
-  > const { data2, error2 } = await storageClient.from(data.bucketId).download(data.path)
-  > ```
-
-  > Note: The `upload` method also accepts a map of optional parameters. For a complete list see the [Supabase API reference](https://supabase.com/docs/reference/javascript/storage-from-upload).
 
 - Download a file from an exisiting bucket:
 
   ```php
-  const { data, error } = await storageClient.from('bucket').download('path/to/file')
+  $file_path = $path; // path to file
+  $opts = $options; //The options for the download.
+  $result = $storage->download($file_path, $options)
   ```
 
 - List all the files within a bucket:
 
   ```php
+
+  //pending
   const { data, error } = await storageClient.from('bucket').list('folder')
   ```
 
@@ -105,9 +112,10 @@ $storage = new Storage\StorageClient($url, [
 - Replace an existing file at the specified path with a new one:
 
   ```php
+  $path = 'path/to/file';
   $file_body = $file; // load your file here
   $opts = $options; //The options for the upload.
-  $result = $storage->from('bucket')->update('path/to/file', $file_body, $opts);
+  $result = $storage->update($path, $file_body, $opts);
   ```
 
   > Note: The `upload` method also accepts a map of optional parameters. For a complete list see the [Supabase API reference](https://supabase.com/docs/reference/javascript/storage-from-upload).
@@ -115,28 +123,33 @@ $storage = new Storage\StorageClient($url, [
 - Move an existing file:
 
   ```php
-  $result = $storage->from('bucket')->move('path/to/file', 'new/path/to/file');
+  $path = 'path/to/file';
+  $new_path = 'new/path/to/file';
+  $result = $storage->move($path, $new_path);
   ```
 
 - Delete files within the same bucket:
 
   ```php
-    $result = $storage->from('bucket')->remove('path/to/file');
+  $path = 'path/to/file';
+  $result = $storage->remove($path);
   ```
 
 - Create signed URL to download file without requiring permissions:
 
   ```php
+    $path = 'path/to/file';
     $expire_in = 60;
     $opts = $options; //The options for the download.[ 'download' => TRUE ]
-    $result = $storage->from('bucket')->createSignedUrl('path/to/file', $expire_in, $opts);
+    $storage->createSignedUrl($path, $expire_in, $opts);
   ```
 
 - Retrieve URLs for assets in public buckets:
 
   ```php
+    $path = 'path/to/file';
     $opts = $options; //The options for the download.[ 'download' => TRUE ]
-    $result = $storage->from('public-bucket')->getPublicUrl('path/to/file', $opts);
+    $storage->testGetPublicUrl($path, $opts);
   ```
 
 

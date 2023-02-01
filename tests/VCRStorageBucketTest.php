@@ -19,6 +19,12 @@ class VCRStorageBucketTest extends TestCase
         $this->client = new  \Supabase\Storage\StorageClient('https://'.$_ENV['PROJECT_REF'].'.supabase.co/storage/v1', $authHeader);
     }
 
+     /**
+    * Test Retrieves the details of all Storage buckets within an existing project function.
+    *
+    * @return void
+    */
+
     public function testListBucket()
     {
         // After turning on the VCR will intercept all requests
@@ -38,15 +44,126 @@ class VCRStorageBucketTest extends TestCase
         \VCR\VCR::turnOff();
     }
 
-    public function testShouldThrowExceptionIfNoCasettePresent()
+    /**
+    * Test Creates a new Storage bucket function.
+    *
+    * @return void
+    */
+
+   public function testCreateBucket(): void
+   {
+       \VCR\VCR::turnOn();
+       \VCR\VCR::insertCassette('storageBucketTest');
+       $result = $this->client->createBucket('my-new-storage-bucket-vcr');
+       $this->assertNotEmpty($result);
+       \VCR\VCR::eject();
+       \VCR\VCR::turnOff();
+   }
+
+   /**
+   * Test Retrieves the details of an existing Storage bucket function.
+   *
+   * @return void
+   */
+
+   public function testGetBucketWithId(): void
     {
-        $this->setExpectedException(
-            'BadMethodCallException',
-            "Invalid http request. No cassette inserted. Please make sure to insert "
-            . "a cassette in your unit test using VCR::insertCassette('name');"
-        );
         \VCR\VCR::turnOn();
-        // If there is no cassette inserted, a request throws an exception
-        file_get_contents('http://example.com');
+        \VCR\VCR::insertCassette('storageBucketTest');
+        $result = $this->client->getBucket('my-new-storage-bucket-vcr');
+        $this->assertNotEmpty($result);
+        \VCR\VCR::eject();
+        \VCR\VCR::turnOff();
+    }
+
+    /**
+    * Test Updates a Storage bucket function.
+    *
+    * @return void
+    */
+
+    public function testUpdateBucket(): void
+    {
+        \VCR\VCR::turnOn();
+        \VCR\VCR::insertCassette('storageBucketTest');
+        $result = $this->client->updateBucket('my-new-storage-bucket-vcr', ['public' => true]);
+        $this->assertNotEmpty($result);
+        \VCR\VCR::eject();
+        \VCR\VCR::turnOff();
+    }
+
+    public function testUpdateBucket_with_not_real_bucket(): void
+    {
+        \VCR\VCR::turnOn();
+        \VCR\VCR::insertCassette('storageBucketTest');
+        $result = $this->client->updateBucket('my-new-storage-bucket-vcr-not-existed', ['public' => true]);
+        $this->assertNotEmpty($result);
+        \VCR\VCR::eject();
+        \VCR\VCR::turnOff();
+    }
+
+    /**
+    * Test Deletes an existing bucket function.
+    *
+    * @return void
+    */
+
+    public function testDeleteBucket(): void
+    {
+        \VCR\VCR::turnOn();
+        \VCR\VCR::insertCassette('storageBucketTest');
+        $result = $this->client->deleteBucket('test');
+        $this->assertNotEmpty($result);
+        \VCR\VCR::eject();
+        \VCR\VCR::turnOff();
+    }
+
+    /**
+     * Test Removes all objects inside a single bucket function.
+    *
+    * @return void
+    */
+
+    public function testEmptyBucket(): void
+    {
+        \VCR\VCR::turnOn();
+        \VCR\VCR::insertCassette('storageBucketTest');
+        $result = $this->client->emptyBucket('my-new-storage-bucket-public-test');
+        $this->assertNotEmpty($result);
+        \VCR\VCR::eject();
+        \VCR\VCR::turnOff();
+    }
+    
+
+    /**
+     * Test Invailid bucket id function.
+    *
+    * @return void
+    */
+
+    public function testGetBucketWithInvalidId(): void
+    {
+        \VCR\VCR::turnOn();
+        \VCR\VCR::insertCassette('storageBucketTest');
+        $result = $this->client->getBucket('not-a-real-bucket-id');
+        $this->assertNotEmpty($result);
+        \VCR\VCR::eject();
+        \VCR\VCR::turnOff();
+    }
+
+    /**
+     * Test Creates a new Storage public bucket function.
+    *
+    * @return void
+    */
+
+    public function testCreatePublicBucket(): void
+    {        
+        \VCR\VCR::turnOn();
+        \VCR\VCR::insertCassette('storageBucketTest');
+        $result = $this->client->createBucket('my-new-storage-bucket-public-vcr', ['public' => true]);
+        $this->assertNotEmpty($result);
+        \VCR\VCR::eject();
+        \VCR\VCR::turnOff();
     }
 }
