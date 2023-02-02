@@ -33,12 +33,12 @@ class StorageFile
 		$this->headers = array_merge(Constants::getDefaultHeaders(), $headers);
 		$this->bucketId = $bucketId;
 	}
+
 	/**
 	 * Lists all the files within a bucket.
+	 *
 	 * @param $path The folder path.
 	 */
-
-
 	public function list($path)
 	{
 		$headers = $this->headers;
@@ -48,7 +48,8 @@ class StorageFile
 				'prefix' => $path,
 			];
 
-			$response = Request::request('POST', $this->url . '/object/list/' . $this->bucketId, $headers, json_encode($body));
+			$response = Request::request('POST', $this->url.'/object/list/'.$this->bucketId, $headers, json_encode($body));
+
 			return $response;
 		} catch (\Exception $e) {
 			if (StorageError::isStorageError($e)) {

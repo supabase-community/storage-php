@@ -45,16 +45,16 @@ final class StorageFileTest extends TestCase
 	}
 
 	/**
-     * Test Downloads a file from a private bucket.
-     * @dataProvider additionProviderList
-     */
-
-     public function testList(string $path): void
-     {   
+	 * Test Downloads a file from a private bucket.
+	 *
+	 * @dataProvider additionProviderList
+	 */
+	public function testList(string $path): void
+	{
 		$result = $this->client->list($path);
-        $this->assertNull($result['error']);
+		$this->assertNull($result['error']);
 		$this->assertArrayHasKey('data', $result);
-     }
+	}
 
 	/**
 	 * Test Replaces an existing file at the specified path with a new one.

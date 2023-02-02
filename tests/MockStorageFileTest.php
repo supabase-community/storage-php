@@ -32,18 +32,17 @@ final class MockStorageFileTest extends TestCase
 	}
 
 	/**
-     * Test Downloads a file from a private bucket.
-     * @dataProvider additionProviderList
-     */
-
-     public function testList(string $path): void
-     {   
+	 * Test Downloads a file from a private bucket.
+	 *
+	 * @dataProvider additionProviderList
+	 */
+	public function testList(string $path): void
+	{
 		$mock = $this->createMock(\Supabase\Storage\StorageFile::class);
 		$mock->method('list')
 			 ->willReturn('url');
 		$this->assertSame('url', $mock->list($path));
-     }
-
+	}
 
 	/**
 	 * @dataProvider additionProvider
@@ -113,11 +112,10 @@ final class MockStorageFileTest extends TestCase
 	/**
 	 * Additional data provider for List.
 	 */
-
 	public function additionProviderList(): array
-    {
-        return [
-            ['new-directory'],
-        ];
-    }
+	{
+		return [
+			['new-directory'],
+		];
+	}
 }

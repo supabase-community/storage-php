@@ -13,7 +13,6 @@ class Request
 				return json_decode($response->getBody(), true);
 			});
 
-			
 			$response = $promise->wait();
 
 			return ['data' => $response, 'error' => null];
@@ -46,7 +45,6 @@ class Request
 		if (method_exists($error, 'getResponse')) {
 			$response = $error->getResponse();
 			$data = json_decode($response->getBody(), true);
-
 
 			$error = new StorageApiError($data['message'], intval($data['statusCode']) || 500);
 		} else {
