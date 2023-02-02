@@ -18,14 +18,14 @@ class StorageBucket
 	}
 
 	/**
-	 * Creates a new Storage bucket.
-	 *
-	 * @param  string  $bucketId  The bucketId to create.
-	 */
+     * Creates a new Storage bucket.
+     * @access public
+     * @param string $bucketId The bucketId to create.
+     */
 	public function createBucket($bucketId, $options = ['public' => false])
 	{
 		try {
-			$url = $this->url.'/bucket';
+			$url = $this->url . '/bucket';
 			$body = json_encode([
 				'id' => $bucketId,
 				'name' => $bucketId,
@@ -53,7 +53,7 @@ class StorageBucket
 	public function getBucket($bucketId)
 	{
 		try {
-			$url = $this->url.'/bucket/'.$bucketId;
+			$url = $this->url . '/bucket/' . $bucketId;
 			$response = Request::request('GET', $url, $this->headers);
 
 			return $response;
@@ -73,7 +73,7 @@ class StorageBucket
 	 */
 	public function listBuckets()
 	{
-		$url = $this->url.'/bucket';
+		$url = $this->url . '/bucket';
 
 		try {
 			$response = Request::request('GET', $url, $this->headers);
@@ -102,7 +102,7 @@ class StorageBucket
 				'name' => $bucketId,
 				'public' => $options['public'] ? 'true' : 'false',
 			]);
-			$url = $this->url.'/bucket/'.$bucketId;
+			$url = $this->url . '/bucket/' . $bucketId;
 			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 			$response = Request::request('PUT', $url, $headers, $body);
 
@@ -124,7 +124,7 @@ class StorageBucket
 	public function deleteBucket($bucketId)
 	{
 		try {
-			$url = $this->url.'/bucket/'.$bucketId;
+			$url = $this->url . '/bucket/' . $bucketId;
 			$response = Request::request('DELETE', $url, $this->headers);
 
 			return $response;
@@ -145,7 +145,7 @@ class StorageBucket
 	public function emptyBucket($bucketId)
 	{
 		try {
-			$url = $this->url.'/bucket/'.$bucketId.'/empty';
+			$url = $this->url . '/bucket/' . $bucketId . '/empty';
 			$response = Request::request('POST', $url, $this->headers);
 
 			return $response;

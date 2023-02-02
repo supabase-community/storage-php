@@ -33,6 +33,31 @@ class StorageFile
 		$this->headers = array_merge(Constants::getDefaultHeaders(), $headers);
 		$this->bucketId = $bucketId;
 	}
+	/**
+	 * Lists all the files within a bucket.
+	 * @param $path The folder path.
+	 */
+
+
+	public function list($path)
+	{
+		$headers = $this->headers;
+		$headers['content-type'] = 'application/json';
+		try {
+			$body = [
+				'prefix' => $path,
+			];
+
+			$response = Request::request('POST', $this->url . '/object/list/' . $this->bucketId, $headers, json_encode($body));
+			return $response;
+		} catch (\Exception $e) {
+			if (StorageError::isStorageError($e)) {
+				return  ['data' => null, 'error' => $e];
+			}
+
+			throw $e;
+		}
+	}
 
 	/**
 	 * Uploads a file to an object storage bucket creating or replacing the file if it already exists.
@@ -212,7 +237,7 @@ class StorageFile
 
 			$downloadQueryParam = $opts['download'] ? '?download=true' : '';
 
-			$signedUrls = array_map(function ($d) {
+			$signedUrls = array_map(function ($d) use ($downloadQueryParam) {
 				$d['signed_url'] = urlencode($this->url.$d['signed_url'].$downloadQueryParam);
 
 				return $d;

@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * MokeStorageFileTest Class.
  */
-final class MokeStorageFileTest extends TestCase
+final class MockStorageFileTest extends TestCase
 {
 	/**
 	 * @dataProvider additionProvider
@@ -30,6 +30,20 @@ final class MokeStorageFileTest extends TestCase
 			 ->willReturn('url');
 		$this->assertSame('url', $mock->download($path, $options));
 	}
+
+	/**
+     * Test Downloads a file from a private bucket.
+     * @dataProvider additionProviderList
+     */
+
+     public function testList(string $path): void
+     {   
+		$mock = $this->createMock(\Supabase\Storage\StorageFile::class);
+		$mock->method('list')
+			 ->willReturn('url');
+		$this->assertSame('url', $mock->list($path));
+     }
+
 
 	/**
 	 * @dataProvider additionProvider
@@ -95,4 +109,15 @@ final class MokeStorageFileTest extends TestCase
 			['path/to/file', 'local/path/to/file/', ['public' => true], 60],
 		];
 	}
+
+	/**
+	 * Additional data provider for List.
+	 */
+
+	public function additionProviderList(): array
+    {
+        return [
+            ['new-directory'],
+        ];
+    }
 }
