@@ -1,6 +1,8 @@
-# `storage-php`
+# Supabase `storage-php`
 
 PHP Client library to interact with Supabase Storage.
+
+> **Note:** This repository is in Alpha and is not ready for production usage. API's will change as it progresses to initial release.
 
 ## Quick Start Guide
 
