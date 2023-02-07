@@ -29,18 +29,13 @@ class StorageBucket
 			$body = json_encode([
 				'id' => $bucketId,
 				'name' => $bucketId,
-				'public' => $options['public'] ? 'true' : 'false',
+				'public' => $options['public'],
 			]);
 			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
-			$response = Request::request('POST', $url, $headers, $body);
-
-			return $response;
+			$data = Request::request('POST', $url, $headers, $body);
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 
@@ -54,15 +49,10 @@ class StorageBucket
 	{
 		try {
 			$url = $this->url.'/bucket/'.$bucketId;
-			$response = Request::request('GET', $url, $this->headers);
-
-			return $response;
+			$data = Request::request('GET', $url, $this->headers);
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 
@@ -76,15 +66,10 @@ class StorageBucket
 		$url = $this->url.'/bucket';
 
 		try {
-			$response = Request::request('GET', $url, $this->headers);
-
-			return $response;
+			$data = Request::request('GET', $url, $this->headers);
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 
@@ -104,15 +89,10 @@ class StorageBucket
 			]);
 			$url = $this->url.'/bucket/'.$bucketId;
 			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
-			$response = Request::request('PUT', $url, $headers, $body);
-
-			return $response;
+			$data = Request::request('PUT', $url, $headers, $body);
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 
@@ -125,15 +105,10 @@ class StorageBucket
 	{
 		try {
 			$url = $this->url.'/bucket/'.$bucketId;
-			$response = Request::request('DELETE', $url, $this->headers);
-
-			return $response;
+			$data = Request::request('DELETE', $url, $this->headers);
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 
@@ -146,15 +121,10 @@ class StorageBucket
 	{
 		try {
 			$url = $this->url.'/bucket/'.$bucketId.'/empty';
-			$response = Request::request('POST', $url, $this->headers);
-
-			return $response;
+			$data = Request::request('POST', $url, $this->headers);
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 }
