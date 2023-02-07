@@ -4,7 +4,6 @@ namespace Supabase\Storage;
 
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
-use Supabase\Util\StorageError;
 
 class StorageBucket
 {
@@ -33,6 +32,7 @@ class StorageBucket
 			]);
 			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 			$data = Request::request('POST', $url, $headers, $body);
+
 			return $data;
 		} catch (\Exception $e) {
 			return $e;
@@ -50,6 +50,7 @@ class StorageBucket
 		try {
 			$url = $this->url.'/bucket/'.$bucketId;
 			$data = Request::request('GET', $url, $this->headers);
+
 			return $data;
 		} catch (\Exception $e) {
 			return $e;
@@ -67,6 +68,7 @@ class StorageBucket
 
 		try {
 			$data = Request::request('GET', $url, $this->headers);
+
 			return $data;
 		} catch (\Exception $e) {
 			return $e;
@@ -90,6 +92,7 @@ class StorageBucket
 			$url = $this->url.'/bucket/'.$bucketId;
 			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 			$data = Request::request('PUT', $url, $headers, $body);
+
 			return $data;
 		} catch (\Exception $e) {
 			return $e;
@@ -106,6 +109,7 @@ class StorageBucket
 		try {
 			$url = $this->url.'/bucket/'.$bucketId;
 			$data = Request::request('DELETE', $url, $this->headers);
+
 			return $data;
 		} catch (\Exception $e) {
 			return $e;
@@ -122,6 +126,7 @@ class StorageBucket
 		try {
 			$url = $this->url.'/bucket/'.$bucketId.'/empty';
 			$data = Request::request('POST', $url, $this->headers);
+
 			return $data;
 		} catch (\Exception $e) {
 			return $e;

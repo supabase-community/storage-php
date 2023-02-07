@@ -4,7 +4,6 @@ namespace Supabase\Storage;
 
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
-use Supabase\Util\StorageError;
 
 class StorageFile
 {
@@ -180,9 +179,10 @@ class StorageFile
 			$fullUrl = $this->url.'/object/sign/'.$storagePath;
 			$response = Request::request('POST', $fullUrl, $headers, json_encode($body));
 			$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
-			$data = urlencode($this->url.$response['data']['signedURL'].$downloadQueryParam);			
+			$data = urlencode($this->url.$response['data']['signedURL'].$downloadQueryParam);
+
 			return $data;
-		} catch (\Exception $e) {			
+		} catch (\Exception $e) {
 			return $e;
 		}
 	}
@@ -206,9 +206,10 @@ class StorageFile
 			$downloadQueryParam = $opts['download'] ? '?download=true' : '';
 			$data = array_map(function ($d) use ($downloadQueryParam) {
 				$d['signed_url'] = urlencode($this->url.$d['signed_url'].$downloadQueryParam);
+
 				return $d;
 			}, $response);
- 
+
 			return $data;
 		} catch (\Exception $e) {
 			return $e;
@@ -229,6 +230,7 @@ class StorageFile
 
 		try {
 			$data = Request::request_file($url, $headers);
+
 			return $data;
 		} catch (\Exception $e) {
 			return $e;
@@ -264,6 +266,7 @@ class StorageFile
 			$options = ['prefixes' => $paths];
 			$fullUrl = $this->url.'/object/'.$this->bucketId;
 			$data = Request::request('DELETE', $fullUrl, $headers, json_encode($options));
+
 			return $data;
 		} catch (\Exception $e) {
 			return $e;
