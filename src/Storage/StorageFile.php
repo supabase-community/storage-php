@@ -4,7 +4,6 @@ namespace Supabase\Storage;
 
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
-use Supabase\Util\StorageError;
 
 class StorageFile
 {
@@ -48,15 +47,11 @@ class StorageFile
 				'prefix' => $path,
 			];
 
-			$response = Request::request('POST', $this->url.'/object/list/'.$this->bucketId, $headers, json_encode($body));
+			$data = Request::request('POST', $this->url.'/object/list/'.$this->bucketId, $headers, json_encode($body));
 
-			return $response;
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return  ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 
@@ -82,15 +77,11 @@ class StorageFile
 
 			$storagePath = $this->_storagePath($path);
 
-			$response = Request::request($method, $this->url.'/object/'.$storagePath, $headers, $body);
+			$data = Request::request($method, $this->url.'/object/'.$storagePath, $headers, $body);
 
-			return $response;
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return  ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 
@@ -135,18 +126,11 @@ class StorageFile
 				'destinationKey' => $toPath,
 			];
 
-			$response = Request::request('POST', $this->url.'/object/move', $headers, json_encode($body));
+			$data = Request::request('POST', $this->url.'/object/move', $headers, json_encode($body));
 
-			return [
-				'data'=> $response,
-				'error'=> null,
-			];
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return  ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return   $e;
 		}
 	}
 
@@ -167,20 +151,11 @@ class StorageFile
 				'destinationKey' => $toPath,
 			];
 
-			$response = Request::request('POST', $this->url.'/object/copy', $headers, json_encode($body));
+			$data = Request::request('POST', $this->url.'/object/copy', $headers, json_encode($body));
 
-			return [
-				'data'=> [
-					'path' => $response,
-				],
-				'error' => null,
-			];
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return  ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 
@@ -204,18 +179,11 @@ class StorageFile
 			$fullUrl = $this->url.'/object/sign/'.$storagePath;
 			$response = Request::request('POST', $fullUrl, $headers, json_encode($body));
 			$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
-			$signedUrl = urlencode($this->url.$response['data']['signedURL'].$downloadQueryParam);
+			$data = urlencode($this->url.$response['data']['signedURL'].$downloadQueryParam);
 
-			return [
-				'data'=> ['signedUrl' => $signedUrl],
-				'error'=> null,
-			];
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return  ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 
@@ -235,25 +203,16 @@ class StorageFile
 			];
 			$fullUrl = $this->url.'/object/sign'.$this->bucketId;
 			$response = Request::request('POST', $fullUrl, $this->headers, $opts, $body);
-
 			$downloadQueryParam = $opts['download'] ? '?download=true' : '';
-
-			$signedUrls = array_map(function ($d) use ($downloadQueryParam) {
+			$data = array_map(function ($d) use ($downloadQueryParam) {
 				$d['signed_url'] = urlencode($this->url.$d['signed_url'].$downloadQueryParam);
 
 				return $d;
 			}, $response);
 
-			return [
-				'data'=> $signedUrls,
-				'error'=> null,
-			];
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return  ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 
@@ -270,15 +229,11 @@ class StorageFile
 		$headers['stream'] = true;
 
 		try {
-			$response = Request::request_file($url, $headers);
+			$data = Request::request_file($url, $headers);
 
-			return $response;
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return  ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 
@@ -293,11 +248,9 @@ class StorageFile
 		$storagePath = $this->_storagePath($path);
 		$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
 
-		return [
-			'data' => [
-				'publicUrl' => urlencode($this->url.'/object/public/'.$storagePath.$downloadQueryParam),
-			],
-		];
+		$data = urlencode($this->url.'/object/public/'.$storagePath.$downloadQueryParam);
+
+		return $data;
 	}
 
 	/**
@@ -312,15 +265,11 @@ class StorageFile
 		try {
 			$options = ['prefixes' => $paths];
 			$fullUrl = $this->url.'/object/'.$this->bucketId;
-			$response = Request::request('DELETE', $fullUrl, $headers, json_encode($options));
+			$data = Request::request('DELETE', $fullUrl, $headers, json_encode($options));
 
-			return $response;
+			return $data;
 		} catch (\Exception $e) {
-			if (StorageError::isStorageError($e)) {
-				return  ['data' => null, 'error' => $e];
-			}
-
-			throw $e;
+			return $e;
 		}
 	}
 

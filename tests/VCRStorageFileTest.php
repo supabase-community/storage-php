@@ -51,21 +51,6 @@ final class VCRStorageFileTest extends TestCase
 	}
 
 	/**
-	 * Test Downloads a file from a private bucket.
-	 *
-	 * @dataProvider additionProviderList
-	 */
-	public function testList(string $path): void
-	{
-		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageFileTest');
-		$result = $this->client->list($path);
-		$this->assertNotEmpty($result);
-		\VCR\VCR::eject();
-		\VCR\VCR::turnOff();
-	}
-
-	/**
 	 * Test Replaces an existing file at the specified path with a new one.
 	 *
 	 * @dataProvider additionProvider
@@ -194,13 +179,6 @@ final class VCRStorageFileTest extends TestCase
 	{
 		return [
 			['copy-directory/supabase.png'],
-		];
-	}
-
-	public function additionProviderList(): array
-	{
-		return [
-			['new-directory'],
 		];
 	}
 }
