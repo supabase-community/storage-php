@@ -3,3 +3,4 @@
 .env
 .env.backup
 phpunit.xml
+.phpdoc
