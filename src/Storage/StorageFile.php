@@ -350,6 +350,8 @@ class StorageFile
 	 * Cleans up the path to the file in the bucket.
 	 *
 	 * @param  string  $path  The path to the file in the bucket.
+	 * 
+	 * @return string
 	 */
 	private function _storagePath($path)
 	{

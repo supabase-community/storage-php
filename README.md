@@ -18,8 +18,8 @@ composer require supabase/storage-php
 
 use Supabase\Storage;
 
-$url = 'https://<project_ref>.supabase.co/storage/v1';
-$service_key = '<service_role>';
+$url = 'https://'.$project_ref.'supabase.co/storage/v1';
+$service_key = $service_role;
 $storage = new Storage\StorageClient($url, [
  'Authorization' => 'Bearer ' . $service_key,
 ]);
@@ -98,15 +98,14 @@ $storage = new StorageFile($url, [
   ```php
   $file_path = $path; // path to file
   $opts = $options; //The options for the download.
-  $result = $storage->download($file_path, $options)
+  $result = $storage->download($file_path, $options);
   ```
 
 - List all the files within a bucket:
 
   ```php
-
-  //pending
-  const { data, error } = await storageClient.from('bucket').list('folder')
+  $path = $path_bucket; // path to files
+  $result = $storage->list($path);
   ```
 
   > Note: The `list` method also accepts a map of optional parameters. For a complete list see the [Supabase API reference](https://supabase.com/docs/reference/javascript/storage-from-list).

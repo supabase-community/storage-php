@@ -1,15 +1,26 @@
 {
-    "name": "jordan/storage-php",
+    "name": "supabase/storage-php",
+    "description": "PHP Client library to interact with Supabase Storage.",
+    "version": "4.0.3", 
     "autoload": {
         "psr-0": { "": "src/" },
         "psr-4": {
             "Supabase\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Supabase\\Test\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "jordan",
             "email": "jordan@ascensionengineer.com"
+        },
+        {
+            "name": "Adolfo",
+            "email": "adolfo@zerocopylabs.com"
         }
     ],
     "require-dev": {
@@ -21,5 +32,7 @@
         "allure-framework/allure-phpunit": "^1.5",
         "guzzlehttp/guzzle": "^7.5",
         "php-vcr/php-vcr": "^1.5"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": false
 }
