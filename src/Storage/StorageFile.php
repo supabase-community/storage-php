@@ -64,7 +64,6 @@ class StorageFile
 	 * Lists all the files within a bucket.
 	 *
 	 * @param $path The folder path.
-	 * 
 	 * @return string Returns Json Object from request
 	 */
 	public function list($path)
@@ -91,7 +90,6 @@ class StorageFile
 	 * @param  string  $path  The path to the file in the bucket.
 	 * @param  string  $file  The body of the file to be stored in the bucket.
 	 * @param  array  $options  The options for the upload.
-	 * 
 	 * @return string Returns Json Object from request
 	 */
 	public function uploadOrUpdate($method, $path, $file, $opts)
@@ -120,11 +118,10 @@ class StorageFile
 	 * Uploads a file to an existing bucket.
 	 *
 	 * @param  string  $path  path The file path, including the file name. Should be of
-	 * the format `folder/subfolder/filename.png`. The bucket must already exist before
-	 * attempting to upload.
+	 *                        the format `folder/subfolder/filename.png`. The bucket must already exist before
+	 *                        attempting to upload.
 	 * @param  string  $file  The body of the file to be stored in the bucket.
 	 * @param  array  $options  The options for the upload.
-	 * 
 	 * @return string Returns Json Object from request
 	 */
 	public function upload($path, $file, $opts)
@@ -136,10 +133,9 @@ class StorageFile
 	 * Replaces an existing file at the specified path with a new one.
 	 *
 	 * @param  string  $path  The relative file path. Should be of the
-	 * format `folder/subfolder/filename.png`. The bucket must already exist before attempting to update.
+	 *                        format `folder/subfolder/filename.png`. The bucket must already exist before attempting to update.
 	 * @param  string  $file  The body of the file to be stored in the bucket.
 	 * @param  array  $options  The options for the update.
-	 * 
 	 * @return string Returns Json Object from request
 	 */
 	public function update($path, $file, $opts)
@@ -151,10 +147,9 @@ class StorageFile
 	 * Moves an existing file to a new path in the same bucket.
 	 *
 	 * @param  string  $fromPath  The original file path, including the current file
-	 * name. For example `folder/image.png`.
+	 *                            name. For example `folder/image.png`.
 	 * @param  string  $toPath  The new file path, including the new file name.
-	 * For example `folder/image-new.png`.
-	 * 
+	 *                          For example `folder/image-new.png`.
 	 * @return string Returns Json Object from request
 	 */
 	public function move($fromPath, $toPath)
@@ -180,10 +175,9 @@ class StorageFile
 	 * Copies an existing file to a new path in the same bucket.
 	 *
 	 * @param  string  $fromPath  The original file path, including the current
-	 * file name. For example `folder/image.png`.
+	 *                            file name. For example `folder/image.png`.
 	 * @param  string  $toPath  The new file path, including the new file name.
-	 * For example `folder/image-copy.png`.
-	 * 
+	 *                          For example `folder/image-copy.png`.
 	 * @return string Returns Json Object from request
 	 */
 	public function copy($fromPath, $toPath)
@@ -210,11 +204,10 @@ class StorageFile
 	 *
 	 * @param  string  $path  The file path, including the current file name. For example `folder/image.png`.
 	 * @param  int  $expiresIn  The number of seconds until the signed URL expires. For example,
-	 * `60` for a URL which is valid for one minute
+	 *                          `60` for a URL which is valid for one minute
 	 * @param  array  $opts['download']  Triggers the file as a download if set to true. Set
-	 * this parameter as the name of the file if you want to trigger the download with a different filename.
+	 *                                   this parameter as the name of the file if you want to trigger the download with a different filename.
 	 * @param  array  $opts['transform  ']  Transform the asset before serving it to the client.
-	 * 
 	 * @return string Returns Json Object from request
 	 */
 	public function createSignedUrl($path, $expires, $opts)
@@ -243,11 +236,10 @@ class StorageFile
 	 *
 	 * @param  string  $paths  The file path, including the current file name. For example `folder/image.png`.
 	 * @param  int  $expiresIn  The number of seconds until the signed URL expires.
-	 * For example, `60` for a URL which is valid for one minute.
+	 *                          For example, `60` for a URL which is valid for one minute.
 	 * @param  array  $opts['download']  Triggers the file as a download if set to true. Set
-	 * this parameter as the name of the file if you want to trigger the download with a different filename.
+	 *                                   this parameter as the name of the file if you want to trigger the download with a different filename.
 	 * @param  array  $opts['transform  ']  Transform the asset before serving it to the client.
-	 * 
 	 * @return string Returns Json Object from request
 	 */
 	public function createSignedUrls($paths, $expiresIn, $opts)
@@ -277,9 +269,8 @@ class StorageFile
 	 * a request to the URL returned from `getPublicUrl` instead.
 	 *
 	 * @param  string  $path  The full path and file name of the file to be downloaded.
-	 * For example `folder/image.png`.
+	 *                        For example `folder/image.png`.
 	 * @param  array  $options['transform']  Transform the asset before serving it to the client.
-	 * 
 	 * @return string Returns Json Object from request
 	 */
 	public function download($path, $options)
@@ -307,13 +298,12 @@ class StorageFile
 	 * you will not be able to download the asset.
 	 *
 	 * @param  string  $path  The path and name of the file to generate
-	 * the public URL for. For example `folder/image.png`.
+	 *                        the public URL for. For example `folder/image.png`.
 	 * @param  array  $options['download']  Triggers the file as a download
-	 * if set to true. Set this parameter as the name of the file if you want
-	 * to trigger the download with a different filename.
+	 *                                      if set to true. Set this parameter as the name of the file if you want
+	 *                                      to trigger the download with a different filename.
 	 * @param  array  $options['transform']  Transform the asset before serving
-	 * it to the client.
-	 * 
+	 *                                       it to the client.
 	 * @return string Returns the public url generated
 	 */
 	public function getPublicUrl($path, $opts)
@@ -330,8 +320,7 @@ class StorageFile
 	 * Deletes files within the same bucket.
 	 *
 	 * @param  string  $path  An array of files to delete,
-	 * including the path and file name. For example [`'folder/image.png'`].
-	 * 
+	 *                        including the path and file name. For example [`'folder/image.png'`].
 	 * @return string Returns Json Object from request
 	 */
 	public function remove($paths)
@@ -353,7 +342,6 @@ class StorageFile
 	 * Cleans up the path to the file in the bucket.
 	 *
 	 * @param  string  $path  The path to the file in the bucket.
-	 * 
 	 * @return string Returns the path to the file cleaned
 	 */
 	private function _storagePath($path)

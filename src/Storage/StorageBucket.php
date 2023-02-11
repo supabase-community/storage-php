@@ -40,11 +40,10 @@ class StorageBucket
 	/**
 	 * Creates a new Storage bucket.
 	 *
-	 * @param string  $bucketId  The bucketId to create.
-	 * @param array $options The visibility of the bucket. Public buckets don't require an 
-	 * authorization token to download objects, but still require a valid token for all
-	 * other operations. By default, buckets are private.
-	 * 
+	 * @param  string  $bucketId  The bucketId to create.
+	 * @param  array  $options  The visibility of the bucket. Public buckets don't require an
+	 *                          authorization token to download objects, but still require a valid token for all
+	 *                          other operations. By default, buckets are private.
 	 * @return string Returns Json Object from request
 	 */
 	public function createBucket($bucketId, $options = ['public' => false])
@@ -105,11 +104,10 @@ class StorageBucket
 	/**
 	 * Updates a Storage bucket.
 	 *
-	 * @param string $bucketId  A unique identifier for the bucket you are updating.
-	 * @param array $options The visibility of the bucket. Public buckets don't 
-	 * require an authorization token to download objects, but still require a valid
-	 * token for all other operations.
-	 * 
+	 * @param  string  $bucketId  A unique identifier for the bucket you are updating.
+	 * @param  array  $options  The visibility of the bucket. Public buckets don't
+	 *                          require an authorization token to download objects, but still require a valid
+	 *                          token for all other operations.
 	 * @return string Returns Json Object from request
 	 */
 	public function updateBucket($bucketId, $options)
@@ -134,8 +132,7 @@ class StorageBucket
 	 * Deletes an existing bucket. A bucket can't be deleted with existing objects inside it.
 	 * You must first `empty()` the bucket.
 	 *
-	 * @param string $bucketId  The unique identifier of the bucket you would like to delete.
-	 * 
+	 * @param  string  $bucketId  The unique identifier of the bucket you would like to delete.
 	 * @return string Returns Json Object from request
 	 */
 	public function deleteBucket($bucketId)
@@ -153,8 +150,7 @@ class StorageBucket
 	/**
 	 *	Removes all objects inside a single bucket.
 	 *
-	 * @param string $bucketId The unique identifier of the bucket you would like to empty.
-	 * 
+	 * @param  string  $bucketId  The unique identifier of the bucket you would like to empty.
 	 * @return string Returns Json Object from request
 	 */
 	public function emptyBucket($bucketId)
