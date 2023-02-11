@@ -270,7 +270,7 @@ class StorageFile
 	 *
 	 * @param  string  $path  The full path and file name of the file to be downloaded.
 	 *                        For example `folder/image.png`.
-	 * @param  array  $options['transform  ']  Transform the asset before serving it to the client.
+	 * @param  array  $options['transform']  Transform the asset before serving it to the client.
 	 * @return array
 	 */
 	public function download($path, $options)
