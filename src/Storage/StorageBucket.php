@@ -44,7 +44,7 @@ class StorageBucket
 	 * @param  array  $options  The visibility of the bucket. Public buckets don't require an
 	 *                          authorization token to download objects, but still require a valid token for all
 	 *                          other operations. By default, buckets are private.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function createBucket($bucketId, $options = ['public' => false])
 	{
@@ -69,7 +69,7 @@ class StorageBucket
 	 *
 	 * @param  string  $bucketId  The unique identifier of the bucket you
 	 *                            would like to retrieve.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function getBucket($bucketId)
 	{
@@ -86,7 +86,7 @@ class StorageBucket
 	/**
 	 * Retrieves the details of all Storage buckets within an existing project.
 	 *
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function listBuckets()
 	{
@@ -108,7 +108,7 @@ class StorageBucket
 	 * @param  array  $options  The visibility of the bucket. Public buckets don't
 	 *                          require an authorization token to download objects, but still require a valid
 	 *                          token for all other operations.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function updateBucket($bucketId, $options)
 	{
@@ -133,7 +133,7 @@ class StorageBucket
 	 * You must first `empty()` the bucket.
 	 *
 	 * @param  string  $bucketId  The unique identifier of the bucket you would like to delete.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function deleteBucket($bucketId)
 	{
@@ -151,7 +151,7 @@ class StorageBucket
 	 *	Removes all objects inside a single bucket.
 	 *
 	 * @param  string  $bucketId  The unique identifier of the bucket you would like to empty.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function emptyBucket($bucketId)
 	{

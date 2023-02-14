@@ -15,7 +15,7 @@ class Request
 
 			$response = $promise->wait();
 
-			return json_encode($response);
+			return json_decode(json_encode($response));
 		} catch (\Exception $e) {
 			throw self::handleError($e);
 		}

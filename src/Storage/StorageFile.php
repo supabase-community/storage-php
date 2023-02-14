@@ -64,7 +64,7 @@ class StorageFile
 	 * Lists all the files within a bucket.
 	 *
 	 * @param $path The folder path.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function list($path)
 	{
@@ -90,7 +90,7 @@ class StorageFile
 	 * @param  string  $path  The path to the file in the bucket.
 	 * @param  string  $file  The body of the file to be stored in the bucket.
 	 * @param  array  $options  The options for the upload.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function uploadOrUpdate($method, $path, $file, $opts)
 	{
@@ -122,7 +122,7 @@ class StorageFile
 	 *                        attempting to upload.
 	 * @param  string  $file  The body of the file to be stored in the bucket.
 	 * @param  array  $options  The options for the upload.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function upload($path, $file, $opts)
 	{
@@ -136,7 +136,7 @@ class StorageFile
 	 *                        format `folder/subfolder/filename.png`. The bucket must already exist before attempting to update.
 	 * @param  string  $file  The body of the file to be stored in the bucket.
 	 * @param  array  $options  The options for the update.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function update($path, $file, $opts)
 	{
@@ -150,7 +150,7 @@ class StorageFile
 	 *                            name. For example `folder/image.png`.
 	 * @param  string  $toPath  The new file path, including the new file name.
 	 *                          For example `folder/image-new.png`.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function move($fromPath, $toPath)
 	{
@@ -178,7 +178,7 @@ class StorageFile
 	 *                            file name. For example `folder/image.png`.
 	 * @param  string  $toPath  The new file path, including the new file name.
 	 *                          For example `folder/image-copy.png`.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function copy($fromPath, $toPath)
 	{
@@ -208,7 +208,7 @@ class StorageFile
 	 * @param  array  $opts['download']  Triggers the file as a download if set to true. Set
 	 *                                   this parameter as the name of the file if you want to trigger the download with a different filename.
 	 * @param  array  $opts['transform  ']  Transform the asset before serving it to the client.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function createSignedUrl($path, $expires, $opts)
 	{
@@ -223,7 +223,7 @@ class StorageFile
 			$fullUrl = $this->url.'/object/sign/'.$storagePath;
 			$response = Request::request('POST', $fullUrl, $headers, json_encode($body));
 			$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
-			$data = urlencode($this->url.$response['data']['signedURL'].$downloadQueryParam);
+			$data = urlencode($this->url.$response->signedURL.$downloadQueryParam);
 
 			return $data;
 		} catch (\Exception $e) {
@@ -240,7 +240,7 @@ class StorageFile
 	 * @param  array  $opts['download']  Triggers the file as a download if set to true. Set
 	 *                                   this parameter as the name of the file if you want to trigger the download with a different filename.
 	 * @param  array  $opts['transform  ']  Transform the asset before serving it to the client.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function createSignedUrls($paths, $expiresIn, $opts)
 	{
@@ -253,7 +253,7 @@ class StorageFile
 			$response = Request::request('POST', $fullUrl, $this->headers, $opts, $body);
 			$downloadQueryParam = $opts['download'] ? '?download=true' : '';
 			$data = array_map(function ($d) use ($downloadQueryParam) {
-				$d['signed_url'] = urlencode($this->url.$d['signed_url'].$downloadQueryParam);
+				$d['signed_url'] = urlencode($this->url.$d->signed_url.$downloadQueryParam);
 
 				return $d;
 			}, $response);
@@ -271,7 +271,7 @@ class StorageFile
 	 * @param  string  $path  The full path and file name of the file to be downloaded.
 	 *                        For example `folder/image.png`.
 	 * @param  array  $options['transform']  Transform the asset before serving it to the client.
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function download($path, $options)
 	{
@@ -321,7 +321,7 @@ class StorageFile
 	 *
 	 * @param  string  $path  An array of files to delete,
 	 *                        including the path and file name. For example [`'folder/image.png'`].
-	 * @return string Returns Json Object from request
+	 * @return string Returns stdClass Object from request
 	 */
 	public function remove($paths)
 	{

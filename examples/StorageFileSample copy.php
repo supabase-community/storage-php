@@ -12,6 +12,14 @@ $client = new  StorageFile(
 	$bucket_id
 );
 
+function examplList(): void
+{
+	global $client;
+	$options = ['public' => true];
+	$result = $client->list('path/to/file', 'https://your-file-body/file', $options);
+	print_r($result);
+}
+
 /**
  * Example uploads a file to an existing bucket.
  */
