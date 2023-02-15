@@ -4,10 +4,10 @@ include '../vendor/autoload.php';
 
 use Supabase\Storage\StorageFile;
 
-$authHeader = ['Authorization' => 'Bearer '.'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc'];
+$authHeader = ['Authorization' => 'Bearer '.'<your_api_key>'];
 $bucket_id = 'test-bucket';
 $client = new  StorageFile(
-	'https://'.'gpdefvsxamnscceccczu'.'.supabase.co/storage/v1',
+	'https://'.'<your_supabase_id>'.'.supabase.co/storage/v1',
 	$authHeader,
 	$bucket_id
 );
