@@ -1,6 +1,5 @@
 .phpunit.result.cache
 /vendor
-/tests/fixtures
 .env
 .env.backup
 phpunit.xml
