@@ -4,8 +4,8 @@ include __DIR__.'/../../vendor/autoload.php';
 
 use Supabase\Storage\StorageClient;
 
-$api_key = getenv('API_KEY');;
-$supabase_id = getenv('REFERENCE_ID');;
+$api_key = getenv('API_KEY');
+$supabase_id = getenv('REFERENCE_ID');
 
 $authHeader = ['Authorization' => "Bearer {$api_key}"];
 $client = new  StorageClient(
