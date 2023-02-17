@@ -17,5 +17,3 @@ $client = new StorageFile(
 $options = ['transform' => true];
 $result = $client->download('path/to/file.png', $options);
 print_r($result);
-
-?>

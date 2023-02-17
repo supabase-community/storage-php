@@ -17,5 +17,3 @@ $client = new StorageFile(
 $options = ['transform' => true];
 $result = $client->update('path/to/file.png', 'https://cdn-icons-png.flaticon.com/128/7267/7267612.png', $options);
 print_r($result);
-
-?>

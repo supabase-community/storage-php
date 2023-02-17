@@ -16,5 +16,3 @@ $client = new StorageFile(
 
 $result = $client->remove('path/to/file.png');
 print_r($result);
-
-?>

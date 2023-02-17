@@ -13,4 +13,3 @@ $client = new  StorageClient(
 );
 $result = $client->getBucket('test-bucket');
 print_r($result);
-?>

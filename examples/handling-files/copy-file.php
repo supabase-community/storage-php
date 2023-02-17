@@ -15,5 +15,3 @@ $client = new StorageFile(
 );
 $result = $client->copy('path/to/file.png', 'path/to/file-copy.png');
 print_r($result);
-
-?>

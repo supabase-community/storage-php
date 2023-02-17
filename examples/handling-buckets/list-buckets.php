@@ -16,4 +16,3 @@ print_r($result);
 foreach ($result as $bucket) {
 	print_r($bucket->name);
 }
-?>

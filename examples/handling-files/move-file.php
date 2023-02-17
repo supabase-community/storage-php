@@ -16,5 +16,3 @@ $client = new StorageFile(
 
 $result = $client->move('path/to/file.png', 'to/new-path/file.png');
 print_r($result);
-
-?>

@@ -13,4 +13,3 @@ $client = new  StorageClient(
 );
 $result = $client->deleteBucket('test-bucket');
 print_r($result);
-?>

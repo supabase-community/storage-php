@@ -17,4 +17,3 @@ $client = new StorageFile(
 $options = ['public' => false];
 $result = $client->upload('path/to/file.png', 'https://www.shorturl.at/img/shorturl-icon.png', $options);
 print_r($result);
-?>

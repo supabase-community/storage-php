@@ -17,5 +17,3 @@ $client = new StorageFile(
 $options = ['download' => true];
 $result = $client->getPublicUrl('path/to/file.png', $options);
 print_r($result);
-
-?>
