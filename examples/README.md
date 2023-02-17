@@ -16,10 +16,11 @@ composer require supabase/storage-php
 include '../vendor/autoload.php';
 use Supabase\Storage\StorageClient;
 
-$authHeader = ['Authorization' => 'Bearer '.'<your_api_key>'];
-$bucket_id = 'test-bucket';
+$api_key = '<your_api_key>';
+$supabase_id = '<your_supabase_id>';
+$authHeader = ['Authorization' => "Bearer {$api_key}"];
 $client = new  StorageClient(
-	'https://'.'<your_supabase_id>'.'.supabase.co/storage/v1',
+	"https://{$supabase_id}.supabase.co/storage/v1",
 	$authHeader
 );
 ```
@@ -82,10 +83,12 @@ $client = new  StorageClient(
 
   use Supabase\Storage\StorageFile;
 
-  $authHeader = ['Authorization' => 'Bearer '.'<your_api_key>'];
+  $api_key = '<your_api_key>';
+  $supabase_id = '<your_supabase_id>';
   $bucket_id = 'test-bucket';
+  $authHeader = ['Authorization' => "Bearer {$api_key}"];
   $client = new  StorageFile(
-    'https://'.'<your_supabase_id>'.'.supabase.co/storage/v1',
+    "https://{$supabase_id}.supabase.co/storage/v1",
     $authHeader,
     $bucket_id
   );
