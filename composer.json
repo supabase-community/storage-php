@@ -10,6 +10,11 @@
             "Supabase\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Supabase\\Test\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "jordan",
@@ -18,6 +23,10 @@
         {
             "name": "norm",
             "email": "norm@zerocopylabs.com"
+        },
+        {
+            "name": "Adolfo",
+            "email": "adolfo@zerocopylabs.com"
         }
     ],
     "require-dev": {
