@@ -1,11 +1,12 @@
 <?php
 
-include '../../vendor/autoload.php';
+include __DIR__.'/../../vendor/autoload.php';
 
 use Supabase\Storage\StorageClient;
 
-$api_key = '<your_api_key>';
-$supabase_id = '<your_supabase_id>';
+$api_key = getenv('API_KEY');;
+$supabase_id = getenv('REFERENCE_ID');;
+
 $authHeader = ['Authorization' => "Bearer {$api_key}"];
 $client = new  StorageClient(
 	"https://{$supabase_id}.supabase.co/storage/v1",
