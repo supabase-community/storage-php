@@ -3,9 +3,13 @@
 include '../../vendor/autoload.php';
 
 use Supabase\Storage\StorageFile;
+use Dotenv\Dotenv;
 
-$api_key = '<your_api_key>';
-$supabase_id = '<your_supabase_id>';
+$dotenv = Dotenv::createUnsafeImmutable('../../');
+$dotenv->load();
+
+$api_key = getenv('API_KEY');
+$supabase_id = getenv('REFERENCE_ID');
 $bucket_id = 'test-bucket';
 $authHeader = ['Authorization' => "Bearer {$api_key}"];
 $client = new StorageFile(

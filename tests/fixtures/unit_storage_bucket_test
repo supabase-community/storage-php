@@ -15,11 +15,11 @@
             code: 200
             message: OK
         headers:
-            Date: 'Fri, 17 Feb 2023 01:38:26 GMT'
+            Date: 'Sat, 18 Feb 2023 00:18:20 GMT'
             Content-Type: 'application/json; charset=utf-8'
             Content-Length: '1973'
             Connection: keep-alive
-            CF-Ray: 79aacdb20e19b6e5-QRO
+            CF-Ray: 79b295b95c741556-QRO
             Access-Control-Allow-Origin: '*'
             Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
             CF-Cache-Status: DYNAMIC
@@ -27,7 +27,7 @@
             sb-gateway-version: '1'
             Server: cloudflare
             alt-svc: 'h3=":443"; ma=86400, h3-29=":443"; ma=86400'
-        body: '[{"id":"my-new-storage-bucket","name":"my-new-storage-bucket","owner":"","public":false,"created_at":"2022-12-05T14:55:18.244496+00:00","updated_at":"2022-12-05T14:55:18.244496+00:00"},{"id":"test-2","name":"test-2","owner":"","public":false,"created_at":"2023-01-21T16:56:45.953527+00:00","updated_at":"2023-01-21T16:56:45.953527+00:00"},{"id":"my-new-storage-bucket-non-public-test","name":"my-new-storage-bucket-non-public-test","owner":"","public":false,"created_at":"2023-01-21T18:24:00.067864+00:00","updated_at":"2023-01-21T18:24:00.067864+00:00"},{"id":"test-bucket-4","name":"test-bucket-4","owner":"","public":false,"created_at":"2023-02-15T00:21:13.133747+00:00","updated_at":"2023-02-15T00:21:13.133747+00:00"},{"id":"my-new-storage-bucket-public-test","name":"my-new-storage-bucket-public-test","owner":"","public":false,"created_at":"2023-01-21T18:23:40.85091+00:00","updated_at":"2023-01-21T18:23:40.85091+00:00"},{"id":"name","name":"name","owner":"","public":false,"created_at":"2023-01-27T02:11:49.711719+00:00","updated_at":"2023-01-27T02:11:49.711719+00:00"},{"id":"my-new-storage-bucket-public-vcr","name":"my-new-storage-bucket-public-vcr","owner":"","public":true,"created_at":"2023-01-31T17:57:01.972838+00:00","updated_at":"2023-01-31T17:57:01.972838+00:00"},{"id":"test-bucket-3","name":"test-bucket-3","owner":"","public":true,"created_at":"2023-02-16T00:26:35.076937+00:00","updated_at":"2023-02-16T00:26:35.076937+00:00"},{"id":"test-bucket-5","name":"test-bucket-5","owner":"","public":false,"created_at":"2023-02-17T00:24:43.352079+00:00","updated_at":"2023-02-17T00:24:43.352079+00:00"},{"id":"my-new-storage-bucket-vcr","name":"my-new-storage-bucket-vcr","owner":"","public":true,"created_at":"2023-02-04T00:02:24.999928+00:00","updated_at":"2023-02-04T00:02:24.999928+00:00"},{"id":"test-bucket","name":"test-bucket","owner":"","public":true,"created_at":"2023-02-17T00:40:02.082135+00:00","updated_at":"2023-02-17T00:40:02.082135+00:00"}]'
+        body: '[{"id":"my-new-storage-bucket","name":"my-new-storage-bucket","owner":"","public":false,"created_at":"2022-12-05T14:55:18.244496+00:00","updated_at":"2022-12-05T14:55:18.244496+00:00"},{"id":"test-2","name":"test-2","owner":"","public":false,"created_at":"2023-01-21T16:56:45.953527+00:00","updated_at":"2023-01-21T16:56:45.953527+00:00"},{"id":"my-new-storage-bucket-non-public-test","name":"my-new-storage-bucket-non-public-test","owner":"","public":false,"created_at":"2023-01-21T18:24:00.067864+00:00","updated_at":"2023-01-21T18:24:00.067864+00:00"},{"id":"test-bucket-4","name":"test-bucket-4","owner":"","public":false,"created_at":"2023-02-15T00:21:13.133747+00:00","updated_at":"2023-02-15T00:21:13.133747+00:00"},{"id":"my-new-storage-bucket-public-test","name":"my-new-storage-bucket-public-test","owner":"","public":false,"created_at":"2023-01-21T18:23:40.85091+00:00","updated_at":"2023-01-21T18:23:40.85091+00:00"},{"id":"name","name":"name","owner":"","public":false,"created_at":"2023-01-27T02:11:49.711719+00:00","updated_at":"2023-01-27T02:11:49.711719+00:00"},{"id":"my-new-storage-bucket-public-vcr","name":"my-new-storage-bucket-public-vcr","owner":"","public":true,"created_at":"2023-01-31T17:57:01.972838+00:00","updated_at":"2023-01-31T17:57:01.972838+00:00"},{"id":"test-bucket-3","name":"test-bucket-3","owner":"","public":true,"created_at":"2023-02-16T00:26:35.076937+00:00","updated_at":"2023-02-16T00:26:35.076937+00:00"},{"id":"test-bucket-5","name":"test-bucket-5","owner":"","public":false,"created_at":"2023-02-17T00:24:43.352079+00:00","updated_at":"2023-02-17T00:24:43.352079+00:00"},{"id":"test-bucket","name":"test-bucket","owner":"","public":true,"created_at":"2023-02-17T00:40:02.082135+00:00","updated_at":"2023-02-17T00:40:02.082135+00:00"},{"id":"my-new-storage-bucket-vcr","name":"my-new-storage-bucket-vcr","owner":"","public":true,"created_at":"2023-02-04T00:02:24.999928+00:00","updated_at":"2023-02-04T00:02:24.999928+00:00"}]'
         curl_info:
             url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket'
             content_type: 'application/json; charset=utf-8'
@@ -37,35 +37,35 @@
             filetime: -1
             ssl_verify_result: 0
             redirect_count: 0
-            total_time: 0.970338
-            namelookup_time: 0.042629
-            connect_time: 0.071257
-            pretransfer_time: 0.161488
+            total_time: 1.070891
+            namelookup_time: 0.045074
+            connect_time: 0.072935
+            pretransfer_time: 0.158902
             size_upload: 0.0
             size_download: 1973.0
-            speed_download: 2033.0
+            speed_download: 1842.0
             speed_upload: 0.0
             download_content_length: 1973.0
             upload_content_length: 0.0
-            starttransfer_time: 0.970142
+            starttransfer_time: 1.07072
             redirect_time: 0.0
             redirect_url: ''
             primary_ip: 104.18.27.135
             certinfo: {  }
             primary_port: 443
             local_ip: 192.168.1.70
-            local_port: 63011
+            local_port: 50967
             http_version: 2
             protocol: 2
             ssl_verifyresult: 0
             scheme: HTTPS
-            appconnect_time_us: 161281
-            connect_time_us: 71257
-            namelookup_time_us: 42629
-            pretransfer_time_us: 161488
+            appconnect_time_us: 158659
+            connect_time_us: 72935
+            namelookup_time_us: 45074
+            pretransfer_time_us: 158902
             redirect_time_us: 0
-            starttransfer_time_us: 970142
-            total_time_us: 970338
+            starttransfer_time_us: 1070720
+            total_time_us: 1070891
     index: 0
 -
     request:
@@ -86,11 +86,11 @@
             code: 400
             message: 'Bad Request'
         headers:
-            Date: 'Fri, 17 Feb 2023 01:38:28 GMT'
+            Date: 'Sat, 18 Feb 2023 00:18:21 GMT'
             Content-Type: 'application/json; charset=utf-8'
             Content-Length: '80'
             Connection: keep-alive
-            CF-Ray: 79aacdbe0f75ea80-DFW
+            CF-Ray: 79b295c09b3d155e-QRO
             Access-Control-Allow-Origin: '*'
             Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
             CF-Cache-Status: DYNAMIC
@@ -108,35 +108,35 @@
             filetime: -1
             ssl_verify_result: 0
             redirect_count: 0
-            total_time: 0.725637
-            namelookup_time: 0.002881
-            connect_time: 0.111406
-            pretransfer_time: 0.252479
+            total_time: 0.740799
+            namelookup_time: 0.045265
+            connect_time: 0.075291
+            pretransfer_time: 0.174574
             size_upload: 84.0
             size_download: 80.0
-            speed_download: 110.0
-            speed_upload: 115.0
+            speed_download: 107.0
+            speed_upload: 113.0
             download_content_length: 80.0
             upload_content_length: 84.0
-            starttransfer_time: 0.725557
+            starttransfer_time: 0.740696
             redirect_time: 0.0
             redirect_url: ''
             primary_ip: 104.18.27.135
             certinfo: {  }
             primary_port: 443
             local_ip: 192.168.1.70
-            local_port: 63014
+            local_port: 50970
             http_version: 2
             protocol: 2
             ssl_verifyresult: 0
             scheme: HTTPS
-            appconnect_time_us: 252293
-            connect_time_us: 111406
-            namelookup_time_us: 2881
-            pretransfer_time_us: 252479
+            appconnect_time_us: 174189
+            connect_time_us: 75291
+            namelookup_time_us: 45265
+            pretransfer_time_us: 174574
             redirect_time_us: 0
-            starttransfer_time_us: 725557
-            total_time_us: 725637
+            starttransfer_time_us: 740696
+            total_time_us: 740799
     index: 0
 -
     request:
@@ -154,11 +154,11 @@
             code: 200
             message: OK
         headers:
-            Date: 'Fri, 17 Feb 2023 01:38:29 GMT'
+            Date: 'Sat, 18 Feb 2023 00:18:22 GMT'
             Content-Type: 'application/json; charset=utf-8'
             Content-Length: '190'
             Connection: keep-alive
-            CF-Ray: 79aacdc22ecc1557-QRO
+            CF-Ray: 79b295c55a06b6e1-QRO
             Access-Control-Allow-Origin: '*'
             Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
             CF-Cache-Status: DYNAMIC
@@ -176,35 +176,35 @@
             filetime: -1
             ssl_verify_result: 0
             redirect_count: 0
-            total_time: 0.659943
-            namelookup_time: 0.003613
-            connect_time: 0.049464
-            pretransfer_time: 0.163501
+            total_time: 0.577446
+            namelookup_time: 0.003101
+            connect_time: 0.033677
+            pretransfer_time: 0.129534
             size_upload: 0.0
             size_download: 190.0
-            speed_download: 287.0
+            speed_download: 329.0
             speed_upload: 0.0
             download_content_length: 190.0
             upload_content_length: 0.0
-            starttransfer_time: 0.659861
+            starttransfer_time: 0.577352
             redirect_time: 0.0
             redirect_url: ''
             primary_ip: 104.18.27.135
             certinfo: {  }
             primary_port: 443
             local_ip: 192.168.1.70
-            local_port: 63017
+            local_port: 50973
             http_version: 2
             protocol: 2
             ssl_verifyresult: 0
             scheme: HTTPS
-            appconnect_time_us: 162947
-            connect_time_us: 49464
-            namelookup_time_us: 3613
-            pretransfer_time_us: 163501
+            appconnect_time_us: 129380
+            connect_time_us: 33677
+            namelookup_time_us: 3101
+            pretransfer_time_us: 129534
             redirect_time_us: 0
-            starttransfer_time_us: 659861
-            total_time_us: 659943
+            starttransfer_time_us: 577352
+            total_time_us: 577446
     index: 0
 -
     request:
@@ -225,11 +225,11 @@
             code: 200
             message: OK
         headers:
-            Date: 'Fri, 17 Feb 2023 01:38:30 GMT'
+            Date: 'Sat, 18 Feb 2023 00:18:22 GMT'
             Content-Type: 'application/json; charset=utf-8'
             Content-Length: '34'
             Connection: keep-alive
-            CF-Ray: 79aacdc75c09eb06-DFW
+            CF-Ray: 79b295c9e898e5ee-DFW
             Access-Control-Allow-Origin: '*'
             Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
             CF-Cache-Status: DYNAMIC
@@ -247,35 +247,35 @@
             filetime: -1
             ssl_verify_result: 0
             redirect_count: 0
-            total_time: 0.737615
-            namelookup_time: 0.009275
-            connect_time: 0.100275
-            pretransfer_time: 0.251058
+            total_time: 0.735923
+            namelookup_time: 0.020284
+            connect_time: 0.089124
+            pretransfer_time: 0.206966
             size_upload: 85.0
             size_download: 34.0
             speed_download: 46.0
             speed_upload: 115.0
             download_content_length: 34.0
             upload_content_length: 85.0
-            starttransfer_time: 0.737493
+            starttransfer_time: 0.735824
             redirect_time: 0.0
             redirect_url: ''
             primary_ip: 104.18.27.135
             certinfo: {  }
             primary_port: 443
             local_ip: 192.168.1.70
-            local_port: 63020
+            local_port: 50976
             http_version: 2
             protocol: 2
             ssl_verifyresult: 0
             scheme: HTTPS
-            appconnect_time_us: 250898
-            connect_time_us: 100275
-            namelookup_time_us: 9275
-            pretransfer_time_us: 251058
+            appconnect_time_us: 206812
+            connect_time_us: 89124
+            namelookup_time_us: 20284
+            pretransfer_time_us: 206966
             redirect_time_us: 0
-            starttransfer_time_us: 737493
-            total_time_us: 737615
+            starttransfer_time_us: 735824
+            total_time_us: 735923
     index: 0
 -
     request:
@@ -296,11 +296,11 @@
             code: 400
             message: 'Bad Request'
         headers:
-            Date: 'Fri, 17 Feb 2023 01:38:30 GMT'
+            Date: 'Sat, 18 Feb 2023 00:18:23 GMT'
             Content-Type: 'application/json; charset=utf-8'
             Content-Length: '79'
             Connection: keep-alive
-            CF-Ray: 79aacdcc59b4ead9-DFW
+            CF-Ray: 79b295ceba233abb-DFW
             Access-Control-Allow-Origin: '*'
             Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
             CF-Cache-Status: DYNAMIC
@@ -318,35 +318,35 @@
             filetime: -1
             ssl_verify_result: 0
             redirect_count: 0
-            total_time: 0.484482
-            namelookup_time: 0.002986
-            connect_time: 0.091179
-            pretransfer_time: 0.232965
+            total_time: 0.422162
+            namelookup_time: 0.003115
+            connect_time: 0.065456
+            pretransfer_time: 0.181853
             size_upload: 109.0
             size_download: 79.0
-            speed_download: 163.0
-            speed_upload: 224.0
+            speed_download: 187.0
+            speed_upload: 258.0
             download_content_length: 79.0
             upload_content_length: 109.0
-            starttransfer_time: 0.484301
+            starttransfer_time: 0.421989
             redirect_time: 0.0
             redirect_url: ''
             primary_ip: 104.18.27.135
             certinfo: {  }
             primary_port: 443
             local_ip: 192.168.1.70
-            local_port: 63024
+            local_port: 50979
             http_version: 2
             protocol: 2
             ssl_verifyresult: 0
             scheme: HTTPS
-            appconnect_time_us: 232739
-            connect_time_us: 91179
-            namelookup_time_us: 2986
-            pretransfer_time_us: 232965
+            appconnect_time_us: 181697
+            connect_time_us: 65456
+            namelookup_time_us: 3115
+            pretransfer_time_us: 181853
             redirect_time_us: 0
-            starttransfer_time_us: 484301
-            total_time_us: 484482
+            starttransfer_time_us: 421989
+            total_time_us: 422162
     index: 0
 -
     request:
@@ -364,11 +364,11 @@
             code: 400
             message: 'Bad Request'
         headers:
-            Date: 'Fri, 17 Feb 2023 01:38:31 GMT'
+            Date: 'Sat, 18 Feb 2023 00:18:23 GMT'
             Content-Type: 'application/json; charset=utf-8'
             Content-Length: '79'
             Connection: keep-alive
-            CF-Ray: 79aacdcf4d9f1549-QRO
+            CF-Ray: 79b295d1df17e524-DFW
             Access-Control-Allow-Origin: '*'
             Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
             CF-Cache-Status: DYNAMIC
@@ -386,35 +386,35 @@
             filetime: -1
             ssl_verify_result: 0
             redirect_count: 0
-            total_time: 0.415534
-            namelookup_time: 0.002813
-            connect_time: 0.032802
-            pretransfer_time: 0.163466
+            total_time: 0.398301
+            namelookup_time: 0.002943
+            connect_time: 0.067054
+            pretransfer_time: 0.181881
             size_upload: 0.0
             size_download: 79.0
-            speed_download: 190.0
+            speed_download: 198.0
             speed_upload: 0.0
             download_content_length: 79.0
             upload_content_length: 0.0
-            starttransfer_time: 0.415454
+            starttransfer_time: 0.398216
             redirect_time: 0.0
             redirect_url: ''
             primary_ip: 104.18.27.135
             certinfo: {  }
             primary_port: 443
             local_ip: 192.168.1.70
-            local_port: 63027
+            local_port: 50982
             http_version: 2
             protocol: 2
             ssl_verifyresult: 0
             scheme: HTTPS
-            appconnect_time_us: 163330
-            connect_time_us: 32802
-            namelookup_time_us: 2813
-            pretransfer_time_us: 163466
+            appconnect_time_us: 181686
+            connect_time_us: 67054
+            namelookup_time_us: 2943
+            pretransfer_time_us: 181881
             redirect_time_us: 0
-            starttransfer_time_us: 415454
-            total_time_us: 415534
+            starttransfer_time_us: 398216
+            total_time_us: 398301
     index: 0
 -
     request:
@@ -433,11 +433,11 @@
             code: 200
             message: OK
         headers:
-            Date: 'Fri, 17 Feb 2023 01:38:32 GMT'
+            Date: 'Sat, 18 Feb 2023 00:18:24 GMT'
             Content-Type: 'application/json; charset=utf-8'
             Content-Length: '34'
             Connection: keep-alive
-            CF-Ray: 79aacdd46bd5eb12-DFW
+            CF-Ray: 79b295d4bc7eb6e8-QRO
             Access-Control-Allow-Origin: '*'
             Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
             CF-Cache-Status: DYNAMIC
@@ -455,35 +455,35 @@
             filetime: -1
             ssl_verify_result: 0
             redirect_count: 0
-            total_time: 0.829906
-            namelookup_time: 0.013862
-            connect_time: 0.102611
-            pretransfer_time: 0.375779
+            total_time: 0.575367
+            namelookup_time: 0.003619
+            connect_time: 0.040792
+            pretransfer_time: 0.12453
             size_upload: 0.0
             size_download: 34.0
-            speed_download: 40.0
+            speed_download: 59.0
             speed_upload: 0.0
             download_content_length: 34.0
             upload_content_length: 0.0
-            starttransfer_time: 0.829815
+            starttransfer_time: 0.575285
             redirect_time: 0.0
             redirect_url: ''
             primary_ip: 104.18.27.135
             certinfo: {  }
             primary_port: 443
             local_ip: 192.168.1.70
-            local_port: 63030
+            local_port: 50985
             http_version: 2
             protocol: 2
             ssl_verifyresult: 0
             scheme: HTTPS
-            appconnect_time_us: 375458
-            connect_time_us: 102611
-            namelookup_time_us: 13862
-            pretransfer_time_us: 375779
+            appconnect_time_us: 124389
+            connect_time_us: 40792
+            namelookup_time_us: 3619
+            pretransfer_time_us: 124530
             redirect_time_us: 0
-            starttransfer_time_us: 829815
-            total_time_us: 829906
+            starttransfer_time_us: 575285
+            total_time_us: 575367
     index: 0
 -
     request:
@@ -501,11 +501,11 @@
             code: 400
             message: 'Bad Request'
         headers:
-            Date: 'Fri, 17 Feb 2023 01:38:32 GMT'
+            Date: 'Sat, 18 Feb 2023 00:18:24 GMT'
             Content-Type: 'application/json; charset=utf-8'
             Content-Length: '79'
             Connection: keep-alive
-            CF-Ray: 79aacdd9de31ea1a-DFW
+            CF-Ray: 79b295d939bd155e-QRO
             Access-Control-Allow-Origin: '*'
             Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
             CF-Cache-Status: DYNAMIC
@@ -523,35 +523,35 @@
             filetime: -1
             ssl_verify_result: 0
             redirect_count: 0
-            total_time: 0.581717
-            namelookup_time: 0.004794
-            connect_time: 0.090723
-            pretransfer_time: 0.23313
+            total_time: 0.320172
+            namelookup_time: 0.002857
+            connect_time: 0.040624
+            pretransfer_time: 0.126878
             size_upload: 0.0
             size_download: 79.0
-            speed_download: 135.0
+            speed_download: 246.0
             speed_upload: 0.0
             download_content_length: 79.0
             upload_content_length: 0.0
-            starttransfer_time: 0.581646
+            starttransfer_time: 0.320089
             redirect_time: 0.0
             redirect_url: ''
             primary_ip: 104.18.27.135
             certinfo: {  }
             primary_port: 443
             local_ip: 192.168.1.70
-            local_port: 63033
+            local_port: 50988
             http_version: 2
             protocol: 2
             ssl_verifyresult: 0
             scheme: HTTPS
-            appconnect_time_us: 232940
-            connect_time_us: 90723
-            namelookup_time_us: 4794
-            pretransfer_time_us: 233130
+            appconnect_time_us: 126617
+            connect_time_us: 40624
+            namelookup_time_us: 2857
+            pretransfer_time_us: 126878
             redirect_time_us: 0
-            starttransfer_time_us: 581646
-            total_time_us: 581717
+            starttransfer_time_us: 320089
+            total_time_us: 320172
     index: 0
 -
     request:
@@ -572,11 +572,11 @@
             code: 400
             message: 'Bad Request'
         headers:
-            Date: 'Fri, 17 Feb 2023 01:38:34 GMT'
+            Date: 'Sat, 18 Feb 2023 00:18:25 GMT'
             Content-Type: 'application/json; charset=utf-8'
             Content-Length: '80'
             Connection: keep-alive
-            CF-Ray: 79aacddec8cfb6df-QRO
+            CF-Ray: 79b295dc9d99345b-DFW
             Access-Control-Allow-Origin: '*'
             Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
             CF-Cache-Status: DYNAMIC
@@ -594,33 +594,33 @@
             filetime: -1
             ssl_verify_result: 0
             redirect_count: 0
-            total_time: 1.311625
-            namelookup_time: 0.087646
-            connect_time: 0.11609
-            pretransfer_time: 0.222021
+            total_time: 0.502316
+            namelookup_time: 0.002493
+            connect_time: 0.064677
+            pretransfer_time: 0.177406
             size_upload: 97.0
             size_download: 80.0
-            speed_download: 60.0
-            speed_upload: 73.0
+            speed_download: 159.0
+            speed_upload: 193.0
             download_content_length: 80.0
             upload_content_length: 97.0
-            starttransfer_time: 1.31154
+            starttransfer_time: 0.502242
             redirect_time: 0.0
             redirect_url: ''
             primary_ip: 104.18.27.135
             certinfo: {  }
             primary_port: 443
             local_ip: 192.168.1.70
-            local_port: 63036
+            local_port: 50991
             http_version: 2
             protocol: 2
             ssl_verifyresult: 0
             scheme: HTTPS
-            appconnect_time_us: 221875
-            connect_time_us: 116090
-            namelookup_time_us: 87646
-            pretransfer_time_us: 222021
+            appconnect_time_us: 177244
+            connect_time_us: 64677
+            namelookup_time_us: 2493
+            pretransfer_time_us: 177406
             redirect_time_us: 0
-            starttransfer_time_us: 1311540
-            total_time_us: 1311625
+            starttransfer_time_us: 502242
+            total_time_us: 502316
     index: 0
