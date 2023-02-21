@@ -14,10 +14,8 @@ final class StorageFileTest extends TestCase
 	public function setup(): void
 	{
 		parent::setUp();
-		$authHeader = ['Authorization' => 'Bearer '.'<service_role>'];
 		$bucket_id = '<existing-storage-bucket>';
-		$this->client = new  \Supabase\Storage\StorageFile('https://<project_ref>.supabase.co/storage/v1',
-			$authHeader, $bucket_id);
+		$this->client = new  \Supabase\Storage\StorageFile($bucket_id);
 	}
 
 	/**

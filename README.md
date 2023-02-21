@@ -11,6 +11,7 @@ PHP Client library to interact with Supabase Storage.
 ```bash
 composer require supabase/storage-php
 ```
+> **Note:** Rename the .env.example file to .env and modify your credentials REFERENCE_ID and API_KEY.
 
 ### Connecting to the storage backend
 
@@ -18,13 +19,7 @@ composer require supabase/storage-php
 
 use Supabase\Storage;
 
-$api_key = '<your_api_key>';
-$supabase_id = '<your_supabase_id>';
-$authHeader = ['Authorization' => "Bearer {$api_key}"];
-$client = new  StorageClient(
-	"https://{$supabase_id}.supabase.co/storage/v1",
-	$authHeader
-);
+$client = new  StorageClient();
 ```
 
 ### Handling resources
@@ -78,15 +73,8 @@ $client = new  StorageClient(
 
 use Supabase\Storage\StorageFile;
 
-$api_key = '<your_api_key>';
-$supabase_id = '<your_supabase_id>';
 $bucket_id = 'test-bucket';
-$authHeader = ['Authorization' => "Bearer {$api_key}"];
-$client = new  StorageFile(
-  "https://{$supabase_id}.supabase.co/storage/v1",
-  $authHeader,
-  $bucket_id
-);
+$client = new  StorageFile($bucket_id);
 ```
 
 - Upload a file to an existing bucket:

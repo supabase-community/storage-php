@@ -13,6 +13,7 @@ namespace Supabase\Storage;
 
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
+use Dotenv\Dotenv;
 
 class StorageFile
 {
@@ -53,9 +54,20 @@ class StorageFile
 		'contentType' => 'text/plain;charset=UTF-8',
 	];
 
-	public function __construct($url, $headers, $bucketId)
+	/**
+     * StorageFile constructor.
+     *
+     * @throws Exception
+     */
+
+	public function __construct($bucketId)
 	{
-		$this->url = $url;
+		$dotenv = Dotenv::createUnsafeImmutable('../../');
+		$dotenv->load();
+		$api_key = getenv('API_KEY');
+		$reference_id = getenv('REFERENCE_ID');
+		$headers = ['Authorization' => "Bearer {$api_key}"];
+		$this->url = "https://{$reference_id}.supabase.co/storage/v1";
 		$this->headers = array_merge(Constants::getDefaultHeaders(), $headers);
 		$this->bucketId = $bucketId;
 	}

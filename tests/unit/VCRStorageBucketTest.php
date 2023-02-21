@@ -11,8 +11,7 @@ class VCRStorageBucketTest extends TestCase
 	public function setup(): void
 	{
 		parent::setUp();
-		$authHeader = ['Authorization' => "Bearer {$_ENV['SERVICE_ROLE']}"];
-		$this->client = new  \Supabase\Storage\StorageClient("https://{$_ENV['PROJECT_REF']}.supabase.co/storage/v1", $authHeader);
+		$this->client = new  \Supabase\Storage\StorageClient();
 	}
 
 	/**

@@ -11,8 +11,7 @@ final class StorageBucketTest extends TestCase
 	public function setup(): void
 	{
 		parent::setUp();
-		$authHeader = ['Authorization' => 'Bearer '.'<service_role>'];
-		$this->client = new  \Supabase\Storage\StorageClient('https://<project_ref>.supabase.co', $authHeader);
+		$this->client = new  \Supabase\Storage\StorageClient();
 	}
 
 	/**
@@ -33,8 +32,6 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testCreateBucket(): void
 	{
-		$storage = new \Supabase\Storage\StorageClient();
-
 		$result = $this->client->createBucket('my-new-storage-bucket');
 		$this->assertNull($result['error']);
 		$this->assertArrayHasKey('data', $result);
