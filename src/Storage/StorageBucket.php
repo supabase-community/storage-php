@@ -13,8 +13,6 @@ namespace Supabase\Storage;
 
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
-use Dotenv\Dotenv;
-
 
 class StorageBucket
 {
@@ -38,12 +36,8 @@ class StorageBucket
      *
      * @throws Exception
      */
-	public function __construct()
+	public function __construct($api_key, $reference_id)
 	{
-		$dotenv = Dotenv::createUnsafeImmutable('../../');
-		$dotenv->load();
-		$api_key = getenv('API_KEY');
-		$reference_id = getenv('REFERENCE_ID');
 		$headers = ['Authorization' => "Bearer {$api_key}"];
 		$this->url = "https://{$reference_id}.supabase.co/storage/v1";
 		$this->headers = array_merge(Constants::getDefaultHeaders(), $headers);

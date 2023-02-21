@@ -3,9 +3,12 @@
 include '../../vendor/autoload.php';
 
 use Supabase\Storage\StorageClient;
-$client = new  StorageClient();
-$result = $client->listBuckets();
+use Dotenv\Dotenv;
 
-foreach ($result as $bucket) {
-	print_r($bucket->name);
-}
+$dotenv = Dotenv::createUnsafeImmutable('../../');
+$dotenv->load();
+$api_key = getenv('API_KEY');
+$reference_id = getenv('REFERENCE_ID');
+$client = new  StorageClient($api_key, $reference_id);
+$result = $client->listBuckets();
+print_r($result);
