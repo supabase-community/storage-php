@@ -3,6 +3,7 @@
 include '../../vendor/autoload.php';
 
 use Supabase\Storage\StorageClient;
+
 $client = new  StorageClient();
 $result = $client->listBuckets();
 

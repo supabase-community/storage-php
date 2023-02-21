@@ -11,9 +11,9 @@
 
 namespace Supabase\Storage;
 
+use Dotenv\Dotenv;
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
-use Dotenv\Dotenv;
 
 class StorageFile
 {
@@ -55,11 +55,10 @@ class StorageFile
 	];
 
 	/**
-     * StorageFile constructor.
-     *
-     * @throws Exception
-     */
-
+	 * StorageFile constructor.
+	 *
+	 * @throws Exception
+	 */
 	public function __construct($bucketId)
 	{
 		$dotenv = Dotenv::createUnsafeImmutable('../../');

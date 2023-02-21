@@ -11,10 +11,9 @@
 
 namespace Supabase\Storage;
 
+use Dotenv\Dotenv;
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
-use Dotenv\Dotenv;
-
 
 class StorageBucket
 {
@@ -32,12 +31,12 @@ class StorageBucket
 	 * @var array
 	 */
 	protected array $headers = [];
-	
+
 	/**
-     * StorageBucket constructor.
-     *
-     * @throws Exception
-     */
+	 * StorageBucket constructor.
+	 *
+	 * @throws Exception
+	 */
 	public function __construct()
 	{
 		$dotenv = Dotenv::createUnsafeImmutable('../../');
