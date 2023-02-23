@@ -2,8 +2,8 @@
 
 include '../../vendor/autoload.php';
 
-use Supabase\Storage\StorageFile;
 use Dotenv\Dotenv;
+use Supabase\Storage\StorageFile;
 
 $dotenv = Dotenv::createUnsafeImmutable('../../', '.env.test');
 $dotenv->load();
@@ -14,10 +14,10 @@ $bucket_id = 'test-bucket';
 $client = new StorageFile($api_key, $reference_id, $bucket_id);
 $result = $client->list('path/to');
 
-//first way to manipulate the  return 
+//first way to manipulate the  return
 $body = $result->getBody();
-$content =  $body->getContents();
+$content = $body->getContents();
 print_r($content);
 
-//second way to manipulate the  return 
-print_r(json_decode($result->getBody(), true)); 
+//second way to manipulate the  return
+print_r(json_decode($result->getBody(), true));

@@ -30,12 +30,12 @@ class StorageBucket
 	 * @var array
 	 */
 	protected array $headers = [];
-	
+
 	/**
-     * StorageBucket constructor.
-     *
-     * @throws Exception
-     */
+	 * StorageBucket constructor.
+	 *
+	 * @throws Exception
+	 */
 	public function __construct($api_key, $reference_id)
 	{
 		$headers = ['Authorization' => "Bearer {$api_key}"];

@@ -13,7 +13,7 @@ final class VCRStorageFileTest extends TestCase
 	 */
 	public function setup(): void
 	{
-		parent::setUp();		
+		parent::setUp();
 		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(dirname(__DIR__, 2), '.env.test');
 		$dotenv->load();
 		$api_key = getenv('API_KEY');

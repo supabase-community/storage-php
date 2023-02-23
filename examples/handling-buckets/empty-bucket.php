@@ -2,8 +2,8 @@
 
 include '../../vendor/autoload.php';
 
-use Supabase\Storage\StorageClient;
 use Dotenv\Dotenv;
+use Supabase\Storage\StorageClient;
 
 $dotenv = Dotenv::createUnsafeImmutable('../../', '.env.test');
 $dotenv->load();

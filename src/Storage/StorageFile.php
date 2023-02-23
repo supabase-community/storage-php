@@ -54,11 +54,10 @@ class StorageFile
 	];
 
 	/**
-     * StorageFile constructor.
-     *
-     * @throws Exception
-     */
-
+	 * StorageFile constructor.
+	 *
+	 * @throws Exception
+	 */
 	public function __construct($api_key, $reference_id, $bucketId)
 	{
 		$headers = ['Authorization' => "Bearer {$api_key}"];
