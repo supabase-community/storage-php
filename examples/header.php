@@ -1,10 +1,9 @@
 <?php
 
-include realpath(dirname(__DIR__).'../vendor/autoload.php');
-
+include dirname(__DIR__, 1).'\vendor\autoload.php';
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createUnsafeImmutable(realpath('../examples'));
+$dotenv = Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 
 $api_key = getenv('API_KEY');
