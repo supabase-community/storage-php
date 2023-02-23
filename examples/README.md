@@ -33,9 +33,10 @@ To get your API keys, please sign into your Supabase account.
 Once signed on your dashboard, go to, Project >> Project Settings >> API Settings >> Project API keys
  #### *You can use the keys to use Supabase client libraries.*
 
-####  **NOTE: Never share your secret key in public, this key has the ablity to bypass Row level security.**
+ ### **Create a .env  file** 
+   ####  Create a file named .env file and paste the template we provided on .env.example, fill out the new file with the enviorment variables needed for the project. We need a .env file to pass enviorment variables securely.
 
-### ** Set up your project**
+### **Set up your project**
 Please reference the documentation to start your project.
 #### -  https://supabase.com/docs 
 
@@ -43,18 +44,7 @@ Please reference the documentation to start your project.
 
 ## Running Examples
 
-### This section is for testing the examples, first open your terminal and go to the desired file to test 
-
-Remember to set up your sensitove information on a .env file. 
-
 ### example:
-> `cd example`
-> `cd handling-files`
-> `php list-files.php`
-
-
-
-```
-API_KEY="<your_api_key>" REFERENCE_ID="<your_reference_id>"; php handling-buckets/create-bucket.php
-```
+> `cd example` 
+`php handling-files/list-files.php`
 

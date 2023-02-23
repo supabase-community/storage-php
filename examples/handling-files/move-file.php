@@ -1,15 +1,8 @@
 <?php
 
-include '../../vendor/autoload.php';
-
-use Dotenv\Dotenv;
+include  realpath('../examples/header.php');
 use Supabase\Storage\StorageFile;
 
-$dotenv = Dotenv::createUnsafeImmutable('../../');
-$dotenv->load();
-
-$api_key = getenv('API_KEY');
-$supabase_id = getenv('REFERENCE_ID');
 $bucket_id = 'test-bucket';
 $authHeader = ['Authorization' => "Bearer {$api_key}"];
 $client = new StorageFile(
@@ -20,3 +13,5 @@ $client = new StorageFile(
 
 $result = $client->move('path/to/file.png', 'to/new-path/file.png');
 print_r($result);
+//echo realpath(dirname(__FILE__));
+echo realpath('../vendor/autoload.php');
