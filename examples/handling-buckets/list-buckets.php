@@ -1,6 +1,6 @@
 <?php
 
-include  realpath('../examples/header.php');
+include realpath('../examples/header.php');
 use Supabase\Storage\StorageClient;
 
 $authHeader = ['Authorization' => "Bearer {$api_key}"];

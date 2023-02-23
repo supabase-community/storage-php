@@ -1,6 +1,6 @@
 <?php
 
-include  realpath('../examples/header.php');
+include realpath('../examples/header.php');
 use Supabase\Storage\StorageFile;
 
 $bucket_id = 'test-bucket';
