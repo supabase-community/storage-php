@@ -3,10 +3,11 @@ name: Release
 on:
   push:
     branches:
-      - main
+#      - main
 
 jobs:
   run:
+#    if: github.repository_owner == 'Upvision'
     runs-on: ubuntu-latest
     steps:
       - name: Install PHP
@@ -15,11 +16,11 @@ jobs:
           php-version: '8.1'
           extensions: curl
 
+      - name: Echo 
+        run: echo "github.repository_owner" 
+
       - name: Install dependencies
         run: composer install
-
-      - name: Lint Code
-        run: ./vendor/bin/phpcbf -h
 
       - name: Test Code
         run: ./vendor/bin/phpunit
