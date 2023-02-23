@@ -13,9 +13,13 @@ final class VCRStorageFileTest extends TestCase
 	 */
 	public function setup(): void
 	{
-		parent::setUp();
+		parent::setUp();		
+		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(dirname(__DIR__, 2), '.env.test');
+		$dotenv->load();
+		$api_key = getenv('API_KEY');
+		$reference_id = getenv('REFERENCE_ID');
 		$bucket_id = 'my-new-storage-bucket-vcr';
-		$this->client = new  \Supabase\Storage\StorageFile($bucket_id);
+		$this->client = new  \Supabase\Storage\StorageFile($api_key, $reference_id, $bucket_id);
 	}
 
 	/**

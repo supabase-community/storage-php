@@ -19,7 +19,9 @@ composer require supabase/storage-php
 
 use Supabase\Storage;
 
-$client = new  StorageClient();
+$api_key = getenv('API_KEY');
+$reference_id = getenv('REFERENCE_ID');
+$client = new  StorageClient($api_key, $reference_id);
 ```
 
 ### Handling resources
@@ -73,8 +75,10 @@ $client = new  StorageClient();
 
 use Supabase\Storage\StorageFile;
 
+$api_key = getenv('API_KEY');
+$reference_id = getenv('REFERENCE_ID');
 $bucket_id = 'test-bucket';
-$client = new  StorageFile($bucket_id);
+$client = new  StorageFile($api_key, $reference_id, $bucket_id);
 ```
 
 - Upload a file to an existing bucket:

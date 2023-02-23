@@ -11,7 +11,11 @@ class VCRStorageBucketTest extends TestCase
 	public function setup(): void
 	{
 		parent::setUp();
-		$this->client = new  \Supabase\Storage\StorageClient();
+		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(dirname(__DIR__, 2), '.env.test');
+		$dotenv->load();
+		$api_key = getenv('API_KEY');
+		$reference_id = getenv('REFERENCE_ID');
+		$this->client = new  \Supabase\Storage\StorageClient($api_key, $reference_id);
 	}
 
 	/**

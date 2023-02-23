@@ -1,21 +1,21 @@
 <?php
-
 namespace Supabase\Util;
+use Psr\Http\Message\ResponseInterface;
 
 class Request
 {
-	public static function request($method, $url, $headers, $body = null)
+	public static function request($method, $url, $headers, $body = null): ResponseInterface
 	{
 		try {
 			$request = new \GuzzleHttp\Psr7\Request($method, $url, $headers, $body);
 			$client = new \GuzzleHttp\Client();
-			$promise = $client->sendAsync($request)->then(function ($response) {
-				return json_decode($response->getBody(), true);
+			$promise = $client->sendAsync($request)->then(function ($response) {				
+				return $response;
 			});
 
 			$response = $promise->wait();
 
-			return json_decode(json_encode($response));
+			return $response;
 		} catch (\Exception $e) {
 			throw self::handleError($e);
 		}

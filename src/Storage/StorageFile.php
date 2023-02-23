@@ -230,7 +230,7 @@ class StorageFile
 			$fullUrl = $this->url.'/object/sign/'.$storagePath;
 			$response = Request::request('POST', $fullUrl, $headers, json_encode($body));
 			$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
-			$data = urlencode($this->url.$response->signedURL.$downloadQueryParam);
+			$data = urlencode($this->url.$response['signedURL'].$downloadQueryParam);
 
 			return $data;
 		} catch (\Exception $e) {
@@ -260,7 +260,7 @@ class StorageFile
 			$response = Request::request('POST', $fullUrl, $this->headers, $opts, $body);
 			$downloadQueryParam = $opts['download'] ? '?download=true' : '';
 			$data = array_map(function ($d) use ($downloadQueryParam) {
-				$d['signed_url'] = urlencode($this->url.$d->signed_url.$downloadQueryParam);
+				$d['signed_url'] = urlencode($this->url.$d['signed_url'].$downloadQueryParam);
 
 				return $d;
 			}, $response);

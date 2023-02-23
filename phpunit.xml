@@ -6,7 +6,7 @@
     </testsuite>
   </testsuites>
   <php>
-    <env name="PROJECT_REF" value="gpdefvsxamnscceccczu" force="true"/>
-    <env name="SERVICE_ROLE" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc" force="true"/>
+    <env name="PROJECT_REF" value="" force="true"/>
+    <env name="SERVICE_ROLE" value="" force="true"/>
   </php>
 </phpunit>
