@@ -1,14 +1,7 @@
 <?php
-
-include '../../vendor/autoload.php';
-
-use Dotenv\Dotenv;
+include __DIR__.'/../header.php';
 use Supabase\Storage\StorageClient;
 
-$dotenv = Dotenv::createUnsafeImmutable('../../', '.env.test');
-$dotenv->load();
-$api_key = getenv('API_KEY');
-$reference_id = getenv('REFERENCE_ID');
 $client = new  StorageClient($api_key, $reference_id);
 $result = $client->listBuckets();
 $output = json_decode($result->getBody(), true);

@@ -1791,22 +1791,22 @@
         },
         {
             "name": "php-vcr/php-vcr",
-            "version": "1.6.4",
+            "version": "1.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-vcr/php-vcr.git",
-                "reference": "bddc1fea824c9b571d21899a484dc680ff256091"
+                "reference": "5c9417b806e5b153e7d12b50ecafe27f45608122"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-vcr/php-vcr/zipball/bddc1fea824c9b571d21899a484dc680ff256091",
-                "reference": "bddc1fea824c9b571d21899a484dc680ff256091",
+                "url": "https://api.github.com/repos/php-vcr/php-vcr/zipball/5c9417b806e5b153e7d12b50ecafe27f45608122",
+                "reference": "5c9417b806e5b153e7d12b50ecafe27f45608122",
                 "shasum": ""
             },
             "require": {
                 "beberlei/assert": "^3.2.5",
                 "ext-curl": "*",
-                "php": "^8",
+                "php": "^8,<8.2",
                 "symfony/event-dispatcher": "^4|^5|^6",
                 "symfony/event-dispatcher-contracts": "^1|^2|^3",
                 "symfony/yaml": "^3|^4|^5|^6"
@@ -1842,9 +1842,9 @@
             "description": "Record your test suite's HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests.",
             "support": {
                 "issues": "https://github.com/php-vcr/php-vcr/issues",
-                "source": "https://github.com/php-vcr/php-vcr/tree/1.6.4"
+                "source": "https://github.com/php-vcr/php-vcr/tree/1.6.5"
             },
-            "time": "2022-12-27T21:48:04+00:00"
+            "time": "2023-02-20T07:54:59+00:00"
         },
         {
             "name": "php-vcr/phpunit-testlistener-vcr",
@@ -3605,16 +3605,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.7.1",
+            "version": "3.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "1359e176e9307e906dc3d890bcc9603ff6d90619"
+                "reference": "ed8e00df0a83aa96acf703f8c2979ff33341f879"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/1359e176e9307e906dc3d890bcc9603ff6d90619",
-                "reference": "1359e176e9307e906dc3d890bcc9603ff6d90619",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/ed8e00df0a83aa96acf703f8c2979ff33341f879",
+                "reference": "ed8e00df0a83aa96acf703f8c2979ff33341f879",
                 "shasum": ""
             },
             "require": {
@@ -3650,14 +3650,15 @@
             "homepage": "https://github.com/squizlabs/PHP_CodeSniffer",
             "keywords": [
                 "phpcs",
-                "standards"
+                "standards",
+                "static analysis"
             ],
             "support": {
                 "issues": "https://github.com/squizlabs/PHP_CodeSniffer/issues",
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
-            "time": "2022-06-18T07:21:10+00:00"
+            "time": "2023-02-22T23:07:41+00:00"
         },
         {
             "name": "symfony/event-dispatcher",

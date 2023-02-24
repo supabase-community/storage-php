@@ -1,6 +1,6 @@
 # Supabase `storage-php` examples 
 
-These examples will provide a way to interact with the `storage-php` library.
+Examples of how to interact with the `storage-php` library.
 
 ```
 .
@@ -24,14 +24,31 @@ These examples will provide a way to interact with the `storage-php` library.
 ```
 
 ## Setup
+Clone the repository locally.
 
-@TODO this needs to talk about how to get an API key, and run composer install
+Install the dependencies `composer install` 
+
+### API Access Details
+To obtain the API Access Details, please sign into your Supabase account. 
+
+#### For the `PROJECT_REF`
+Once signed on to the dashboard, navigate to, Project >> Project Settings >> General settings. Copy the Reference ID for use in the `.env`.
+
+#### For the `API_KEY`
+Once signed on to the dashboard, navigate to, Project >> Project Settings >> API >> Project API keys. Choose either the `anon` `public` or the `service_role` key.
+
+### Setup the Env
+
+```
+cd examples
+cp .env.example .env
+```
+
+Populate the `.env` to include `REFERENCE_ID` and `API_KEY`.
 
 ## Running Examples
 
-@TODO - explain any additonal details here. Might want to test on windows and make sure this works as well - or we might need a windows/unix - linux section
-
 ```
-API_KEY="<your_api_key>" REFERENCE_ID="<your_reference_id>"; php handling-buckets/create-bucket.php
+cd examples
+php handling-files/list-files.php
 ```
-
