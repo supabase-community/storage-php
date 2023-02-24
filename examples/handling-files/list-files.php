@@ -13,4 +13,3 @@ $client = new StorageFile(
 
 $result = $client->list('path/to');
 print_r($result);
-
