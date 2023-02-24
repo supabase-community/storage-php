@@ -1,6 +1,6 @@
 # Supabase `storage-php` examples 
 
-These examples will provide a way to interact with the `storage-php` library.
+Examples of how to interact with the `storage-php` library.
 
 ```
 .
@@ -24,27 +24,31 @@ These examples will provide a way to interact with the `storage-php` library.
 ```
 
 ## Setup
+Clone the repository locally.
 
-### **Downloading the package**
-Download the package supabase/storage-php. On your terminal run `composer require supabase/storage-php` 
+Install the dependencies `composer install` 
 
-### **API Keys**
-To get your API keys, please sign into your Supabase account. 
-Once signed on your dashboard, go to, Project >> Project Settings >> API Settings >> Project API keys
- #### *You can use the keys to use Supabase client libraries.*
+### API Access Details
+To obtain the API Access Details, please sign into your Supabase account. 
 
- ### **Create a .env  file** 
-   ####  Create a file named .env file and paste the template we provided on .env.example, fill out the new file with the enviorment variables needed for the project. We need a .env file to pass enviorment variables securely.
+#### For the `PROJECT_REF`
+Once signed on to the dashboard, navigate to, Project >> Project Settings >> General settings. Copy the Reference ID for use in the `.env`.
 
-### **Set up your project**
-Please reference the documentation to start your project.
-#### -  https://supabase.com/docs 
+#### For the `API_KEY`
+Once signed on to the dashboard, navigate to, Project >> Project Settings >> API >> Project API keys. Choose either the `anon` `public` or the `service_role` key.
 
+### Setup the Env
 
+```
+cd examples
+cp .env.example .env
+```
+
+Populate the `.env` to include `REFERENCE_ID` and `API_KEY`.
 
 ## Running Examples
 
-### example:
-> `cd example` 
-`php handling-files/list-files.php`
-
+```
+cd examples
+php handling-files/list-files.php
+```
