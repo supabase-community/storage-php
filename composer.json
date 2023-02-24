@@ -37,6 +37,7 @@
         "allure-framework/allure-phpunit": "^2"
     },
     "require": {
-        "guzzlehttp/guzzle": "^7.5"
+        "guzzlehttp/guzzle": "^7.5",
+        "vlucas/phpdotenv": "^5.5"
     }
 }

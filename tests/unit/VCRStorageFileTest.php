@@ -28,7 +28,7 @@ final class VCRStorageFileTest extends TestCase
 	public function testUpload(string $path, string $file_path, array $options): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageFileTest');
+		\VCR\VCR::insertCassette('unit_storage_file_test');
 		$result = $this->client->upload($path, $file_path, $options);
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -43,7 +43,7 @@ final class VCRStorageFileTest extends TestCase
 	public function testDownload(string $path, string $file_path, array $options): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageFileTest');
+		\VCR\VCR::insertCassette('unit_storage_file_test');
 		$result = $this->client->download($path, $options);
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -58,7 +58,7 @@ final class VCRStorageFileTest extends TestCase
 	public function testUpdate(string $path, string $file_path, array $options): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageFileTest');
+		\VCR\VCR::insertCassette('unit_storage_file_test');
 		$result = $this->client->update($path, $file_path, $options);
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -73,7 +73,7 @@ final class VCRStorageFileTest extends TestCase
 	public function testMove(string $from_path, string $to_path): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageFileTest');
+		\VCR\VCR::insertCassette('unit_storage_file_test');
 		$result = $this->client->move($from_path, $to_path);
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -88,7 +88,7 @@ final class VCRStorageFileTest extends TestCase
 	public function testCopy(string $from_path, string $to_path): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageFileTest');
+		\VCR\VCR::insertCassette('unit_storage_file_test');
 		$result = $this->client->copy($from_path, $to_path);
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -103,7 +103,7 @@ final class VCRStorageFileTest extends TestCase
 	public function testRemove($path): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageFileTest');
+		\VCR\VCR::insertCassette('unit_storage_file_test');
 		$result = $this->client->remove($path);
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -118,7 +118,7 @@ final class VCRStorageFileTest extends TestCase
 	public function testCreateSignedUrl($path, $expires, $options): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageFileTest');
+		\VCR\VCR::insertCassette('unit_storage_file_test');
 		$result = $this->client->createSignedUrl($path, $expires, $options);
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -133,7 +133,7 @@ final class VCRStorageFileTest extends TestCase
 	public function testGetPublicUrl($path, $options): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageFileTest');
+		\VCR\VCR::insertCassette('unit_storage_file_test');
 		$result = $this->client->getPublicUrl($path, $options);
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();

@@ -148,7 +148,7 @@ class StorageBucket
 	}
 
 	/**
-	 *	Removes all objects inside a single bucket.
+	 * Removes all objects inside a single bucket.
 	 *
 	 * @param  string  $bucketId  The unique identifier of the bucket you would like to empty.
 	 * @return string Returns stdClass Object from request
