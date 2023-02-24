@@ -11,6 +11,7 @@
 
 namespace Supabase\Storage;
 
+use Psr\Http\Message\ResponseInterface;
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
 
@@ -70,9 +71,11 @@ class StorageFile
 	 * Lists all the files within a bucket.
 	 *
 	 * @param $path The folder path.
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 *
+	 * @throws Exception
 	 */
-	public function list($path)
+	public function list($path): ResponseInterface
 	{
 		$headers = $this->headers;
 		$headers['content-type'] = 'application/json';
@@ -96,9 +99,11 @@ class StorageFile
 	 * @param  string  $path  The path to the file in the bucket.
 	 * @param  string  $file  The body of the file to be stored in the bucket.
 	 * @param  array  $options  The options for the upload.
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 *
+	 * @throws Exception
 	 */
-	public function uploadOrUpdate($method, $path, $file, $opts)
+	public function uploadOrUpdate($method, $path, $file, $opts): ResponseInterface
 	{
 		try {
 			$options = array_merge($this->DEFAULT_FILE_OPTIONS, $opts);
@@ -128,9 +133,11 @@ class StorageFile
 	 *                        attempting to upload.
 	 * @param  string  $file  The body of the file to be stored in the bucket.
 	 * @param  array  $options  The options for the upload.
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 *
+	 * @throws Exception
 	 */
-	public function upload($path, $file, $opts)
+	public function upload($path, $file, $opts): ResponseInterface
 	{
 		return $this->uploadOrUpdate('POST', $path, $file, $opts);
 	}
@@ -142,9 +149,11 @@ class StorageFile
 	 *                        format `folder/subfolder/filename.png`. The bucket must already exist before attempting to update.
 	 * @param  string  $file  The body of the file to be stored in the bucket.
 	 * @param  array  $options  The options for the update.
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 *
+	 * @throws Exception
 	 */
-	public function update($path, $file, $opts)
+	public function update($path, $file, $opts): ResponseInterface
 	{
 		return $this->uploadOrUpdate('PUT', $path, $file, $opts);
 	}
@@ -156,9 +165,11 @@ class StorageFile
 	 *                            name. For example `folder/image.png`.
 	 * @param  string  $toPath  The new file path, including the new file name.
 	 *                          For example `folder/image-new.png`.
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 *
+	 * @throws Exception
 	 */
-	public function move($fromPath, $toPath)
+	public function move($fromPath, $toPath): ResponseInterface
 	{
 		$headers = $this->headers;
 		$headers['content-type'] = 'application/json';
@@ -184,9 +195,11 @@ class StorageFile
 	 *                            file name. For example `folder/image.png`.
 	 * @param  string  $toPath  The new file path, including the new file name.
 	 *                          For example `folder/image-copy.png`.
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 *
+	 * @throws Exception
 	 */
-	public function copy($fromPath, $toPath)
+	public function copy($fromPath, $toPath): ResponseInterface
 	{
 		$headers = $this->headers;
 		$headers['content-type'] = 'application/json';
@@ -214,9 +227,9 @@ class StorageFile
 	 * @param  array  $opts['download']  Triggers the file as a download if set to true. Set
 	 *                                   this parameter as the name of the file if you want to trigger the download with a different filename.
 	 * @param  array  $opts['transform  ']  Transform the asset before serving it to the client.
-	 * @return string Returns stdClass Object from request
+	 * @return string
 	 */
-	public function createSignedUrl($path, $expires, $opts)
+	public function createSignedUrl($path, $expires, $opts): string
 	{
 		$headers = $this->headers;
 		$headers['content-type'] = 'application/json';
@@ -228,8 +241,9 @@ class StorageFile
 			$storagePath = $this->_storagePath($path);
 			$fullUrl = $this->url.'/object/sign/'.$storagePath;
 			$response = Request::request('POST', $fullUrl, $headers, json_encode($body));
+			$result = json_decode($response->getBody(), true);
 			$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
-			$data = urlencode($this->url.$response['signedURL'].$downloadQueryParam);
+			$data = urlencode($this->url.$result['signedURL'].$downloadQueryParam);
 
 			return $data;
 		} catch (\Exception $e) {
@@ -246,9 +260,9 @@ class StorageFile
 	 * @param  array  $opts['download']  Triggers the file as a download if set to true. Set
 	 *                                   this parameter as the name of the file if you want to trigger the download with a different filename.
 	 * @param  array  $opts['transform  ']  Transform the asset before serving it to the client.
-	 * @return string Returns stdClass Object from request
+	 * @return array
 	 */
-	public function createSignedUrls($paths, $expiresIn, $opts)
+	public function createSignedUrls($paths, $expiresIn, $opts): array
 	{
 		try {
 			$body = [
@@ -277,16 +291,18 @@ class StorageFile
 	 * @param  string  $path  The full path and file name of the file to be downloaded.
 	 *                        For example `folder/image.png`.
 	 * @param  array  $options['transform']  Transform the asset before serving it to the client.
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 *
+	 * @throws Exception
 	 */
-	public function download($path, $options)
+	public function download($path, $options): ResponseInterface
 	{
 		$headers = $this->headers;
 		$url = $this->url.'/object/'.$this->bucketId.'/'.$path;
 		$headers['stream'] = true;
 
 		try {
-			$data = Request::request_file($url, $headers);
+			$data = Request::request('GET', $url, $headers);
 
 			return $data;
 		} catch (\Exception $e) {
@@ -310,9 +326,9 @@ class StorageFile
 	 *                                      to trigger the download with a different filename.
 	 * @param  array  $options['transform']  Transform the asset before serving
 	 *                                       it to the client.
-	 * @return string Returns the public url generated
+	 * @return string
 	 */
-	public function getPublicUrl($path, $opts)
+	public function getPublicUrl($path, $opts): string
 	{
 		$storagePath = $this->_storagePath($path);
 		$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
@@ -327,9 +343,11 @@ class StorageFile
 	 *
 	 * @param  string  $path  An array of files to delete,
 	 *                        including the path and file name. For example [`'folder/image.png'`].
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 *
+	 * @throws Exception
 	 */
-	public function remove($paths)
+	public function remove($paths): ResponseInterface
 	{
 		$headers = $this->headers;
 		$headers['content-type'] = 'application/json';
@@ -350,7 +368,7 @@ class StorageFile
 	 * @param  string  $path  The path to the file in the bucket.
 	 * @return string Returns the path to the file cleaned
 	 */
-	private function _storagePath($path)
+	private function _storagePath($path): string
 	{
 		$p = preg_replace('/^\/|\/$/', '', $path);
 		$p = preg_replace('/\/+/', '/', $p);

@@ -12,4 +12,4 @@ $reference_id = getenv('REFERENCE_ID');
 
 $client = new StorageClient($api_key, $reference_id);
 $result = $client->getBucket('test-bucket');
-print_r($result);
+$output = json_decode($result->getBody(), true);

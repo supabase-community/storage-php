@@ -15,4 +15,5 @@ $client = new StorageFile($api_key, $reference_id, $bucket_id);
 
 $options = ['transform' => true];
 $result = $client->update('path/to/file.png', 'https://cdn-icons-png.flaticon.com/128/7267/7267612.png', $options);
-print_r($result);
+$output = json_decode($result->getBody(), true);
+print_r($output);

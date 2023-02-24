@@ -14,4 +14,6 @@ $bucket_id = 'test-bucket';
 $client = new StorageFile($api_key, $reference_id, $bucket_id);
 $options = ['transform' => true];
 $result = $client->download('path/to/file.png', $options);
-print_r($result);
+$output = $result->getBody()->getContents();
+file_put_contents('file.png', $output);
+print_r($output);
