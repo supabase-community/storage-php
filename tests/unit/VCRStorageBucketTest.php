@@ -11,8 +11,8 @@ class VCRStorageBucketTest extends TestCase
 	public function setup(): void
 	{
 		parent::setUp();
-		$authHeader = ['Authorization' => 'Bearer '.$_ENV['SERVICE_ROLE']];
-		$this->client = new  \Supabase\Storage\StorageClient('https://'.$_ENV['PROJECT_REF'].'.supabase.co/storage/v1', $authHeader);
+		$authHeader = ['Authorization' => "Bearer {$_ENV['SERVICE_ROLE']}"];
+		$this->client = new  \Supabase\Storage\StorageClient("https://{$_ENV['PROJECT_REF']}.supabase.co/storage/v1", $authHeader);
 	}
 
 	/**
@@ -26,7 +26,7 @@ class VCRStorageBucketTest extends TestCase
 		\VCR\VCR::turnOn();
 
 		// Record requests and responses in cassette file 'example'
-		\VCR\VCR::insertCassette('storageBucketTest');
+		\VCR\VCR::insertCassette('unit_storage_bucket_test');
 
 		// Following request will be recorded once and replayed in future test runs
 		$result = $this->client->listBuckets();
@@ -47,7 +47,7 @@ class VCRStorageBucketTest extends TestCase
 	public function testCreateBucket(): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageBucketTest');
+		\VCR\VCR::insertCassette('unit_storage_bucket_test');
 		$result = $this->client->createBucket('my-new-storage-bucket-vcr');
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -62,7 +62,7 @@ class VCRStorageBucketTest extends TestCase
 	public function testGetBucketWithId(): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageBucketTest');
+		\VCR\VCR::insertCassette('unit_storage_bucket_test');
 		$result = $this->client->getBucket('my-new-storage-bucket-vcr');
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -77,7 +77,7 @@ class VCRStorageBucketTest extends TestCase
 	public function testUpdateBucket(): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageBucketTest');
+		\VCR\VCR::insertCassette('unit_storage_bucket_test');
 		$result = $this->client->updateBucket('my-new-storage-bucket-vcr', ['public' => true]);
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -87,7 +87,7 @@ class VCRStorageBucketTest extends TestCase
 	public function testUpdateBucket_with_not_real_bucket(): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageBucketTest');
+		\VCR\VCR::insertCassette('unit_storage_bucket_test');
 		$result = $this->client->updateBucket('my-new-storage-bucket-vcr-not-existed', ['public' => true]);
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -102,7 +102,7 @@ class VCRStorageBucketTest extends TestCase
 	public function testDeleteBucket(): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageBucketTest');
+		\VCR\VCR::insertCassette('unit_storage_bucket_test');
 		$result = $this->client->deleteBucket('test');
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -117,7 +117,7 @@ class VCRStorageBucketTest extends TestCase
 	public function testEmptyBucket(): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageBucketTest');
+		\VCR\VCR::insertCassette('unit_storage_bucket_test');
 		$result = $this->client->emptyBucket('my-new-storage-bucket-public-test');
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -132,7 +132,7 @@ class VCRStorageBucketTest extends TestCase
 	public function testGetBucketWithInvalidId(): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageBucketTest');
+		\VCR\VCR::insertCassette('unit_storage_bucket_test');
 		$result = $this->client->getBucket('not-a-real-bucket-id');
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();
@@ -147,7 +147,7 @@ class VCRStorageBucketTest extends TestCase
 	public function testCreatePublicBucket(): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('storageBucketTest');
+		\VCR\VCR::insertCassette('unit_storage_bucket_test');
 		$result = $this->client->createBucket('my-new-storage-bucket-public-vcr', ['public' => true]);
 		$this->assertNotEmpty($result);
 		\VCR\VCR::eject();

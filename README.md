@@ -18,11 +18,13 @@ composer require supabase/storage-php
 
 use Supabase\Storage;
 
-$url = 'https://'.$project_ref.'supabase.co/storage/v1';
-$service_key = $service_role;
-$storage = new Storage\StorageClient($url, [
- 'Authorization' => 'Bearer ' . $service_key,
-]);
+$api_key = '<your_api_key>';
+$supabase_id = '<your_supabase_id>';
+$authHeader = ['Authorization' => "Bearer {$api_key}"];
+$client = new  StorageClient(
+	"https://{$supabase_id}.supabase.co/storage/v1",
+	$authHeader
+);
 ```
 
 ### Handling resources
@@ -76,12 +78,15 @@ $storage = new Storage\StorageClient($url, [
 
 use Supabase\Storage\StorageFile;
 
-$url = 'https://<project_ref>.supabase.co/storage/v1';
-$service_key = '<service_role>';
-$bucket_id = '<storage-bucket-id';
-$storage = new StorageFile($url, [
- 'Authorization' => 'Bearer ' . $service_key,
-], $bucket_id);
+$api_key = '<your_api_key>';
+$supabase_id = '<your_supabase_id>';
+$bucket_id = 'test-bucket';
+$authHeader = ['Authorization' => "Bearer {$api_key}"];
+$client = new  StorageFile(
+  "https://{$supabase_id}.supabase.co/storage/v1",
+  $authHeader,
+  $bucket_id
+);
 ```
 
 - Upload a file to an existing bucket:
