@@ -1,6 +1,6 @@
 <?php
 
-include dirname(__DIR__, 1).'/header.php';
+include __DIR__.'/../header.php';
 use Supabase\Storage\StorageClient;
 
 $authHeader = ['Authorization' => "Bearer {$api_key}"];
