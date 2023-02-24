@@ -1,6 +1,6 @@
 <?php
 
-include dirname(__DIR__, 1).'\vendor\autoload.php';
+include dirname(__DIR__, 1).'/vendor/autoload.php';
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createUnsafeImmutable(__DIR__);
