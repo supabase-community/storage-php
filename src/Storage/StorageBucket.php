@@ -13,6 +13,7 @@ namespace Supabase\Storage;
 
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
+use Psr\Http\Message\ResponseInterface;
 
 class StorageBucket
 {
@@ -50,9 +51,10 @@ class StorageBucket
 	 * @param  array  $options  The visibility of the bucket. Public buckets don't require an
 	 *                          authorization token to download objects, but still require a valid token for all
 	 *                          other operations. By default, buckets are private.
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 * @throws Exception
 	 */
-	public function createBucket($bucketId, $options = ['public' => false])
+	public function createBucket($bucketId, $options = ['public' => false]): ResponseInterface
 	{
 		try {
 			$url = $this->url.'/bucket';
@@ -75,9 +77,10 @@ class StorageBucket
 	 *
 	 * @param  string  $bucketId  The unique identifier of the bucket you
 	 *                            would like to retrieve.
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 * @throws Exception
 	 */
-	public function getBucket($bucketId)
+	public function getBucket($bucketId): ResponseInterface
 	{
 		try {
 			$url = $this->url.'/bucket/'.$bucketId;
@@ -92,9 +95,10 @@ class StorageBucket
 	/**
 	 * Retrieves the details of all Storage buckets within an existing project.
 	 *
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 * @throws Exception
 	 */
-	public function listBuckets()
+	public function listBuckets(): ResponseInterface
 	{
 		$url = $this->url.'/bucket';
 
@@ -114,9 +118,10 @@ class StorageBucket
 	 * @param  array  $options  The visibility of the bucket. Public buckets don't
 	 *                          require an authorization token to download objects, but still require a valid
 	 *                          token for all other operations.
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 * @throws Exception
 	 */
-	public function updateBucket($bucketId, $options)
+	public function updateBucket($bucketId, $options): ResponseInterface
 	{
 		try {
 			$body = json_encode([
@@ -139,9 +144,10 @@ class StorageBucket
 	 * You must first `empty()` the bucket.
 	 *
 	 * @param  string  $bucketId  The unique identifier of the bucket you would like to delete.
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 * @throws Exception
 	 */
-	public function deleteBucket($bucketId)
+	public function deleteBucket($bucketId): ResponseInterface
 	{
 		try {
 			$url = $this->url.'/bucket/'.$bucketId;
@@ -157,9 +163,10 @@ class StorageBucket
 	 * Removes all objects inside a single bucket.
 	 *
 	 * @param  string  $bucketId  The unique identifier of the bucket you would like to empty.
-	 * @return string Returns stdClass Object from request
+	 * @return ResponseInterface
+	 * @throws Exception
 	 */
-	public function emptyBucket($bucketId)
+	public function emptyBucket($bucketId): ResponseInterface
 	{
 		try {
 			$url = $this->url.'/bucket/'.$bucketId.'/empty';

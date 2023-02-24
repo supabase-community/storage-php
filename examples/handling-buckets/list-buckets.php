@@ -11,4 +11,5 @@ $api_key = getenv('API_KEY');
 $reference_id = getenv('REFERENCE_ID');
 $client = new  StorageClient($api_key, $reference_id);
 $result = $client->listBuckets();
-print_r($result);
+$output = json_decode($result->getBody(), true);
+print_r($output);
