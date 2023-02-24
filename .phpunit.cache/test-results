@@ -1,1 +1,0 @@
-{"version":1,"defects":{"StorageBucketTest::testListBucket":8,"StorageBucketTest::testCreateBucket":8,"StorageBucketTest::testGetBucketWithId":8,"StorageBucketTest::testUpdateBucket":8},"times":{"StorageBucketTest::testListBucket":1.016,"StorageBucketTest::testCreateBucket":0.881,"StorageBucketTest::testGetBucketWithId":1.311,"StorageBucketTest::testUpdateBucket":1.129}}

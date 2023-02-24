@@ -4,4 +4,4 @@
 .env.backup
 phpunit.xml
 .phpdoc
-/.phpunit.cache
+/.phpunit.cache/
