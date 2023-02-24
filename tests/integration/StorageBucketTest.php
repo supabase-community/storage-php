@@ -36,7 +36,7 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testCreateBucket(): void
 	{
-		$result = $this->client->createBucket('my-new-storage-bucket');		
+		$result = $this->client->createBucket('my-new-storage-bucket');
 		$this->assertNull($result['error']);
 		$this->assertArrayHasKey('data', $result);
 		$this->assertEquals($result['data']['id'], 'my-new-storage-bucket');
@@ -116,5 +116,4 @@ final class StorageBucketTest extends TestCase
 		$this->assertArrayHasKey('data', $result);
 		$this->assertEquals($result['data'], 'my-new-storage-bucket-public');
 	}
-
 }

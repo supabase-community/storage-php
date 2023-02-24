@@ -11,9 +11,9 @@
 
 namespace Supabase\Storage;
 
+use Psr\Http\Message\ResponseInterface;
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
-use Psr\Http\Message\ResponseInterface;
 
 class StorageFile
 {
@@ -55,11 +55,10 @@ class StorageFile
 	];
 
 	/**
-     * StorageFile constructor.
-     *
-     * @throws Exception
-     */
-
+	 * StorageFile constructor.
+	 *
+	 * @throws Exception
+	 */
 	public function __construct($api_key, $reference_id, $bucketId)
 	{
 		$headers = ['Authorization' => "Bearer {$api_key}"];
@@ -73,6 +72,7 @@ class StorageFile
 	 *
 	 * @param $path The folder path.
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function list($path): ResponseInterface
@@ -100,6 +100,7 @@ class StorageFile
 	 * @param  string  $file  The body of the file to be stored in the bucket.
 	 * @param  array  $options  The options for the upload.
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function uploadOrUpdate($method, $path, $file, $opts): ResponseInterface
@@ -133,6 +134,7 @@ class StorageFile
 	 * @param  string  $file  The body of the file to be stored in the bucket.
 	 * @param  array  $options  The options for the upload.
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function upload($path, $file, $opts): ResponseInterface
@@ -148,6 +150,7 @@ class StorageFile
 	 * @param  string  $file  The body of the file to be stored in the bucket.
 	 * @param  array  $options  The options for the update.
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function update($path, $file, $opts): ResponseInterface
@@ -163,6 +166,7 @@ class StorageFile
 	 * @param  string  $toPath  The new file path, including the new file name.
 	 *                          For example `folder/image-new.png`.
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function move($fromPath, $toPath): ResponseInterface
@@ -192,6 +196,7 @@ class StorageFile
 	 * @param  string  $toPath  The new file path, including the new file name.
 	 *                          For example `folder/image-copy.png`.
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function copy($fromPath, $toPath): ResponseInterface
@@ -287,6 +292,7 @@ class StorageFile
 	 *                        For example `folder/image.png`.
 	 * @param  array  $options['transform']  Transform the asset before serving it to the client.
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function download($path, $options): ResponseInterface
@@ -295,8 +301,9 @@ class StorageFile
 		$url = $this->url.'/object/'.$this->bucketId.'/'.$path;
 		$headers['stream'] = true;
 
-		try {			
+		try {
 			$data = Request::request('GET', $url, $headers);
+
 			return $data;
 		} catch (\Exception $e) {
 			return $e;
@@ -337,6 +344,7 @@ class StorageFile
 	 * @param  string  $path  An array of files to delete,
 	 *                        including the path and file name. For example [`'folder/image.png'`].
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function remove($paths): ResponseInterface

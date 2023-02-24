@@ -1,5 +1,7 @@
 <?php
+
 namespace Supabase\Util;
+
 use Psr\Http\Message\ResponseInterface;
 
 class Request
@@ -9,7 +11,7 @@ class Request
 		try {
 			$request = new \GuzzleHttp\Psr7\Request($method, $url, $headers, $body);
 			$client = new \GuzzleHttp\Client();
-			$promise = $client->sendAsync($request)->then(function ($response) {				
+			$promise = $client->sendAsync($request)->then(function ($response) {
 				return $response;
 			});
 
@@ -21,7 +23,6 @@ class Request
 		}
 	}
 
-	
 	public static function handleError($error)
 	{
 		if (method_exists($error, 'getResponse')) {

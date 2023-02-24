@@ -11,9 +11,9 @@
 
 namespace Supabase\Storage;
 
+use Psr\Http\Message\ResponseInterface;
 use Supabase\Util\Constants;
 use Supabase\Util\Request;
-use Psr\Http\Message\ResponseInterface;
 
 class StorageBucket
 {
@@ -31,12 +31,12 @@ class StorageBucket
 	 * @var array
 	 */
 	protected array $headers = [];
-	
+
 	/**
-     * StorageBucket constructor.
-     *
-     * @throws Exception
-     */
+	 * StorageBucket constructor.
+	 *
+	 * @throws Exception
+	 */
 	public function __construct($api_key, $reference_id)
 	{
 		$headers = ['Authorization' => "Bearer {$api_key}"];
@@ -52,6 +52,7 @@ class StorageBucket
 	 *                          authorization token to download objects, but still require a valid token for all
 	 *                          other operations. By default, buckets are private.
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function createBucket($bucketId, $options = ['public' => false]): ResponseInterface
@@ -78,6 +79,7 @@ class StorageBucket
 	 * @param  string  $bucketId  The unique identifier of the bucket you
 	 *                            would like to retrieve.
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function getBucket($bucketId): ResponseInterface
@@ -96,6 +98,7 @@ class StorageBucket
 	 * Retrieves the details of all Storage buckets within an existing project.
 	 *
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function listBuckets(): ResponseInterface
@@ -119,6 +122,7 @@ class StorageBucket
 	 *                          require an authorization token to download objects, but still require a valid
 	 *                          token for all other operations.
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function updateBucket($bucketId, $options): ResponseInterface
@@ -145,6 +149,7 @@ class StorageBucket
 	 *
 	 * @param  string  $bucketId  The unique identifier of the bucket you would like to delete.
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function deleteBucket($bucketId): ResponseInterface
@@ -164,6 +169,7 @@ class StorageBucket
 	 *
 	 * @param  string  $bucketId  The unique identifier of the bucket you would like to empty.
 	 * @return ResponseInterface
+	 *
 	 * @throws Exception
 	 */
 	public function emptyBucket($bucketId): ResponseInterface
