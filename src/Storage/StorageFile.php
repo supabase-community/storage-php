@@ -71,18 +71,22 @@ class StorageFile
 	 * Lists all the files within a bucket.
 	 *
 	 * @param $path The folder path.
+	 * @param  array  $options  The options for list files.
 	 * @return ResponseInterface
 	 *
 	 * @throws Exception
 	 */
-	public function list($path): ResponseInterface
+	public function list($path, $opts = []): ResponseInterface
 	{
 		$headers = $this->headers;
 		$headers['content-type'] = 'application/json';
 		try {
-			$body = [
-				'prefix' => $path,
+
+			$prefix = [
+				'prefix'=> $path,
 			];
+
+			$body = array_merge($prefix, $opts);
 
 			$data = Request::request('POST', $this->url.'/object/list/'.$this->bucketId, $headers, json_encode($body));
 
@@ -113,10 +117,14 @@ class StorageFile
 				$headers['x-upsert'] = $options['upsert'] ? 'true' : 'false';
 			}
 
-			$body = file_get_contents($file);
+			if (base64_decode($file, true) === false) {
+				$body = file_get_contents($file);		
+			} else {
+				$body = base64_decode($file);
+				$headers['content-type'] = $options['contentType'];		
+			}			
 
 			$storagePath = $this->_storagePath($path);
-
 			$data = Request::request($method, $this->url.'/object/'.$storagePath, $headers, $body);
 
 			return $data;
