@@ -81,7 +81,6 @@ class StorageFile
 		$headers = $this->headers;
 		$headers['content-type'] = 'application/json';
 		try {
-
 			$prefix = [
 				'prefix'=> $path,
 			];
@@ -118,11 +117,11 @@ class StorageFile
 			}
 
 			if (base64_decode($file, true) === false) {
-				$body = file_get_contents($file);		
+				$body = file_get_contents($file);
 			} else {
 				$body = base64_decode($file);
-				$headers['content-type'] = $options['contentType'];		
-			}			
+				$headers['content-type'] = $options['contentType'];
+			}
 
 			$storagePath = $this->_storagePath($path);
 			$data = Request::request($method, $this->url.'/object/'.$storagePath, $headers, $body);
