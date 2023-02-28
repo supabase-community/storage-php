@@ -233,7 +233,7 @@ class StorageFile
 	 *                          `60` for a URL which is valid for one minute
 	 * @param  array  $opts['download']  Triggers the file as a download if set to true. Set
 	 *                                   this parameter as the name of the file if you want to trigger the download with a different filename.
-	 * @param  array  $opts['transform  ']  Transform the asset before serving it to the client.
+	 * @param  array  $opts['transform']  Transform the asset before serving it to the client.
 	 * @return string
 	 */
 	public function createSignedUrl($path, $expires, $opts = []): string
@@ -267,24 +267,26 @@ class StorageFile
 	 *                          For example, `60` for a URL which is valid for one minute.
 	 * @param  array  $opts['download']  Triggers the file as a download if set to true. Set
 	 *                                   this parameter as the name of the file if you want to trigger the download with a different filename.
-	 * @param  array  $opts['transform  ']  Transform the asset before serving it to the client.
+	 * @param  array  $opts['transform']  Transform the asset before serving it to the client.
 	 * @return array
 	 */
 	public function createSignedUrls($paths, $expiresIn, $opts): array
 	{
 		try {
+			$headers = $this->headers;
+			$headers['content-type'] = 'application/json';			
 			$body = [
 				'paths'=> $paths,
-				'expires_in'=> $expiresIn,
+				'expiresIn'=> $expiresIn,
+				'options' => $opts,
 			];
-			$fullUrl = $this->url.'/object/sign'.$this->bucketId;
-			$response = Request::request('POST', $fullUrl, $this->headers, $opts, $body);
-			$downloadQueryParam = $opts['download'] ? '?download=true' : '';
+			$fullUrl = $this->url.'/object/sign/'.$this->bucketId;
+			$response = Request::request('POST', $fullUrl, $headers, json_encode($body));
+			$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
 			$data = array_map(function ($d) use ($downloadQueryParam) {
-				$d['signed_url'] = urlencode($this->url.$d['signed_url'].$downloadQueryParam);
-
+				$d['signedURL'] = urlencode($this->url.$d['signedURL'].$downloadQueryParam);
 				return $d;
-			}, $response);
+			}, json_decode($response->getBody(), true));
 
 			return $data;
 		} catch (\Exception $e) {
@@ -303,10 +305,14 @@ class StorageFile
 	 *
 	 * @throws Exception
 	 */
-	public function download($path, $options): ResponseInterface
+	public function download($path, $opts = []): ResponseInterface
 	{
 		$headers = $this->headers;
-		$url = $this->url.'/object/'.$this->bucketId.'/'.$path;
+		$transformOptions = isset($opts['transform']) ? $opts['transform'] : [];
+		$renderPath = isset($opts['transform']) ? 'render/image/authenticated' : 'object';
+		$transformationQuery = $this->transformOptsToQueryString($transformOptions);
+		$queryString = ($transformationQuery != '') ? '?'.$transformationQuery : '';
+		$url = $this->url.'/'.$renderPath.'/'.$this->bucketId.'/'.$path.$queryString;
 		$headers['stream'] = true;
 
 		try {
@@ -358,9 +364,9 @@ class StorageFile
 			$queryString = '?'.$queryString;
 		}
 
-		$data = urlencode($this->url.'/object/public/'.$storagePath.$downloadQueryParam);
+		$data = urlencode($this->url.'/'.$renderPath.'/public/'.$storagePath.$queryString);
 
-		return $this->url.'/'.$renderPath.'/public/'.$storagePath.$queryString;
+		return $data;
 	}
 
 	/**
