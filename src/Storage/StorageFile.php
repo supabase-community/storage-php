@@ -274,7 +274,7 @@ class StorageFile
 	{
 		try {
 			$headers = $this->headers;
-			$headers['content-type'] = 'application/json';			
+			$headers['content-type'] = 'application/json';
 			$body = [
 				'paths'=> $paths,
 				'expiresIn'=> $expiresIn,
@@ -285,6 +285,7 @@ class StorageFile
 			$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
 			$data = array_map(function ($d) use ($downloadQueryParam) {
 				$d['signedURL'] = urlencode($this->url.$d['signedURL'].$downloadQueryParam);
+
 				return $d;
 			}, json_decode($response->getBody(), true));
 
