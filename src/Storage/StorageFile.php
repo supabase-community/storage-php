@@ -236,7 +236,7 @@ class StorageFile
 	 * @param  array  $opts['transform  ']  Transform the asset before serving it to the client.
 	 * @return string
 	 */
-	public function createSignedUrl($path, $expires, $opts): string
+	public function createSignedUrl($path, $expires, $opts = []): string
 	{
 		$headers = $this->headers;
 		$headers['content-type'] = 'application/json';
@@ -244,6 +244,7 @@ class StorageFile
 		try {
 			$body = [
 				'expiresIn' => $expires,
+				'options' => $opts,
 			];
 			$storagePath = $this->_storagePath($path);
 			$fullUrl = $this->url.'/object/sign/'.$storagePath;
@@ -335,14 +336,31 @@ class StorageFile
 	 *                                       it to the client.
 	 * @return string
 	 */
-	public function getPublicUrl($path, $opts): string
+	public function getPublicUrl($path, $opts = []): string
 	{
 		$storagePath = $this->_storagePath($path);
-		$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
+		$_queryString = [];
+
+		$downloadQueryParam = isset($opts['download']) ? 'download=true' : '';
+		if ($downloadQueryParam !== '') {
+			array_push($_queryString, $downloadQueryParam);
+		}
+
+		$transformOptions = isset($opts['transform']) ? $opts['transform'] : [];
+		$renderPath = isset($opts['transform']) ? 'render/image' : 'object';
+		$transformationQuery = $this->transformOptsToQueryString($transformOptions);
+
+		if ($transformationQuery !== '') {
+			array_push($_queryString, $transformationQuery);
+		}
+		$queryString = implode("&", $_queryString);
+		if ($queryString !== '') {
+			$queryString = '?'.$queryString;
+		}
 
 		$data = urlencode($this->url.'/object/public/'.$storagePath.$downloadQueryParam);
 
-		return $data;
+		return $this->url.'/'.$renderPath.'/public/'.$storagePath.$queryString;
 	}
 
 	/**
@@ -362,7 +380,6 @@ class StorageFile
 			$options = ['prefixes' => $paths];
 			$fullUrl = $this->url.'/object/'.$this->bucketId;
 			$data = Request::request('DELETE', $fullUrl, $headers, json_encode($options));
-
 			return $data;
 		} catch (\Exception $e) {
 			return $e;
@@ -381,5 +398,30 @@ class StorageFile
 		$p = preg_replace('/\/+/', '/', $p);
 
 		return $this->bucketId.'/'.$p;
+	}
+
+	private function transformOptsToQueryString($transform = []) {
+		$params = [];
+		if (isset($transform['width'])) {
+			array_push($params, "width={$transform['width']}");
+		}
+
+		if (isset($transform['height'])) {
+			array_push($params, "height={$transform['height']}");
+		}
+
+		if (isset($transform['resize'])) {
+			array_push($params, "resize={$transform['resize']}");
+		}
+
+		if (isset($transform['format'])) {
+			array_push($params, "format={$transform['format']}");
+		}
+
+		if (isset($transform['quality'])) {
+			array_push($params, "quality={$transform['quality']}");
+		}
+
+		return implode("&", $params);
 	}
 }
