@@ -353,7 +353,7 @@ class StorageFile
 		if ($transformationQuery !== '') {
 			array_push($_queryString, $transformationQuery);
 		}
-		$queryString = implode("&", $_queryString);
+		$queryString = implode('&', $_queryString);
 		if ($queryString !== '') {
 			$queryString = '?'.$queryString;
 		}
@@ -380,6 +380,7 @@ class StorageFile
 			$options = ['prefixes' => $paths];
 			$fullUrl = $this->url.'/object/'.$this->bucketId;
 			$data = Request::request('DELETE', $fullUrl, $headers, json_encode($options));
+
 			return $data;
 		} catch (\Exception $e) {
 			return $e;
@@ -400,7 +401,8 @@ class StorageFile
 		return $this->bucketId.'/'.$p;
 	}
 
-	private function transformOptsToQueryString($transform = []) {
+	private function transformOptsToQueryString($transform = [])
+	{
 		$params = [];
 		if (isset($transform['width'])) {
 			array_push($params, "width={$transform['width']}");
@@ -422,6 +424,6 @@ class StorageFile
 			array_push($params, "quality={$transform['quality']}");
 		}
 
-		return implode("&", $params);
+		return implode('&', $params);
 	}
 }
