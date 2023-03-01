@@ -14,7 +14,7 @@ final class StorageFileTest extends TestCase
 	public function setup(): void
 	{
 		parent::setUp();
-		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(dirname(__DIR__, 2), '.env.test');
+		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__, '/../../.env.test');
 		$dotenv->load();
 		$api_key = getenv('API_KEY');
 		$reference_id = getenv('REFERENCE_ID');

@@ -28,8 +28,6 @@ class Request
 		if (method_exists($error, 'getResponse')) {
 			$response = $error->getResponse();
 			$data = json_decode($response->getBody(), true);
-
-			//return $response;
 			$error = new StorageApiError($data['message'], intval($data['statusCode']) || 500);
 		} else {
 			$error = new StorageUnknownError($error->getMessage(), $error->getCode());

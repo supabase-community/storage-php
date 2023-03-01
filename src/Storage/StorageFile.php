@@ -71,18 +71,21 @@ class StorageFile
 	 * Lists all the files within a bucket.
 	 *
 	 * @param $path The folder path.
+	 * @param  array  $options  The options for list files.
 	 * @return ResponseInterface
 	 *
 	 * @throws Exception
 	 */
-	public function list($path): ResponseInterface
+	public function list($path, $opts = []): ResponseInterface
 	{
 		$headers = $this->headers;
 		$headers['content-type'] = 'application/json';
 		try {
-			$body = [
-				'prefix' => $path,
+			$prefix = [
+				'prefix'=> $path,
 			];
+
+			$body = array_merge($prefix, $opts);
 
 			$data = Request::request('POST', $this->url.'/object/list/'.$this->bucketId, $headers, json_encode($body));
 
@@ -113,10 +116,14 @@ class StorageFile
 				$headers['x-upsert'] = $options['upsert'] ? 'true' : 'false';
 			}
 
-			$body = file_get_contents($file);
+			if (base64_decode($file, true) === false) {
+				$body = file_get_contents($file);
+			} else {
+				$body = base64_decode($file);
+				$headers['content-type'] = $options['contentType'];
+			}
 
 			$storagePath = $this->_storagePath($path);
-
 			$data = Request::request($method, $this->url.'/object/'.$storagePath, $headers, $body);
 
 			return $data;
@@ -226,10 +233,10 @@ class StorageFile
 	 *                          `60` for a URL which is valid for one minute
 	 * @param  array  $opts['download']  Triggers the file as a download if set to true. Set
 	 *                                   this parameter as the name of the file if you want to trigger the download with a different filename.
-	 * @param  array  $opts['transform  ']  Transform the asset before serving it to the client.
+	 * @param  array  $opts['transform']  Transform the asset before serving it to the client.
 	 * @return string
 	 */
-	public function createSignedUrl($path, $expires, $opts): string
+	public function createSignedUrl($path, $expires, $opts = []): string
 	{
 		$headers = $this->headers;
 		$headers['content-type'] = 'application/json';
@@ -237,6 +244,7 @@ class StorageFile
 		try {
 			$body = [
 				'expiresIn' => $expires,
+				'options' => $opts,
 			];
 			$storagePath = $this->_storagePath($path);
 			$fullUrl = $this->url.'/object/sign/'.$storagePath;
@@ -259,24 +267,27 @@ class StorageFile
 	 *                          For example, `60` for a URL which is valid for one minute.
 	 * @param  array  $opts['download']  Triggers the file as a download if set to true. Set
 	 *                                   this parameter as the name of the file if you want to trigger the download with a different filename.
-	 * @param  array  $opts['transform  ']  Transform the asset before serving it to the client.
+	 * @param  array  $opts['transform']  Transform the asset before serving it to the client.
 	 * @return array
 	 */
 	public function createSignedUrls($paths, $expiresIn, $opts): array
 	{
 		try {
+			$headers = $this->headers;
+			$headers['content-type'] = 'application/json';
 			$body = [
 				'paths'=> $paths,
-				'expires_in'=> $expiresIn,
+				'expiresIn'=> $expiresIn,
+				'options' => $opts,
 			];
-			$fullUrl = $this->url.'/object/sign'.$this->bucketId;
-			$response = Request::request('POST', $fullUrl, $this->headers, $opts, $body);
-			$downloadQueryParam = $opts['download'] ? '?download=true' : '';
+			$fullUrl = $this->url.'/object/sign/'.$this->bucketId;
+			$response = Request::request('POST', $fullUrl, $headers, json_encode($body));
+			$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
 			$data = array_map(function ($d) use ($downloadQueryParam) {
-				$d['signed_url'] = urlencode($this->url.$d['signed_url'].$downloadQueryParam);
+				$d['signedURL'] = urlencode($this->url.$d['signedURL'].$downloadQueryParam);
 
 				return $d;
-			}, $response);
+			}, json_decode($response->getBody(), true));
 
 			return $data;
 		} catch (\Exception $e) {
@@ -295,10 +306,14 @@ class StorageFile
 	 *
 	 * @throws Exception
 	 */
-	public function download($path, $options): ResponseInterface
+	public function download($path, $opts = []): ResponseInterface
 	{
 		$headers = $this->headers;
-		$url = $this->url.'/object/'.$this->bucketId.'/'.$path;
+		$transformOptions = isset($opts['transform']) ? $opts['transform'] : [];
+		$renderPath = isset($opts['transform']) ? 'render/image/authenticated' : 'object';
+		$transformationQuery = $this->transformOptsToQueryString($transformOptions);
+		$queryString = ($transformationQuery != '') ? '?'.$transformationQuery : '';
+		$url = $this->url.'/'.$renderPath.'/'.$this->bucketId.'/'.$path.$queryString;
 		$headers['stream'] = true;
 
 		try {
@@ -328,12 +343,29 @@ class StorageFile
 	 *                                       it to the client.
 	 * @return string
 	 */
-	public function getPublicUrl($path, $opts): string
+	public function getPublicUrl($path, $opts = []): string
 	{
 		$storagePath = $this->_storagePath($path);
-		$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
+		$_queryString = [];
 
-		$data = urlencode($this->url.'/object/public/'.$storagePath.$downloadQueryParam);
+		$downloadQueryParam = isset($opts['download']) ? 'download=true' : '';
+		if ($downloadQueryParam !== '') {
+			array_push($_queryString, $downloadQueryParam);
+		}
+
+		$transformOptions = isset($opts['transform']) ? $opts['transform'] : [];
+		$renderPath = isset($opts['transform']) ? 'render/image' : 'object';
+		$transformationQuery = $this->transformOptsToQueryString($transformOptions);
+
+		if ($transformationQuery !== '') {
+			array_push($_queryString, $transformationQuery);
+		}
+		$queryString = implode('&', $_queryString);
+		if ($queryString !== '') {
+			$queryString = '?'.$queryString;
+		}
+
+		$data = urlencode($this->url.'/'.$renderPath.'/public/'.$storagePath.$queryString);
 
 		return $data;
 	}
@@ -374,5 +406,31 @@ class StorageFile
 		$p = preg_replace('/\/+/', '/', $p);
 
 		return $this->bucketId.'/'.$p;
+	}
+
+	private function transformOptsToQueryString($transform = [])
+	{
+		$params = [];
+		if (isset($transform['width'])) {
+			array_push($params, "width={$transform['width']}");
+		}
+
+		if (isset($transform['height'])) {
+			array_push($params, "height={$transform['height']}");
+		}
+
+		if (isset($transform['resize'])) {
+			array_push($params, "resize={$transform['resize']}");
+		}
+
+		if (isset($transform['format'])) {
+			array_push($params, "format={$transform['format']}");
+		}
+
+		if (isset($transform['quality'])) {
+			array_push($params, "quality={$transform['quality']}");
+		}
+
+		return implode('&', $params);
 	}
 }

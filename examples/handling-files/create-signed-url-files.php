@@ -6,6 +6,6 @@ use Supabase\Storage\StorageFile;
 $bucket_id = 'test-bucket';
 
 $client = new StorageFile($api_key, $reference_id, $bucket_id);
-$result = $client->remove(['path/to/file-base.png']);
-$output = json_decode($result->getBody(), true);
-print_r($output);
+$options = ['public' => true];
+$result = $client->createSignedUrls(['path/to/file.png', 'path/to/file-base64.png'], 60, $options);
+print_r($result);
