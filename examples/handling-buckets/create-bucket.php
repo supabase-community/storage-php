@@ -3,10 +3,8 @@
 include __DIR__.'/../header.php';
 use Supabase\Storage\StorageClient;
 
-$authHeader = ['Authorization' => "Bearer {$api_key}"];
-$client = new  StorageClient(
-	"https://{$supabase_id}.supabase.co/storage/v1",
-	$authHeader
-);
-$result = $client->createBucket('test-bucket');
-print_r($result);
+$client = new StorageClient($api_key, $reference_id);
+$result = $client->createBucket('test-bucket-new', ['public' => false]);
+$output = json_decode($result->getBody(), true);
+
+print_r($output);

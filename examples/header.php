@@ -7,4 +7,4 @@ $dotenv = Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 
 $api_key = getenv('API_KEY');
-$supabase_id = getenv('REFERENCE_ID');
+$reference_id = getenv('REFERENCE_ID');

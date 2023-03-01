@@ -11,8 +11,11 @@ final class StorageBucketTest extends TestCase
 	public function setup(): void
 	{
 		parent::setUp();
-		$authHeader = ['Authorization' => 'Bearer '.'<service_role>'];
-		$this->client = new  \Supabase\Storage\StorageClient('https://<project_ref>.supabase.co', $authHeader);
+		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__, '/../../.env.test');
+		$dotenv->load();
+		$api_key = getenv('API_KEY');
+		$reference_id = getenv('REFERENCE_ID');
+		$this->client = new  \Supabase\Storage\StorageClient($api_key, $reference_id);
 	}
 
 	/**
@@ -23,7 +26,7 @@ final class StorageBucketTest extends TestCase
 	public function testListBucket(): void
 	{
 		$result = $this->client->listBuckets();
-		$this->assertGreaterThan(0, count($result['data']));
+		$this->assertGreaterThan(0, count($result));
 	}
 
 	/**
@@ -33,8 +36,6 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testCreateBucket(): void
 	{
-		$storage = new \Supabase\Storage\StorageClient();
-
 		$result = $this->client->createBucket('my-new-storage-bucket');
 		$this->assertNull($result['error']);
 		$this->assertArrayHasKey('data', $result);
@@ -49,9 +50,8 @@ final class StorageBucketTest extends TestCase
 	public function testGetBucketWithId(): void
 	{
 		$result = $this->client->getBucket('test');
-
 		$this->assertArrayHasKey('data', $result);
-		$this->assertNull($result['error']);
+		$this->assertNull($result);
 	}
 
 	/**
@@ -75,9 +75,7 @@ final class StorageBucketTest extends TestCase
 	public function testDeleteBucket()
 	{
 		$storage = new \Supabase\Storage\StorageClient();
-
 		$result = $storage->deleteBucket('my-new-storage-bucket-public');
-
 		$this->assertNull($result['error']);
 	}
 
