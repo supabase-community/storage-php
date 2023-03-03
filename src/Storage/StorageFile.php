@@ -88,7 +88,7 @@ class StorageFile
 
 			$body = array_merge($prefix, $opts);
 
-			$data = Request::request('POST', $this->url . '/object/list/' . $this->bucketId, $headers, json_encode($body));
+			$data = Request::request('POST', $this->url.'/object/list/'.$this->bucketId, $headers, json_encode($body));
 
 			return $data;
 		} catch (\Exception $e) {
@@ -127,8 +127,8 @@ class StorageFile
 
 		$storagePath = $this->_storagePath($path);
 		try {
-			$data = Request::request($method, $this->url . '/object/' . $storagePath, $headers, $body);
-			// we should just mock this request instead of all of the function 
+			$data = Request::request($method, $this->url.'/object/'.$storagePath, $headers, $body);
+			// we should just mock this request instead of all of the function
 			return $data;
 		} catch (\Exception $e) {
 			throw $e;
@@ -190,7 +190,7 @@ class StorageFile
 				'destinationKey' => $toPath,
 			];
 
-			$data = Request::request('POST', $this->url . '/object/move', $headers, json_encode($body));
+			$data = Request::request('POST', $this->url.'/object/move', $headers, json_encode($body));
 
 			return $data;
 		} catch (\Exception $e) {
@@ -220,7 +220,7 @@ class StorageFile
 				'destinationKey' => $toPath,
 			];
 
-			$data = Request::request('POST', $this->url . '/object/copy', $headers, json_encode($body));
+			$data = Request::request('POST', $this->url.'/object/copy', $headers, json_encode($body));
 
 			return $data;
 		} catch (\Exception $e) {
@@ -250,11 +250,11 @@ class StorageFile
 				'options' => $opts,
 			];
 			$storagePath = $this->_storagePath($path);
-			$fullUrl = $this->url . '/object/sign/' . $storagePath;
+			$fullUrl = $this->url.'/object/sign/'.$storagePath;
 			$response = Request::request('POST', $fullUrl, $headers, json_encode($body));
 			$result = json_decode($response->getBody(), true);
 			$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
-			$data = urlencode($this->url . $result['signedURL'] . $downloadQueryParam);
+			$data = urlencode($this->url.$result['signedURL'].$downloadQueryParam);
 
 			return $data;
 		} catch (\Exception $e) {
@@ -283,11 +283,11 @@ class StorageFile
 				'expiresIn' => $expiresIn,
 				'options' => $opts,
 			];
-			$fullUrl = $this->url . '/object/sign/' . $this->bucketId;
+			$fullUrl = $this->url.'/object/sign/'.$this->bucketId;
 			$response = Request::request('POST', $fullUrl, $headers, json_encode($body));
 			$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
 			$data = array_map(function ($d) use ($downloadQueryParam) {
-				$d['signedURL'] = urlencode($this->url . $d['signedURL'] . $downloadQueryParam);
+				$d['signedURL'] = urlencode($this->url.$d['signedURL'].$downloadQueryParam);
 
 				return $d;
 			}, json_decode($response->getBody(), true));
@@ -315,8 +315,8 @@ class StorageFile
 		$transformOptions = isset($opts['transform']) ? $opts['transform'] : [];
 		$renderPath = isset($opts['transform']) ? 'render/image/authenticated' : 'object';
 		$transformationQuery = $this->transformOptsToQueryString($transformOptions);
-		$queryString = ($transformationQuery != '') ? '?' . $transformationQuery : '';
-		$url = $this->url . '/' . $renderPath . '/' . $this->bucketId . '/' . $path . $queryString;
+		$queryString = ($transformationQuery != '') ? '?'.$transformationQuery : '';
+		$url = $this->url.'/'.$renderPath.'/'.$this->bucketId.'/'.$path.$queryString;
 		$headers['stream'] = true;
 
 		try {
@@ -365,10 +365,10 @@ class StorageFile
 		}
 		$queryString = implode('&', $_queryString);
 		if ($queryString !== '') {
-			$queryString = '?' . $queryString;
+			$queryString = '?'.$queryString;
 		}
 
-		$data = urlencode($this->url . '/' . $renderPath . '/public/' . $storagePath . $queryString);
+		$data = urlencode($this->url.'/'.$renderPath.'/public/'.$storagePath.$queryString);
 
 		return $data;
 	}
@@ -388,7 +388,7 @@ class StorageFile
 		$headers['content-type'] = 'application/json';
 		try {
 			$options = ['prefixes' => $paths];
-			$fullUrl = $this->url . '/object/' . $this->bucketId;
+			$fullUrl = $this->url.'/object/'.$this->bucketId;
 			$data = Request::request('DELETE', $fullUrl, $headers, json_encode($options));
 
 			return $data;
@@ -408,7 +408,7 @@ class StorageFile
 		$p = preg_replace('/^\/|\/$/', '', $path);
 		$p = preg_replace('/\/+/', '/', $p);
 
-		return $this->bucketId . '/' . $p;
+		return $this->bucketId.'/'.$p;
 	}
 
 	private function transformOptsToQueryString($transform = [])

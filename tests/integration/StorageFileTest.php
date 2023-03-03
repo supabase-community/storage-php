@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
-
 final class StorageFileTest extends TestCase
 {
 	private $client;
@@ -30,10 +29,10 @@ final class StorageFileTest extends TestCase
 	 */
 	public function testUpload(string $path, string $file_path, array $options): void
 	{
-		//add try catch and throw error 
+		//add try catch and throw error
 		$result = $this->client->upload($path, $file_path, $options);
-		echo $result->getStatusCode() . "\n";
-		echo $result->getReasonPhrase() . "\n";
+		echo $result->getStatusCode()."\n";
+		echo $result->getReasonPhrase()."\n";
 		var_dump((string) $result->getBody());
 		var_dump(json_decode((string) $result->getBody()));
 
@@ -138,7 +137,7 @@ final class StorageFileTest extends TestCase
 	public static function additionProvider(): array
 	{
 		return [
-			['testFile.png', 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w', ['public' => true]]
+			['testFile.png', 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w', ['public' => true]],
 		];
 	}
 
@@ -148,6 +147,7 @@ final class StorageFileTest extends TestCase
 			['public/image.jpg', 60, ['public' => true]],
 		];
 	}
+
 	/**
 	 * Additional data provider for List.
 	 */
