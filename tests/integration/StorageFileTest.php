@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
+
 final class StorageFileTest extends TestCase
 {
 	private $client;
@@ -18,7 +19,7 @@ final class StorageFileTest extends TestCase
 		$dotenv->load();
 		$api_key = getenv('API_KEY');
 		$reference_id = getenv('REFERENCE_ID');
-		$bucket_id = 'existing-storage-bucket';
+		$bucket_id = 'test-bucket';
 		$this->client = new  \Supabase\Storage\StorageFile($api_key, $reference_id, $bucket_id);
 	}
 
@@ -29,9 +30,19 @@ final class StorageFileTest extends TestCase
 	 */
 	public function testUpload(string $path, string $file_path, array $options): void
 	{
+		//add try catch and throw error 
 		$result = $this->client->upload($path, $file_path, $options);
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
+		echo $result->getStatusCode() . "\n";
+		echo $result->getReasonPhrase() . "\n";
+		var_dump((string) $result->getBody());
+		var_dump(json_decode((string) $result->getBody()));
+
+		ob_flush();
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"Key":"test-bucket/testFile.png"}', (string) $result->getBody());
+		// $this->assertNull($result); //['error']
+		// $this->assertArrayHasKey('data', $result);
 	}
 
 	/**
@@ -124,17 +135,26 @@ final class StorageFileTest extends TestCase
 		$this->assertArrayHasKey('data', $result);
 	}
 
-	public function additionProvider(): array
+	public static function additionProvider(): array
 	{
 		return [
-			['public/copy-imagen2.jpg', 'public/copy-imagen2.jpg', ['public' => true]],
+			['testFile.png', 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w', ['public' => true]]
 		];
 	}
 
-	public function additionProviderSignedUrl(): array
+	public static function additionProviderSignedUrl(): array
 	{
 		return [
 			['public/image.jpg', 60, ['public' => true]],
+		];
+	}
+	/**
+	 * Additional data provider for List.
+	 */
+	public static function additionProviderList(): array
+	{
+		return [
+			['new-directory'],
 		];
 	}
 }
