@@ -25,8 +25,11 @@ jobs:
       - name: Install dependencies
         run: composer install
 
-      - name: Test Code
-        run: ./vendor/bin/phpunit
+      - name: Run Unit Tests 
+        run: ./vendor/bin/phpunit --testsuite test-unit
+
+      - name: Run Integration Tests 
+        run: ./vendor/bin/phpunit --testsuite test-int
 
       - name: Bump version and push tag
         id: tag_version
