@@ -1,0 +1,28 @@
+name: Integration Tests
+
+on:
+  push: {}
+
+jobs:
+  phpunit:
+    strategy:
+      matrix:
+        operating-system: ["ubuntu-latest", "windows-latest", "macos-latest"]
+        php-versions: ["7.4", "8.0", "8.1", "8.2"]
+        phpunit-versions: ["latest"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP ${{ matrix.php-version }} on ${{ matrix.operating-system }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+
+      - name: Install dependencies
+        uses: php-actions/composer@v6
+
+      - name: Run Unit tests
+        run: ./vendor/bin/phpunit --testsuite test-int

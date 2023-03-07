@@ -1,4 +1,4 @@
-name: PHPUnit Tests
+name: Unit Tests
 
 on:
   push: {}
@@ -8,13 +8,12 @@ jobs:
     strategy:
       matrix:
         php-version: [7.4, 8.0, 8.1, 8.2]
-        test-type: [unit, integration]
 
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
@@ -23,7 +22,7 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer install
+        uses: php-actions/composer@v6
 
-      - name: Run ${{ matrix.test-type }} tests
-        run: vendor/bin/phpunit
+      - name: Run Unit tests
+        run: ./vendor/bin/phpunit --testsuite test-unit
