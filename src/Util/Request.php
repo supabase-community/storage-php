@@ -33,6 +33,6 @@ class Request
 			$error = new StorageUnknownError($error->getMessage(), $error->getCode());
 		}
 
-		return $error;
+		throw $error;
 	}
 }

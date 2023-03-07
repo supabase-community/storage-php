@@ -1,4 +1,5 @@
 <?php
+
 /**
  * A PHP  class  client library to interact with Supabase Storage.
  *
@@ -82,7 +83,7 @@ class StorageFile
 		$headers['content-type'] = 'application/json';
 		try {
 			$prefix = [
-				'prefix'=> $path,
+				'prefix' => $path,
 			];
 
 			$body = array_merge($prefix, $opts);
@@ -108,27 +109,29 @@ class StorageFile
 	 */
 	public function uploadOrUpdate($method, $path, $file, $opts): ResponseInterface
 	{
+		//change to path instead of fileContent verify the path is there with a try catch.
+		$options = array_merge($this->DEFAULT_FILE_OPTIONS, $opts);
+		$headers = $this->headers;
+		$headers['debug'] = true;
+
+		if ($method == 'POST') {
+			$headers['x-upsert'] = $options['upsert'] ? 'true' : 'false';
+		}
+
+		if (base64_decode($file, true) === false) {
+			$body = file_get_contents($file);
+		} else {
+			$body = base64_decode($file);
+			$headers['content-type'] = $options['contentType'];
+		}
+
+		$storagePath = $this->_storagePath($path);
 		try {
-			$options = array_merge($this->DEFAULT_FILE_OPTIONS, $opts);
-			$headers = $this->headers;
-
-			if ($method == 'POST') {
-				$headers['x-upsert'] = $options['upsert'] ? 'true' : 'false';
-			}
-
-			if (base64_decode($file, true) === false) {
-				$body = file_get_contents($file);
-			} else {
-				$body = base64_decode($file);
-				$headers['content-type'] = $options['contentType'];
-			}
-
-			$storagePath = $this->_storagePath($path);
 			$data = Request::request($method, $this->url.'/object/'.$storagePath, $headers, $body);
-
+			// we should just mock this request instead of all of the function
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 
@@ -191,7 +194,7 @@ class StorageFile
 
 			return $data;
 		} catch (\Exception $e) {
-			return   $e;
+			throw   $e;
 		}
 	}
 
@@ -221,7 +224,7 @@ class StorageFile
 
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 
@@ -255,7 +258,7 @@ class StorageFile
 
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 
@@ -276,8 +279,8 @@ class StorageFile
 			$headers = $this->headers;
 			$headers['content-type'] = 'application/json';
 			$body = [
-				'paths'=> $paths,
-				'expiresIn'=> $expiresIn,
+				'paths' => $paths,
+				'expiresIn' => $expiresIn,
 				'options' => $opts,
 			];
 			$fullUrl = $this->url.'/object/sign/'.$this->bucketId;
@@ -291,7 +294,7 @@ class StorageFile
 
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 
@@ -321,7 +324,7 @@ class StorageFile
 
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 
@@ -390,7 +393,7 @@ class StorageFile
 
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 
