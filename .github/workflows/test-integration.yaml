@@ -27,6 +27,8 @@ jobs:
 
       - name: Install dependencies
         uses: php-actions/composer@v6
+        with:
+          php-version: ${{ matrix.php-versions }}
 
       - name: Run Unit tests
         run: ./vendor/bin/phpunit --testsuite test-int
