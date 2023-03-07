@@ -5,6 +5,7 @@ namespace Supabase\Util;
 class StorageError extends \Exception
 {
 	protected bool $isStorageError = true;
+	string $name = "StorageError";
 
 	public function __construct($message)
 	{
