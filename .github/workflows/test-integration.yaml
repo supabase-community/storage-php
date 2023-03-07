@@ -25,10 +25,13 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           coverage: none
 
+#      - name: Install dependencies
+#        uses: php-actions/composer@v6
+#        with:
+#          php_version: ${{ matrix.php-versions }}
+
       - name: Install dependencies
-        uses: php-actions/composer@v6
-        with:
-          php_version: ${{ matrix.php-versions }}
+        run: composer install 
 
       - name: Run Unit tests
         run: ./vendor/bin/phpunit --testsuite test-int
