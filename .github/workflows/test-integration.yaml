@@ -5,17 +5,20 @@ on:
 
 jobs:
   phpunit:
+    runs-on: ${{ matrix.os }} 
+
     strategy:
       matrix:
-        operating-system: ["ubuntu-latest", "windows-latest", "macos-latest"]
+        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
         php-versions: ["7.4", "8.0", "8.1", "8.2"]
         phpunit-versions: ["latest"]
+
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup PHP ${{ matrix.php-version }} on ${{ matrix.operating-system }}
+      - name: Setup PHP ${{ matrix.php-version }} on ${{ matrix.os }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
