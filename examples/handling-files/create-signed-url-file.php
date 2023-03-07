@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__ . '/../header.php';
+include __DIR__.'/../header.php';
 
 use Supabase\Storage\StorageFile;
 
@@ -11,4 +11,4 @@ $options = ['public' => true];
 $result = $client->createSignedUrl('path/to/file.png', 60, $options);
 print_r($result);
 
-// should be print_r((string) $result->getBody());  and delete the options variable 
+// should be print_r((string) $result->getBody());  and delete the options variable

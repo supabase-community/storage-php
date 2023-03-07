@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use PhpOption\Option;
 use PHPUnit\Framework\TestCase;
 
 final class StorageFileTest extends TestCase
@@ -25,8 +24,6 @@ final class StorageFileTest extends TestCase
 
 	/**
 	 * Test uploads a file to an existing bucket.
-	 *
-	 * 
 	 */
 	public function testUpload(): void
 	{
@@ -41,8 +38,6 @@ final class StorageFileTest extends TestCase
 
 	/**
 	 * Test Downloads a file from a private bucket.
-	 *
-	 * 
 	 */
 	public function testDownload(): void
 	{
@@ -57,21 +52,17 @@ final class StorageFileTest extends TestCase
 
 	/**
 	 * Test Downloads a file from a private bucket.
-	 *
-	 * 
 	 */
 	public function testList(): void
 	{
 		$path = 'path/to';
 		$result = $this->client->list($path);
-		echo $result->getBody() . "\n";
+		echo $result->getBody()."\n";
 		ob_flush();
 	}
 
 	/**
 	 * Test Replaces an existing file at the specified path with a new one.
-	 *
-	 * 
 	 */
 	public function testUpdate(): void
 	{
@@ -86,8 +77,6 @@ final class StorageFileTest extends TestCase
 
 	/**
 	 * Test Moves an existing file to a new path in the same bucket.
-	 *
-	 * 
 	 */
 	public function testMove(): void
 	{
@@ -102,8 +91,6 @@ final class StorageFileTest extends TestCase
 
 	/**
 	 * Test Copies an existing file to a new path in the same bucket.
-	 *
-	 * 
 	 */
 	public function testCopy(): void
 	{
@@ -118,8 +105,6 @@ final class StorageFileTest extends TestCase
 
 	/**
 	 * Test Deletes files within the same bucket.
-	 *
-	 * 
 	 */
 	public function testRemove($path): void
 	{
@@ -132,8 +117,6 @@ final class StorageFileTest extends TestCase
 
 	/**
 	 * Test Creates a signed URL. Use a signed URL to share a file for a fixed amount of time.
-	 *
-	 * 
 	 */
 	public function testCreateSignedUrl(): void
 	{
