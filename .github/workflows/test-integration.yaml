@@ -30,3 +30,6 @@ jobs:
 
       - name: Run Unit tests
         run: ./vendor/bin/phpunit --testsuite test-int
+        env:
+          REFERENCE_ID: ${{ secrets.SB_TEST_REFERENCE_ID }}
+          API_KEY: ${{ secrets.SB_TEST_SERVICE_ROLE }}
