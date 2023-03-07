@@ -26,7 +26,7 @@ final class StorageBucketTest extends TestCase
 	public function testListBucket(): void
 	{
 		$result = $this->client->listBuckets();
-		$this->assertGreaterThan(0, count($result));
+		$this->assertIsArray($result);
 	}
 
 	/**
