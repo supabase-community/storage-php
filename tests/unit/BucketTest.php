@@ -72,9 +72,10 @@ ob_flush();
 	 */
 	public function testCreateBucketX(): void
 	{
-		\VCR\VCR::turnOn();
 \VCR\VCR::configure()
     ->setStorage('json');
+\VCR\VCR::configure()->enableLibraryHooks(array('curl', 'soap'));
+		\VCR\VCR::turnOn();
 		\VCR\VCR::insertCassette('unit_storage_bucket_create_bucket');
 		$this->newClient();
 		$result = $this->client->createBucket('vcr-bucket', ['public' => true]);
