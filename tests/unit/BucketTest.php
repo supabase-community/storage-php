@@ -29,7 +29,6 @@ class StorageBucketTest extends TestCase
 	 */
 	public function testNewStorageBucket()
 	{
-
 		$client = new  \Supabase\Storage\StorageClient('somekey', 'some_ref_id');
 		$this->assertEquals($client->__getUrl(), 'https://some_ref_id.supabase.co/storage/v1');
 		$this->assertEquals($client->__getHeaders(),  Array(

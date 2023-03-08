@@ -36,7 +36,7 @@ class StorageBucket
 	/**
 	 * Get the url.
 	 */
-	public function __getUrl(): String
+	public function __getUrl(): string
 	{
 		return $this->url;
 	}
