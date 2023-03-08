@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
-use function PHPUnit\Framework\stringContains;
-
 final class StorageBucketTest extends TestCase
 {
 	private $client;
@@ -42,7 +40,7 @@ final class StorageBucketTest extends TestCase
 		$result = $this->client->createBucket('test-bucket-new', ['public' => true]);
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
-		$getValue = json_decode((string)$result->getBody());
+		$getValue = json_decode((string) $result->getBody());
 		$obj = $getValue->{'name'};
 		$this->assertEquals('test-bucket-new', $obj);
 	}
@@ -57,7 +55,7 @@ final class StorageBucketTest extends TestCase
 		$result = $this->client->getBucket('test-bucket');
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
-		$getValue = json_decode((string)$result->getBody());
+		$getValue = json_decode((string) $result->getBody());
 		$obj = $getValue->{'id'};
 		$this->assertEquals('test-bucket', $obj);
 	}
@@ -128,7 +126,7 @@ final class StorageBucketTest extends TestCase
 		$this->assertEquals('OK', $result->getReasonPhrase());
 		$this->assertJsonStringEqualsJsonString('{"name":"bucket-private"}', (string) $result->getBody());
 		$result2 = $this->client->getBucket('bucket-private');
-		$getValue = json_decode((string)$result2->getBody());
+		$getValue = json_decode((string) $result2->getBody());
 		$obj = $getValue->{'public'};
 		$this->assertFalse($obj);
 	}
