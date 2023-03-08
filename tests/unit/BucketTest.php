@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
-class StorageBucketTest extends TestCase
+class BucketTest extends TestCase
 {
 	private $client;
 
@@ -20,6 +20,9 @@ class StorageBucketTest extends TestCase
 		$api_key = getenv('API_KEY');
 		$reference_id = getenv('REFERENCE_ID');
 		$this->client = new  \Supabase\Storage\StorageClient($api_key, $reference_id);
+echo $this->client->__getUrl();
+print_r($this->client->__getHeaders());
+ob_flush();
 	}
 
 	/**
@@ -67,13 +70,17 @@ class StorageBucketTest extends TestCase
 	 *
 	 * @return void
 	 */
-	public function testCreateBucket(): void
+	public function testCreateBucketX(): void
 	{
 		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('unit_storage_bucket_test');
+\VCR\VCR::configure()
+    ->setStorage('json');
+		\VCR\VCR::insertCassette('unit_storage_bucket_create_bucket');
 		$this->newClient();
 		$result = $this->client->createBucket('vcr-bucket', ['public' => true]);
 		$this->assertNotEmpty($result);
+//		$this->assertEqual($result->getEffectiveUrl(), '');
+//		$this->assertEqual($result->getHeaders(), '');
 		\VCR\VCR::eject();
 		\VCR\VCR::turnOff();
 	}
