@@ -44,9 +44,9 @@ class StorageBucket
 	/**
 	 * Get the headers.
 	 */
-	public function __getHeaders(): String
+	public function __getHeaders(): Array 
 	{
-		return $this->getHeaders;
+		return $this->headers;
 	}
 
 	/**
