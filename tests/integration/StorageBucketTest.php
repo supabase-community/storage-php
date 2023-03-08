@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
+use function PHPUnit\Framework\stringContains;
+
 final class StorageBucketTest extends TestCase
 {
 	private $client;
@@ -15,7 +17,7 @@ final class StorageBucketTest extends TestCase
 		$dotenv->load();
 		$api_key = getenv('API_KEY');
 		$reference_id = getenv('REFERENCE_ID');
-		$this->client = new  \Supabase\Storage\StorageClient($api_key, $reference_id);
+		$this->client = new  \Supabase\Storage\StorageBucket($api_key, $reference_id);
 	}
 
 	/**
@@ -26,7 +28,8 @@ final class StorageBucketTest extends TestCase
 	public function testListBucket(): void
 	{
 		$result = $this->client->listBuckets();
-		$this->assertIsArray($result);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
 	}
 
 	/**
@@ -36,10 +39,12 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testCreateBucket(): void
 	{
-		$result = $this->client->createBucket('my-new-storage-bucket');
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
-		$this->assertEquals($result['data']['id'], 'my-new-storage-bucket');
+		$result = $this->client->createBucket('test-bucket-new', ['public' => true]);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$getValue = json_decode((string)$result->getBody());
+		$obj = $getValue->{'name'};
+		$this->assertEquals('test-bucket-new', $obj);
 	}
 
 	/**
@@ -49,9 +54,12 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testGetBucketWithId(): void
 	{
-		$result = $this->client->getBucket('test');
-		$this->assertArrayHasKey('data', $result);
-		$this->assertNull($result);
+		$result = $this->client->getBucket('test-bucket');
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$getValue = json_decode((string)$result->getBody());
+		$obj = $getValue->{'id'};
+		$this->assertEquals('test-bucket', $obj);
 	}
 
 	/**
@@ -61,22 +69,10 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testUpdateBucket(): void
 	{
-		$result = $this->client->updateBucket('my-new-storage-bucket-public', ['public' => false]);
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
-		$this->assertEquals($result['data'], 'my-new-storage-bucket-public');
-	}
-
-	/**
-	 * Test Deletes an existing bucket function.
-	 *
-	 * @return void
-	 */
-	public function testDeleteBucket()
-	{
-		$storage = new \Supabase\Storage\StorageClient();
-		$result = $storage->deleteBucket('my-new-storage-bucket-public');
-		$this->assertNull($result['error']);
+		$result = $this->client->updateBucket('test-bucket-new', ['public' => true]);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"message":"Successfully updated"}', (string) $result->getBody());
 	}
 
 	/**
@@ -86,10 +82,24 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testEmptyBucket()
 	{
-		$result = $this->client->emptyBucket('my-new-storage-bucket-public');
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
-		$this->assertEquals($result['data'], 'my-new-storage-bucket-public');
+		$result = $this->client->emptyBucket('test-bucket-new');
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"message":"Successfully emptied"}', (string) $result->getBody());
+	}
+
+	/**
+	 * Test Deletes an existing bucket function.
+	 *
+	 * @return void
+	 */
+	public function testDeleteBucket()
+	{
+		$bucketId = 'test-bucket-new';
+		$result = $this->client->deleteBucket($bucketId);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"message":"Successfully deleted"}', (string) $result->getBody());
 	}
 
 	/**
@@ -99,9 +109,11 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testGetBucketWithInvalidId(): void
 	{
-		$result = $this->client->getBucket('not-a-real-bucket-id');
-		$this->assertArrayHasKey('error', $result);
-		$this->assertNull($result['data']);
+		try {
+			$result = $this->client->getBucket('not-a-real-bucket-id');
+		} catch (\Exception $e) {
+			$this->assertEquals('The resource was not found', $e->getMessage());
+		}
 	}
 
 	/**
@@ -109,11 +121,15 @@ final class StorageBucketTest extends TestCase
 	 *
 	 * @return void
 	 */
-	public function testCreatePublicBucket(): void
+	public function testCreatePrivateBucket(): void
 	{
-		$result = $this->client->createBucket('my-new-storage-bucket-public', ['public' => true]);
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
-		$this->assertEquals($result['data'], 'my-new-storage-bucket-public');
+		$result = $this->client->createBucket('bucket-private', ['public' => false]);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"name":"bucket-private"}', (string) $result->getBody());
+		$result2 = $this->client->getBucket('bucket-private');
+		$getValue = json_decode((string)$result2->getBody());
+		$obj = $getValue->{'public'};
+		$this->assertFalse($obj);
 	}
 }

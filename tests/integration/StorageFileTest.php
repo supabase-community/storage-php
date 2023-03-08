@@ -57,8 +57,8 @@ final class StorageFileTest extends TestCase
 	{
 		$path = 'path/to';
 		$result = $this->client->list($path);
-		echo $result->getBody()."\n";
-		ob_flush();
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
 	}
 
 	/**
@@ -126,7 +126,6 @@ final class StorageFileTest extends TestCase
 		echo (string) $result->getBody();
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
-		ob_flush();
 	}
 
 	public function testGetPublicUrl(): void
