@@ -34,6 +34,22 @@ class StorageBucket
 	protected array $headers = [];
 
 	/**
+	 * Get the url.
+	 */
+	public function __getUrl(): String
+	{
+		return $this->url;
+	}
+
+	/**
+	 * Get the headers.
+	 */
+	public function __getHeaders(): String
+	{
+		return $this->getHeaders;
+	}
+
+	/**
 	 * StorageBucket constructor.
 	 *
 	 * @throws Exception
