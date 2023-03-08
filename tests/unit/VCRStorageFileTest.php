@@ -142,42 +142,42 @@ final class VCRStorageFileTest extends TestCase
 		\VCR\VCR::turnOff();
 	}
 
-	public function additionProvider(): array
+	public static function additionProvider(): array
 	{
 		return [
-			['public/supabase.png', 'https://raw.githubusercontent.com/github/explore/f4ec5347a36e06540a69376753a7c37a8cb5a136/topics/supabase/supabase.png', ['public' => true]],
+			['supabase.png', 'https://raw.githubusercontent.com/github/explore/f4ec5347a36e06540a69376753a7c37a8cb5a136/topics/supabase/supabase.png', ['public' => true]],
 		];
 	}
 
-	public function additionProviderSignedUrl(): array
+	public static function additionProviderSignedUrl(): array
 	{
 		return [
 			['new-directory/supabase.png', 60, ['public' => true]],
 		];
 	}
 
-	public function additionProviderPublicUrl(): array
+	public static function additionProviderPublicUrl(): array
 	{
 		return [
 			['new-directory/supabase.png', ['public' => true]],
 		];
 	}
 
-	public function additionProviderMove(): array
+	public static function additionProviderMove(): array
 	{
 		return [
 			['public/supabase.png', 'new-directory/supabase.png'],
 		];
 	}
 
-	public function additionProviderCopy(): array
+	public static function additionProviderCopy(): array
 	{
 		return [
 			['new-directory/supabase.png', 'copy-directory/supabase.png'],
 		];
 	}
 
-	public function additionProviderRemove(): array
+	public static function additionProviderRemove(): array
 	{
 		return [
 			['copy-directory/supabase.png'],

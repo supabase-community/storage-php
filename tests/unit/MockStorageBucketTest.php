@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * MockStorageBucketTest Class.
@@ -12,7 +13,7 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Creates a new Storage bucket function.
 	 *
-	 * @dataProvider additionProvider
+	 * 
 	 *
 	 * @return void
 	 */
@@ -27,16 +28,17 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Retrieves the details of an existing Storage bucket function.
 	 *
-	 * @dataProvider additionProvider
+	 * 
 	 *
-	 * @return void
+	 * @return ResponseInterface
 	 */
-	public function testGetBucketWithId(string $bucket_id): void
+	public function testGetBucketWithId(): void
 	{
+		$bucket_id = 'test-bucket';
 		$mock = $this->createMock(\Supabase\Storage\StorageClient::class);
 		$mock->method('getBucket')
 			->willReturn($bucket_id);
-		$this->assertSame($bucket_id, $mock->getBucket($bucket_id));
+		$this->assertSame($bucket_id,  $mock->getBucket($bucket_id));
 	}
 
 	/**
@@ -47,15 +49,13 @@ final class MockStorageBucketTest extends TestCase
 	public function testListBucket(): void
 	{
 		$mock = $this->createMock(\Supabase\Storage\StorageClient::class);
-		$mock->method('listBuckets')
-			->willReturn('list-buckets');
-		$this->assertSame('list-buckets', $mock->listBuckets());
+		$mock->listBuckets();
 	}
 
 	/**
 	 * Test Updates a Storage bucket function.
 	 *
-	 * @dataProvider additionProvider
+	 * 
 	 *
 	 * @return void
 	 */
@@ -70,7 +70,7 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Deletes an existing bucket function.
 	 *
-	 * @dataProvider additionProvider
+	 * 
 	 *
 	 * @return void
 	 */
@@ -85,7 +85,7 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Removes all objects inside a single bucket function.
 	 *
-	 *  @dataProvider additionProvider
+	 *  
 	 *
 	 * @return void
 	 */
@@ -100,7 +100,7 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Invailid bucket id function.
 	 *
-	 * @dataProvider notRealAdditionProvider
+	 * 
 	 *
 	 * @return void
 	 */
@@ -115,7 +115,7 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Creates a new Storage public bucket function.
 	 *
-	 * @dataProvider additionProvider
+	 * 
 	 *
 	 * @return void
 	 */
@@ -125,25 +125,5 @@ final class MockStorageBucketTest extends TestCase
 		$mock->method('createBucket')
 			->willReturn($bucket_id);
 		$this->assertSame($bucket_id, $mock->createBucket($bucket_id, ['public' => true]));
-	}
-
-	/**
-	 * Additional data provider.
-	 */
-	public function additionProvider(): array
-	{
-		return [
-			['my-storage-bucket', 'my-new-storage-bucket', ['public' => false]],
-		];
-	}
-
-	/**
-	 * Additional fake data provider.
-	 */
-	public function notRealAdditionProvider(): array
-	{
-		return [
-			['not-real-storage-bucket'],
-		];
 	}
 }

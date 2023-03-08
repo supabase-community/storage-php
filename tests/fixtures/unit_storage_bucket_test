@@ -624,3 +624,632 @@
             starttransfer_time_us: 502242
             total_time_us: 502316
     index: 0
+-
+    request:
+        method: POST
+        url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket'
+        headers:
+            Host: gpdefvsxamnscceccczu.supabase.co
+            Expect: ''
+            Accept-Encoding: ''
+            User-Agent: GuzzleHttp/7
+            X-Client-Info: storage-php/0.0.1
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc'
+            Content-Type: application/json
+            Accept: ''
+        body: '{"name":"my-new-storage-bucket-vcr","id":"my-new-storage-bucket-vcr","public":"true"}'
+    response:
+        status:
+            code: 400
+            message: 'Bad Request'
+        headers:
+            Date: 'Wed, 08 Mar 2023 21:47:31 GMT'
+            Content-Type: 'application/json; charset=utf-8'
+            Content-Length: '80'
+            Connection: keep-alive
+            CF-Ray: 7a4e46ee8fd9534f-LAX
+            Access-Control-Allow-Origin: '*'
+            Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
+            CF-Cache-Status: DYNAMIC
+            sb-gateway-mode: direct
+            sb-gateway-version: '1'
+            Server: cloudflare
+            alt-svc: 'h3=":443"; ma=86400, h3-29=":443"; ma=86400'
+        body: '{"statusCode":"409","error":"Duplicate","message":"The resource already exists"}'
+        curl_info:
+            url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket'
+            content_type: 'application/json; charset=utf-8'
+            http_code: 400
+            header_size: 429
+            request_size: 516
+            filetime: -1
+            ssl_verify_result: 0
+            redirect_count: 0
+            total_time: 0.392283
+            namelookup_time: 0.024134
+            connect_time: 0.046726
+            pretransfer_time: 0.071293
+            size_upload: 85.0
+            size_download: 80.0
+            speed_download: 203.0
+            speed_upload: 216.0
+            download_content_length: 80.0
+            upload_content_length: 85.0
+            starttransfer_time: 0.392205
+            redirect_time: 0.0
+            redirect_url: ''
+            primary_ip: 104.18.26.135
+            certinfo: {  }
+            primary_port: 443
+            local_ip: 192.168.100.16
+            local_port: 52112
+            http_version: 2
+            protocol: 2
+            ssl_verifyresult: 0
+            scheme: HTTPS
+            appconnect_time_us: 71229
+            connect_time_us: 46726
+            namelookup_time_us: 24134
+            pretransfer_time_us: 71293
+            redirect_time_us: 0
+            starttransfer_time_us: 392205
+            total_time_us: 392283
+    index: 0
+-
+    request:
+        method: PUT
+        url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket/my-new-storage-bucket-vcr'
+        headers:
+            Host: gpdefvsxamnscceccczu.supabase.co
+            Expect: ''
+            Accept-Encoding: ''
+            User-Agent: GuzzleHttp/7
+            X-Client-Info: storage-php/0.0.1
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc'
+            Content-Type: application/json
+            Accept: ''
+        body: '{"id":"my-new-storage-bucket-vcr","name":"my-new-storage-bucket-vcr","public":"false"}'
+    response:
+        status:
+            code: 200
+            message: OK
+        headers:
+            Date: 'Wed, 08 Mar 2023 21:47:51 GMT'
+            Content-Type: 'application/json; charset=utf-8'
+            Content-Length: '34'
+            Connection: keep-alive
+            CF-Ray: 7a4e476eef8152fb-LAX
+            Access-Control-Allow-Origin: '*'
+            Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
+            CF-Cache-Status: DYNAMIC
+            sb-gateway-mode: direct
+            sb-gateway-version: '1'
+            Server: cloudflare
+            alt-svc: 'h3=":443"; ma=86400, h3-29=":443"; ma=86400'
+        body: '{"message":"Successfully updated"}'
+        curl_info:
+            url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket/my-new-storage-bucket-vcr'
+            content_type: 'application/json; charset=utf-8'
+            http_code: 200
+            header_size: 420
+            request_size: 542
+            filetime: -1
+            ssl_verify_result: 0
+            redirect_count: 0
+            total_time: 0.296056
+            namelookup_time: 0.011963
+            connect_time: 0.020768
+            pretransfer_time: 0.045271
+            size_upload: 86.0
+            size_download: 34.0
+            speed_download: 114.0
+            speed_upload: 290.0
+            download_content_length: 34.0
+            upload_content_length: 86.0
+            starttransfer_time: 0.295946
+            redirect_time: 0.0
+            redirect_url: ''
+            primary_ip: 104.18.26.135
+            certinfo: {  }
+            primary_port: 443
+            local_ip: 192.168.100.16
+            local_port: 52117
+            http_version: 2
+            protocol: 2
+            ssl_verifyresult: 0
+            scheme: HTTPS
+            appconnect_time_us: 45210
+            connect_time_us: 20768
+            namelookup_time_us: 11963
+            pretransfer_time_us: 45271
+            redirect_time_us: 0
+            starttransfer_time_us: 295946
+            total_time_us: 296056
+    index: 0
+-
+    request:
+        method: POST
+        url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket'
+        headers:
+            Host: gpdefvsxamnscceccczu.supabase.co
+            Expect: ''
+            Accept-Encoding: ''
+            User-Agent: GuzzleHttp/7
+            X-Client-Info: storage-php/0.0.1
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc'
+            Content-Type: application/json
+            Accept: ''
+        body: '{"name":"vcr-bucket","id":"vcr-bucket","public":"true"}'
+    response:
+        status:
+            code: 200
+            message: OK
+        headers:
+            Date: 'Wed, 08 Mar 2023 21:48:23 GMT'
+            Content-Type: 'application/json; charset=utf-8'
+            Content-Length: '21'
+            Connection: keep-alive
+            CF-Ray: 7a4e4833a9402b66-LAX
+            Access-Control-Allow-Origin: '*'
+            Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
+            CF-Cache-Status: DYNAMIC
+            sb-gateway-mode: direct
+            sb-gateway-version: '1'
+            Server: cloudflare
+            alt-svc: 'h3=":443"; ma=86400, h3-29=":443"; ma=86400'
+        body: '{"name":"vcr-bucket"}'
+        curl_info:
+            url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket'
+            content_type: 'application/json; charset=utf-8'
+            http_code: 200
+            header_size: 420
+            request_size: 486
+            filetime: -1
+            ssl_verify_result: 0
+            redirect_count: 0
+            total_time: 0.516461
+            namelookup_time: 0.029782
+            connect_time: 0.039231
+            pretransfer_time: 0.072118
+            size_upload: 55.0
+            size_download: 21.0
+            speed_download: 40.0
+            speed_upload: 106.0
+            download_content_length: 21.0
+            upload_content_length: 55.0
+            starttransfer_time: 0.516442
+            redirect_time: 0.0
+            redirect_url: ''
+            primary_ip: 104.18.26.135
+            certinfo: {  }
+            primary_port: 443
+            local_ip: 192.168.100.16
+            local_port: 52122
+            http_version: 2
+            protocol: 2
+            ssl_verifyresult: 0
+            scheme: HTTPS
+            appconnect_time_us: 71889
+            connect_time_us: 39231
+            namelookup_time_us: 29782
+            pretransfer_time_us: 72118
+            redirect_time_us: 0
+            starttransfer_time_us: 516442
+            total_time_us: 516461
+    index: 0
+-
+    request:
+        method: PUT
+        url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket/vcr-bucket'
+        headers:
+            Host: gpdefvsxamnscceccczu.supabase.co
+            Expect: ''
+            Accept-Encoding: ''
+            User-Agent: GuzzleHttp/7
+            X-Client-Info: storage-php/0.0.1
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc'
+            Content-Type: application/json
+            Accept: ''
+        body: '{"id":"vcr-bucket","name":"vcr-bucket","public":"false"}'
+    response:
+        status:
+            code: 200
+            message: OK
+        headers:
+            Date: 'Wed, 08 Mar 2023 21:48:42 GMT'
+            Content-Type: 'application/json; charset=utf-8'
+            Content-Length: '34'
+            Connection: keep-alive
+            CF-Ray: 7a4e48acbdf0db7a-LAX
+            Access-Control-Allow-Origin: '*'
+            Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
+            CF-Cache-Status: DYNAMIC
+            sb-gateway-mode: direct
+            sb-gateway-version: '1'
+            Server: cloudflare
+            alt-svc: 'h3=":443"; ma=86400, h3-29=":443"; ma=86400'
+        body: '{"message":"Successfully updated"}'
+        curl_info:
+            url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket/vcr-bucket'
+            content_type: 'application/json; charset=utf-8'
+            http_code: 200
+            header_size: 420
+            request_size: 497
+            filetime: -1
+            ssl_verify_result: 0
+            redirect_count: 0
+            total_time: 0.401159
+            namelookup_time: 0.013796
+            connect_time: 0.02269
+            pretransfer_time: 0.049658
+            size_upload: 56.0
+            size_download: 34.0
+            speed_download: 84.0
+            speed_upload: 139.0
+            download_content_length: 34.0
+            upload_content_length: 56.0
+            starttransfer_time: 0.40113
+            redirect_time: 0.0
+            redirect_url: ''
+            primary_ip: 104.18.26.135
+            certinfo: {  }
+            primary_port: 443
+            local_ip: 192.168.100.16
+            local_port: 52127
+            http_version: 2
+            protocol: 2
+            ssl_verifyresult: 0
+            scheme: HTTPS
+            appconnect_time_us: 49430
+            connect_time_us: 22690
+            namelookup_time_us: 13796
+            pretransfer_time_us: 49658
+            redirect_time_us: 0
+            starttransfer_time_us: 401130
+            total_time_us: 401159
+    index: 0
+-
+    request:
+        method: DELETE
+        url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket/vcr-bucket'
+        headers:
+            Host: gpdefvsxamnscceccczu.supabase.co
+            Accept-Encoding: ''
+            User-Agent: GuzzleHttp/7
+            X-Client-Info: storage-php/0.0.1
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc'
+            Accept: ''
+    response:
+        status:
+            code: 200
+            message: OK
+        headers:
+            Date: 'Wed, 08 Mar 2023 21:53:47 GMT'
+            Content-Type: 'application/json; charset=utf-8'
+            Content-Length: '34'
+            Connection: keep-alive
+            CF-Ray: 7a4e501938672f74-LAX
+            Access-Control-Allow-Origin: '*'
+            Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
+            CF-Cache-Status: DYNAMIC
+            sb-gateway-mode: direct
+            sb-gateway-version: '1'
+            Server: cloudflare
+            alt-svc: 'h3=":443"; ma=86400, h3-29=":443"; ma=86400'
+        body: '{"message":"Successfully deleted"}'
+        curl_info:
+            url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket/vcr-bucket'
+            content_type: 'application/json; charset=utf-8'
+            http_code: 200
+            header_size: 420
+            request_size: 392
+            filetime: -1
+            ssl_verify_result: 0
+            redirect_count: 0
+            total_time: 0.643601
+            namelookup_time: 0.015886
+            connect_time: 0.025111
+            pretransfer_time: 0.045028
+            size_upload: 0.0
+            size_download: 34.0
+            speed_download: 52.0
+            speed_upload: 0.0
+            download_content_length: 34.0
+            upload_content_length: 0.0
+            starttransfer_time: 0.643581
+            redirect_time: 0.0
+            redirect_url: ''
+            primary_ip: 104.18.27.135
+            certinfo: {  }
+            primary_port: 443
+            local_ip: 192.168.100.16
+            local_port: 52190
+            http_version: 2
+            protocol: 2
+            ssl_verifyresult: 0
+            scheme: HTTPS
+            appconnect_time_us: 44977
+            connect_time_us: 25111
+            namelookup_time_us: 15886
+            pretransfer_time_us: 45028
+            redirect_time_us: 0
+            starttransfer_time_us: 643581
+            total_time_us: 643601
+    index: 0
+-
+    request:
+        method: POST
+        url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket/bucket=private/empty'
+        headers:
+            Host: gpdefvsxamnscceccczu.supabase.co
+            Content-Length: '0'
+            Accept-Encoding: ''
+            User-Agent: GuzzleHttp/7
+            X-Client-Info: storage-php/0.0.1
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc'
+            Accept: ''
+    response:
+        status:
+            code: 400
+            message: 'Bad Request'
+        headers:
+            Date: 'Wed, 08 Mar 2023 21:54:30 GMT'
+            Content-Type: 'application/json; charset=utf-8'
+            Content-Length: '79'
+            Connection: keep-alive
+            CF-Ray: 7a4e512a8ee62ae4-LAX
+            Access-Control-Allow-Origin: '*'
+            Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
+            CF-Cache-Status: DYNAMIC
+            sb-gateway-mode: direct
+            sb-gateway-version: '1'
+            Server: cloudflare
+            alt-svc: 'h3=":443"; ma=86400, h3-29=":443"; ma=86400'
+        body: '{"statusCode":"404","error":"Not found","message":"The resource was not found"}'
+        curl_info:
+            url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket/bucket=private/empty'
+            content_type: 'application/json; charset=utf-8'
+            http_code: 400
+            header_size: 429
+            request_size: 419
+            filetime: -1
+            ssl_verify_result: 0
+            redirect_count: 0
+            total_time: 0.248417
+            namelookup_time: 0.018292
+            connect_time: 0.026505
+            pretransfer_time: 0.045488
+            size_upload: 0.0
+            size_download: 79.0
+            speed_download: 318.0
+            speed_upload: 0.0
+            download_content_length: 79.0
+            upload_content_length: 0.0
+            starttransfer_time: 0.248402
+            redirect_time: 0.0
+            redirect_url: ''
+            primary_ip: 104.18.27.135
+            certinfo: {  }
+            primary_port: 443
+            local_ip: 192.168.100.16
+            local_port: 52211
+            http_version: 2
+            protocol: 2
+            ssl_verifyresult: 0
+            scheme: HTTPS
+            appconnect_time_us: 45439
+            connect_time_us: 26505
+            namelookup_time_us: 18292
+            pretransfer_time_us: 45488
+            redirect_time_us: 0
+            starttransfer_time_us: 248402
+            total_time_us: 248417
+    index: 0
+-
+    request:
+        method: POST
+        url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket/bucket-private/empty'
+        headers:
+            Host: gpdefvsxamnscceccczu.supabase.co
+            Content-Length: '0'
+            Accept-Encoding: ''
+            User-Agent: GuzzleHttp/7
+            X-Client-Info: storage-php/0.0.1
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc'
+            Accept: ''
+    response:
+        status:
+            code: 200
+            message: OK
+        headers:
+            Date: 'Wed, 08 Mar 2023 21:54:41 GMT'
+            Content-Type: 'application/json; charset=utf-8'
+            Content-Length: '34'
+            Connection: keep-alive
+            CF-Ray: 7a4e516f4b842a98-LAX
+            Access-Control-Allow-Origin: '*'
+            Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
+            CF-Cache-Status: DYNAMIC
+            sb-gateway-mode: direct
+            sb-gateway-version: '1'
+            Server: cloudflare
+            alt-svc: 'h3=":443"; ma=86400, h3-29=":443"; ma=86400'
+        body: '{"message":"Successfully emptied"}'
+        curl_info:
+            url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket/bucket-private/empty'
+            content_type: 'application/json; charset=utf-8'
+            http_code: 200
+            header_size: 420
+            request_size: 419
+            filetime: -1
+            ssl_verify_result: 0
+            redirect_count: 0
+            total_time: 0.321718
+            namelookup_time: 0.011913
+            connect_time: 0.021378
+            pretransfer_time: 0.042365
+            size_upload: 0.0
+            size_download: 34.0
+            speed_download: 105.0
+            speed_upload: 0.0
+            download_content_length: 34.0
+            upload_content_length: 0.0
+            starttransfer_time: 0.321674
+            redirect_time: 0.0
+            redirect_url: ''
+            primary_ip: 104.18.27.135
+            certinfo: {  }
+            primary_port: 443
+            local_ip: 192.168.100.16
+            local_port: 52215
+            http_version: 2
+            protocol: 2
+            ssl_verifyresult: 0
+            scheme: HTTPS
+            appconnect_time_us: 42307
+            connect_time_us: 21378
+            namelookup_time_us: 11913
+            pretransfer_time_us: 42365
+            redirect_time_us: 0
+            starttransfer_time_us: 321674
+            total_time_us: 321718
+    index: 0
+-
+    request:
+        method: POST
+        url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket'
+        headers:
+            Host: gpdefvsxamnscceccczu.supabase.co
+            Expect: ''
+            Accept-Encoding: ''
+            User-Agent: GuzzleHttp/7
+            X-Client-Info: storage-php/0.0.1
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc'
+            Content-Type: application/json
+            Accept: ''
+        body: '{"name":"bucket-public","id":"bucket-public","public":"true"}'
+    response:
+        status:
+            code: 200
+            message: OK
+        headers:
+            Date: 'Wed, 08 Mar 2023 21:57:41 GMT'
+            Content-Type: 'application/json; charset=utf-8'
+            Content-Length: '24'
+            Connection: keep-alive
+            CF-Ray: 7a4e55d6e9e32ea2-LAX
+            Access-Control-Allow-Origin: '*'
+            Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
+            CF-Cache-Status: DYNAMIC
+            sb-gateway-mode: direct
+            sb-gateway-version: '1'
+            Server: cloudflare
+            alt-svc: 'h3=":443"; ma=86400, h3-29=":443"; ma=86400'
+        body: '{"name":"bucket-public"}'
+        curl_info:
+            url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket'
+            content_type: 'application/json; charset=utf-8'
+            http_code: 200
+            header_size: 420
+            request_size: 492
+            filetime: -1
+            ssl_verify_result: 0
+            redirect_count: 0
+            total_time: 0.383136
+            namelookup_time: 0.017535
+            connect_time: 0.026256
+            pretransfer_time: 0.049369
+            size_upload: 61.0
+            size_download: 24.0
+            speed_download: 62.0
+            speed_upload: 159.0
+            download_content_length: 24.0
+            upload_content_length: 61.0
+            starttransfer_time: 0.383119
+            redirect_time: 0.0
+            redirect_url: ''
+            primary_ip: 104.18.27.135
+            certinfo: {  }
+            primary_port: 443
+            local_ip: 192.168.100.16
+            local_port: 52238
+            http_version: 2
+            protocol: 2
+            ssl_verifyresult: 0
+            scheme: HTTPS
+            appconnect_time_us: 49134
+            connect_time_us: 26256
+            namelookup_time_us: 17535
+            pretransfer_time_us: 49369
+            redirect_time_us: 0
+            starttransfer_time_us: 383119
+            total_time_us: 383136
+    index: 0
+-
+    request:
+        method: GET
+        url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket/bucket-public'
+        headers:
+            Host: gpdefvsxamnscceccczu.supabase.co
+            Accept-Encoding: ''
+            User-Agent: GuzzleHttp/7
+            X-Client-Info: storage-php/0.0.1
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZGVmdnN4YW1uc2NjZWNjY3p1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY3MDAwOTgxNCwiZXhwIjoxOTg1NTg1ODE0fQ.kZKF_5HedaYHIi4aL77r2PJa5LGeyGlvVnL-tKstycc'
+            Accept: ''
+    response:
+        status:
+            code: 200
+            message: OK
+        headers:
+            Date: 'Wed, 08 Mar 2023 21:57:42 GMT'
+            Content-Type: 'application/json; charset=utf-8'
+            Content-Length: '210'
+            Connection: keep-alive
+            CF-Ray: 7a4e55d969047d64-LAX
+            Access-Control-Allow-Origin: '*'
+            Strict-Transport-Security: 'max-age=2592000; includeSubDomains'
+            CF-Cache-Status: DYNAMIC
+            sb-gateway-mode: direct
+            sb-gateway-version: '1'
+            Server: cloudflare
+            alt-svc: 'h3=":443"; ma=86400, h3-29=":443"; ma=86400'
+        body: '{"id":"bucket-public","name":"bucket-public","owner":"","public":true,"file_size_limit":0,"allowed_mime_types":null,"created_at":"2023-03-08T21:57:41.89354+00:00","updated_at":"2023-03-08T21:57:41.89354+00:00"}'
+        curl_info:
+            url: 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/bucket/bucket-public'
+            content_type: 'application/json; charset=utf-8'
+            http_code: 200
+            header_size: 421
+            request_size: 392
+            filetime: -1
+            ssl_verify_result: 0
+            redirect_count: 0
+            total_time: 0.356258
+            namelookup_time: 0.004116
+            connect_time: 0.012427
+            pretransfer_time: 0.032953
+            size_upload: 0.0
+            size_download: 210.0
+            speed_download: 589.0
+            speed_upload: 0.0
+            download_content_length: 210.0
+            upload_content_length: 0.0
+            starttransfer_time: 0.356239
+            redirect_time: 0.0
+            redirect_url: ''
+            primary_ip: 104.18.27.135
+            certinfo: {  }
+            primary_port: 443
+            local_ip: 192.168.100.16
+            local_port: 52241
+            http_version: 2
+            protocol: 2
+            ssl_verifyresult: 0
+            scheme: HTTPS
+            appconnect_time_us: 32905
+            connect_time_us: 12427
+            namelookup_time_us: 4116
+            pretransfer_time_us: 32953
+            redirect_time_us: 0
+            starttransfer_time_us: 356239
+            total_time_us: 356258
+    index: 0
