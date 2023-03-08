@@ -166,7 +166,7 @@ class VCRStorageBucketTest extends TestCase
 		$this->assertEquals('OK', $result->getReasonPhrase());
 		$this->assertJsonStringEqualsJsonString('{"name":"bucket-public"}', (string) $result->getBody());
 		$resultInfo = $this->client->getBucket('bucket-public');
-		$getValue = json_decode((string)$resultInfo->getBody());
+		$getValue = json_decode((string) $resultInfo->getBody());
 		$isPrivate = $getValue->{'public'};
 		$this->assertTrue($isPrivate);
 		$this->assertNotEmpty($result);

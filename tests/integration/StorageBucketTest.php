@@ -126,7 +126,7 @@ final class StorageBucketTest extends TestCase
 		$this->assertEquals('OK', $result->getReasonPhrase());
 		$this->assertJsonStringEqualsJsonString('{"name":"bucket-private"}', (string) $result->getBody());
 		$resultInfo = $this->client->getBucket('bucket-private');
-		$getValue = json_decode((string)$resultInfo->getBody());
+		$getValue = json_decode((string) $resultInfo->getBody());
 		$isPrivate = $getValue->{'public'};
 		$this->assertFalse($isPrivate);
 	}

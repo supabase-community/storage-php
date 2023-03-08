@@ -13,7 +13,7 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Creates a new Storage bucket function.
 	 *
-	 * 
+	 *
 	 *
 	 * @return void
 	 */
@@ -28,7 +28,7 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Retrieves the details of an existing Storage bucket function.
 	 *
-	 * 
+	 *
 	 *
 	 * @return ResponseInterface
 	 */
@@ -38,7 +38,7 @@ final class MockStorageBucketTest extends TestCase
 		$mock = $this->createMock(\Supabase\Storage\StorageClient::class);
 		$mock->method('getBucket')
 			->willReturn($bucket_id);
-		$this->assertSame($bucket_id,  $mock->getBucket($bucket_id));
+		$this->assertSame($bucket_id, $mock->getBucket($bucket_id));
 	}
 
 	/**
@@ -55,7 +55,7 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Updates a Storage bucket function.
 	 *
-	 * 
+	 *
 	 *
 	 * @return void
 	 */
@@ -70,7 +70,7 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Deletes an existing bucket function.
 	 *
-	 * 
+	 *
 	 *
 	 * @return void
 	 */
@@ -85,7 +85,7 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Removes all objects inside a single bucket function.
 	 *
-	 *  
+	 *
 	 *
 	 * @return void
 	 */
@@ -100,7 +100,7 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Invailid bucket id function.
 	 *
-	 * 
+	 *
 	 *
 	 * @return void
 	 */
@@ -115,7 +115,7 @@ final class MockStorageBucketTest extends TestCase
 	/**
 	 * Test Creates a new Storage public bucket function.
 	 *
-	 * 
+	 *
 	 *
 	 * @return void
 	 */
