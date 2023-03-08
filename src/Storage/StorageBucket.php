@@ -36,7 +36,7 @@ class StorageBucket
 	/**
 	 * Get the url.
 	 */
-	public function __getUrl(): String
+	public function __getUrl(): string
 	{
 		return $this->url;
 	}
@@ -44,7 +44,7 @@ class StorageBucket
 	/**
 	 * Get the headers.
 	 */
-	public function __getHeaders(): String
+	public function __getHeaders(): string
 	{
 		return $this->getHeaders;
 	}
