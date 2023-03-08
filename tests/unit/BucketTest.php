@@ -31,10 +31,10 @@ class StorageBucketTest extends TestCase
 	{
 		$client = new  \Supabase\Storage\StorageClient('somekey', 'some_ref_id');
 		$this->assertEquals($client->__getUrl(), 'https://some_ref_id.supabase.co/storage/v1');
-		$this->assertEquals($client->__getHeaders(),  Array(
-			"X-Client-Info" => "storage-php/0.0.1",
-			"Authorization" => "Bearer somekey"
-		));
+		$this->assertEquals($client->__getHeaders(), [
+			'X-Client-Info' => 'storage-php/0.0.1',
+			'Authorization' => 'Bearer somekey',
+		]);
 	}
 
 	/**
