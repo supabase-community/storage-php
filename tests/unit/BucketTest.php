@@ -20,9 +20,9 @@ class BucketTest extends TestCase
 		$api_key = getenv('API_KEY');
 		$reference_id = getenv('REFERENCE_ID');
 		$this->client = new  \Supabase\Storage\StorageClient($api_key, $reference_id);
-echo $this->client->__getUrl();
-print_r($this->client->__getHeaders());
-ob_flush();
+		echo $this->client->__getUrl();
+		print_r($this->client->__getHeaders());
+		ob_flush();
 	}
 
 	/**
@@ -72,9 +72,9 @@ ob_flush();
 	 */
 	public function testCreateBucketX(): void
 	{
-\VCR\VCR::configure()
-    ->setStorage('json');
-\VCR\VCR::configure()->enableLibraryHooks(array('curl', 'soap'));
+		\VCR\VCR::configure()
+	->setStorage('json');
+		\VCR\VCR::configure()->enableLibraryHooks(['curl', 'soap']);
 		\VCR\VCR::turnOn();
 		\VCR\VCR::insertCassette('unit_storage_bucket_create_bucket');
 		$this->newClient();
