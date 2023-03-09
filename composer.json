@@ -33,7 +33,7 @@
         "phpunit/phpunit": "9.6",
         "squizlabs/php_codesniffer": "3.*",
         "php-vcr/phpunit-testlistener-vcr": "3.1",
-        "php-vcr/php-vcr": "1.5",
+        "php-vcr/php-vcr": "1.6",
         "allure-framework/allure-phpunit": "1.5"
     },
     "require": {
