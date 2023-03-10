@@ -84,9 +84,9 @@ class StorageBucket
 			'id' => $bucketId,
 			'public' => $options['public'] ? 'true' : 'false',
 		]);
-		$url = $this->url.'/bucket';
+		$url = $this->url . '/bucket';
 		$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
-
+		//$headers = $this->__getHeaders();
 		try {
 			$data = $this->__request('POST', $url, $headers, $body);
 
@@ -108,9 +108,9 @@ class StorageBucket
 	public function getBucket($bucketId): ResponseInterface
 	{
 		try {
-			$url = $this->url.'/bucket/'.$bucketId;
-
-			$data = $this->__request('GET', $url, $this->headers);
+			$url = $this->url . '/bucket/' . $bucketId;
+			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
+			$data = $this->__request('GET', $url, $headers);
 
 			return $data;
 		} catch (\Exception $e) {
@@ -127,10 +127,10 @@ class StorageBucket
 	 */
 	public function listBuckets(): ResponseInterface
 	{
-		$url = $this->url.'/bucket';
-
+		$url = $this->url . '/bucket';
+		$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 		try {
-			$data = $this->__request('GET', $url, $this->headers);
+			$data = $this->__request('GET', $url, $headers);
 
 			return $data;
 		} catch (\Exception $e) {
@@ -157,7 +157,7 @@ class StorageBucket
 				'name' => $bucketId,
 				'public' => $options['public'] ? 'true' : 'false',
 			]);
-			$url = $this->url.'/bucket/'.$bucketId;
+			$url = $this->url . '/bucket/' . $bucketId;
 			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 			$data = $this->__request('POST', $url, $headers, $body);
 
@@ -179,8 +179,9 @@ class StorageBucket
 	public function deleteBucket($bucketId): ResponseInterface
 	{
 		try {
-			$url = $this->url.'/bucket/'.$bucketId;
-			$data = Request::request('DELETE', $url, $this->headers);
+			$url = $this->url . '/bucket/' . $bucketId;
+			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
+			$data = $this->__request('DELETE', $url, $headers);
 
 			return $data;
 		} catch (\Exception $e) {
@@ -199,8 +200,9 @@ class StorageBucket
 	public function emptyBucket($bucketId): ResponseInterface
 	{
 		try {
-			$url = $this->url.'/bucket/'.$bucketId.'/empty';
-			$data = Request::request('POST', $url, $this->headers);
+			$url = $this->url . '/bucket/' . $bucketId . '/empty';
+			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
+			$data = $this->__request('POST', $url, $headers);
 
 			return $data;
 		} catch (\Exception $e) {

@@ -55,6 +55,28 @@ class StorageFile
 		'contentType' => 'text/plain;charset=UTF-8',
 	];
 
+
+	/**
+	 * Get the url.
+	 */
+	public function __getUrl(): string
+	{
+		return $this->url;
+	}
+
+	/**
+	 * Get the headers.
+	 */
+	public function __getHeaders(): array
+	{
+		return $this->headers;
+	}
+
+	public function __getBucketId(): string
+	{
+		return $this->bucketId;
+	}
+
 	/**
 	 * StorageFile constructor.
 	 *
@@ -66,6 +88,11 @@ class StorageFile
 		$this->url = "https://{$reference_id}.supabase.co/storage/v1";
 		$this->headers = array_merge(Constants::getDefaultHeaders(), $headers);
 		$this->bucketId = $bucketId;
+	}
+
+	public function __request($method, $url, $headers, $body = null): ResponseInterface
+	{
+		return Request::request($method, $url, $headers, $body);
 	}
 
 	/**
@@ -88,11 +115,11 @@ class StorageFile
 			$opts = $this->DEFAULT_SEARCH_OPTIONS;
 			$body = array_merge($prefix, $opts);
 
-			$data = Request::request('POST', $this->url.'/object/list/'.$this->bucketId, $headers, json_encode($body));
+			$data = $this->__request('POST', $this->url . '/object/list/' . $this->bucketId, $headers, json_encode($body));
 			//acording to Swagger you need auth bearer key, check on monday to see if bearer is required.
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 
@@ -111,8 +138,7 @@ class StorageFile
 	{
 		//change to path instead of fileContent verify the path is there with a try catch.
 		$options = array_merge($this->DEFAULT_FILE_OPTIONS, $opts);
-		$headers = $this->headers;
-		$headers['debug'] = true;
+		$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 
 		if ($method == 'POST') {
 			$headers['x-upsert'] = $options['upsert'] ? 'true' : 'false';
@@ -127,7 +153,7 @@ class StorageFile
 
 		$storagePath = $this->_storagePath($path);
 		try {
-			$data = Request::request($method, $this->url.'/object/'.$storagePath, $headers, $body);
+			$data = $this->__request($method, $this->url . '/object/' . $storagePath, $headers, $body);
 			// we should just mock this request instead of all of the function
 			return $data;
 		} catch (\Exception $e) {
@@ -189,7 +215,7 @@ class StorageFile
 			'destinationKey' => $toPath,
 		];
 		try {
-			$data = Request::request('POST', $this->url.'/object/move', $headers, json_encode($body));
+			$data = $this->__request('POST', $this->url . '/object/move', $headers, json_encode($body));
 
 			return $data;
 		} catch (\Exception $e) {
@@ -219,7 +245,7 @@ class StorageFile
 				'destinationKey' => $toPath,
 			];
 
-			$data = Request::request('POST', $this->url.'/object/copy', $headers, json_encode($body));
+			$data = Request::request('POST', $this->url . '/object/copy', $headers, json_encode($body));
 
 			return $data;
 		} catch (\Exception $e) {
@@ -255,7 +281,7 @@ class StorageFile
 				],
 			];
 			$storagePath = $this->_storagePath($path);
-			$fullUrl = $this->url.'/object/sign/'.$storagePath;
+			$fullUrl = $this->url . '/object/sign/' . $storagePath;
 			$data = Request::request('POST', $fullUrl, $headers, json_encode($body));
 
 			return  $data;
@@ -285,11 +311,11 @@ class StorageFile
 				'expiresIn' => $expiresIn,
 				'options' => $opts,
 			];
-			$fullUrl = $this->url.'/object/sign/'.$this->bucketId;
+			$fullUrl = $this->url . '/object/sign/' . $this->bucketId;
 			$response = Request::request('POST', $fullUrl, $headers, json_encode($body));
 			$downloadQueryParam = isset($opts['download']) ? '?download=true' : '';
 			$data = array_map(function ($d) use ($downloadQueryParam) {
-				$d['signedURL'] = urldecode($this->url.$d['signedURL'].$downloadQueryParam);
+				$d['signedURL'] = urldecode($this->url . $d['signedURL'] . $downloadQueryParam);
 
 				return $d;
 			}, json_decode($response->getBody(), true));
@@ -317,12 +343,12 @@ class StorageFile
 		$transformOptions = isset($opts['transform']) ? $opts['transform'] : [];
 		$renderPath = isset($opts['transform']) ? 'render/image/authenticated' : 'object';
 		$transformationQuery = $this->transformOptsToQueryString($transformOptions);
-		$queryString = ($transformationQuery != '') ? '?'.$transformationQuery : '';
-		$url = $this->url.'/'.$renderPath.'/'.$this->bucketId.'/'.$path.$queryString;
+		$queryString = ($transformationQuery != '') ? '?' . $transformationQuery : '';
+		$url = $this->url . '/' . $renderPath . '/' . $this->bucketId . '/' . $path . $queryString;
 		$headers['stream'] = true;
 
 		try {
-			$data = Request::request('GET', $url, $headers);
+			$data = $this->__request('GET', $url, $headers);
 
 			return $data;
 		} catch (\Exception $e) {
@@ -369,9 +395,9 @@ class StorageFile
 		}
 		$queryString = implode('&', $_queryString);
 		if ($queryString !== '') {
-			$queryString = '?'.$queryString;
+			$queryString = '?' . $queryString;
 		}
-		$url = urldecode($this->url.'/'.$renderPath.'/public/'.$storagePath.$queryString);
+		$url = urldecode($this->url . '/' . $renderPath . '/public/' . $storagePath . $queryString);
 		$data = Request::request('GET', $url, $headers, $opts);
 
 		return $data;
@@ -392,7 +418,7 @@ class StorageFile
 		$headers['content-type'] = 'application/json';
 		try {
 			$options = ['prefixes' => $paths];
-			$fullUrl = $this->url.'/object/'.$this->bucketId;
+			$fullUrl = $this->url . '/object/' . $this->bucketId;
 			$data = Request::request('DELETE', $fullUrl, $headers, json_encode($options));
 
 			return $data;
@@ -412,7 +438,7 @@ class StorageFile
 		$p = preg_replace('/^\/|\/$/', '', $path);
 		$p = preg_replace('/\/+/', '/', $p);
 
-		return $this->bucketId.'/'.$p;
+		return $this->bucketId . '/' . $p;
 	}
 
 	private function transformOptsToQueryString($transform = [])
