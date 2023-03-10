@@ -133,9 +133,7 @@ final class StorageFileTest extends TestCase
 		$path = 'path/to/file.png';
 		$options = ['download'];
 		$result = $this->client->getPublicUrl($path, $options);
-		echo (string) $result->getBody();
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
-		ob_flush();
 	}
 }

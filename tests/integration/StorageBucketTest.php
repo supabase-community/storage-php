@@ -70,10 +70,12 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testUpdateBucket(): void
 	{
+		$result = $this->client->createBucket('test-bucket-new', ['public' => true]);
 		$result = $this->client->updateBucket('test-bucket-new', ['public' => true]);
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
 		$this->assertJsonStringEqualsJsonString('{"message":"Successfully updated"}', (string) $result->getBody());
+		$result = $this->client->deleteBucket('test-bucket-new');
 	}
 
 	/**
@@ -83,10 +85,12 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testEmptyBucket()
 	{
+		$result = $this->client->createBucket('test-bucket-new', ['public' => true]);
 		$result = $this->client->emptyBucket('test-bucket-new');
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
 		$this->assertJsonStringEqualsJsonString('{"message":"Successfully emptied"}', (string) $result->getBody());
+		$result = $this->client->deleteBucket('test-bucket-new');
 	}
 
 	/**
@@ -96,6 +100,7 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testDeleteBucket()
 	{
+		$result = $this->client->createBucket('test-bucket-new', ['public' => true]);
 		$bucketId = 'test-bucket-new';
 		$result = $this->client->deleteBucket($bucketId);
 		$this->assertEquals('200', $result->getStatusCode());
@@ -124,13 +129,14 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testCreatePrivateBucket(): void
 	{
-		$result = $this->client->createBucket('bucket-private', ['public' => false]);
+		$result = $this->client->createBucket('test-bucket-new', ['public' => false]);
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
-		$this->assertJsonStringEqualsJsonString('{"name":"bucket-private"}', (string) $result->getBody());
-		$resultInfo = $this->client->getBucket('bucket-private');
+		$this->assertJsonStringEqualsJsonString('{"name":"test-bucket-new"}', (string) $result->getBody());
+		$resultInfo = $this->client->getBucket('test-bucket-new');
 		$getValue = json_decode((string) $resultInfo->getBody());
 		$isPrivate = $getValue->{'public'};
 		$this->assertFalse($isPrivate);
+		$result = $this->client->deleteBucket('test-bucket-new');
 	}
 }

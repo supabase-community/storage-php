@@ -159,7 +159,7 @@ class StorageBucket
 			]);
 			$url = $this->url . '/bucket/' . $bucketId;
 			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
-			$data = $this->__request('POST', $url, $headers, $body);
+			$data = $this->__request('PUT', $url, $headers, $body);
 
 			return $data;
 		} catch (\Exception $e) {
@@ -201,7 +201,7 @@ class StorageBucket
 	{
 		try {
 			$url = $this->url . '/bucket/' . $bucketId . '/empty';
-			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
+			$headers = $this->__getHeaders();
 			$data = $this->__request('POST', $url, $headers);
 
 			return $data;
