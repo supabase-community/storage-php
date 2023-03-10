@@ -86,8 +86,9 @@ class StorageBucket
 		]);
 		$url = $this->url.'/bucket';
 		$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
+
 		try {
-			$data = Request::request('POST', $url, $headers, $body);
+			$data = $this->__request('POST', $url, $headers, $body);
 
 			return $data;
 		} catch (\Exception $e) {

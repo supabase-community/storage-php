@@ -21,9 +21,6 @@ class BucketTest extends TestCase
 		$api_key = getenv('API_KEY');
 		$reference_id = getenv('REFERENCE_ID');
 		$this->client = new  \Supabase\Storage\StorageClient($api_key, $reference_id);
-		$this->client->__getUrl();
-		$this->client->__getHeaders();
-		ob_flush();
 	}
 
 	/**
@@ -70,22 +67,25 @@ class BucketTest extends TestCase
 	 */
 	public function testCreateBucket(): void
 	{
+		$mock = \Mockery::mock('Supabase\Storage\StorageBucket[__request]', 
+			array('123123123', 'mmmmderm')
+		);
 
-		// $this->newClient();
-		// $result = $this->client->createBucket('vcr-bucket', ['public' => false]);
-		// $this->assertNotEmpty($result);
+		$mock->shouldReceive('__request')->withArgs(function($scheme, $url, $headers, $body) { 
+			$this->assertEquals('POST', $scheme);
+			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/bucket', $url);
+			$this->assertEquals(array(
+				'X-Client-Info' => 'storage-php/0.0.1',
+				'Authorization' => 'Bearer 123123123',
+				'Content-Type' => 'application/json',
+			), $headers);
+			$this->assertEquals('{"name":"test","id":"test","public":"true"}', $body);
+		ob_flush();
+			return true;
+		});
 
-		$this->newClient();
-		// $url = $this->client->__getUrl();
-		// $headers = $this->client->__getHeaders();
-		$$MakeMock = $this->createMock(StorageBucket::class);
-		$CreateBucketMock = $MakeMock->createBucket('vcr-bucket', ['public' => false]);
 
-		$CreateBucketMock
-			->expects($this->once())
-			->method('createBucket')
-			->with($this->equalTo('vcr-bucket'), $this->equalTo($url));
-		$this->assertNotEmpty($CreateBucketMock);
+		$mock->createBucket('test', array('public' => true));
 	}
 
 	/**
