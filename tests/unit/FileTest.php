@@ -82,6 +82,7 @@ class FileTest extends TestCase
 					'Authorization' => 'Bearer 123123123',
 					'Content-Type' => 'application/json',
 					'x-upsert' => 'false',
+					'content-type' => 'text/plain;charset=UTF-8'
 				],
 				$headers
 			);
@@ -90,7 +91,7 @@ class FileTest extends TestCase
 			return true;
 		});
 
-		$mock->upload('testFile.png', 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w', ['public' => true]);
+		$mock->upload('testFile.png', 'testFile', ['public' => true]);
 	}
 
 	/**
@@ -143,7 +144,7 @@ class FileTest extends TestCase
 				],
 				$headers
 			);
-			//$this->assertEquals('{"name":"test","id":"test","public":"true"}', $body);
+			//$this->assertEquals('', $body);
 
 			return true;
 		});
@@ -185,6 +186,28 @@ class FileTest extends TestCase
 	 */
 	public function testCopy()
 	{
+		$mock = \Mockery::mock(
+			'Supabase\Storage\StorageFile[__request]',
+			['123123123', 'mmmmderm', 'someBucket']
+		);
+
+		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
+			$this->assertEquals('POST', $scheme);
+			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/copy', $url);
+			$this->assertEquals(
+				[
+					'X-Client-Info' => 'storage-php/0.0.1',
+					'Authorization' => 'Bearer 123123123',
+					'content-type' => 'application/json',
+				],
+				$headers
+			);
+			$this->assertEquals('{"sourceKey":"fromBucket","bucketId":"someBucket","destinationKey":"toBucket"}', $body);
+
+			return true;
+		});
+
+		$mock->copy('fromBucket', 'someBucket', 'toBucket');
 	}
 
 	/**
@@ -192,6 +215,28 @@ class FileTest extends TestCase
 	 */
 	public function testRemove()
 	{
+		$mock = \Mockery::mock(
+			'Supabase\Storage\StorageFile[__request]',
+			['123123123', 'mmmmderm', 'someBucket']
+		);
+
+		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
+			$this->assertEquals('DELETE', $scheme);
+			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/someBucket', $url);
+			$this->assertEquals(
+				[
+					'X-Client-Info' => 'storage-php/0.0.1',
+					'Authorization' => 'Bearer 123123123',
+					'content-type' => 'application/json',
+				],
+				$headers
+			);
+			$this->assertEquals('{"prefixes":["exampleFolder\/exampleFile.png"]}', $body);
+
+			return true;
+		});
+
+		$mock->remove(['exampleFolder/exampleFile.png']);
 	}
 
 	/**
@@ -199,6 +244,57 @@ class FileTest extends TestCase
 	 */
 	public function testCreateSignedUrl()
 	{
+		$mock = \Mockery::mock(
+			'Supabase\Storage\StorageFile[__request]',
+			['123123123', 'mmmmderm', 'someBucket']
+		);
+
+		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
+			$this->assertEquals('POST', $scheme);
+			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/sign/someBucket/exampleFolder/exampleFile.png', $url);
+			$this->assertEquals(
+				[
+					'X-Client-Info' => 'storage-php/0.0.1',
+					'Authorization' => 'Bearer 123123123',
+					'content-type' => 'application/json',
+				],
+				$headers
+			);
+			$this->assertEquals('{"expiresIn":60,"transform":{"height":100,"width":100,"resize":"cover","format":"origin","quality":100}}', $body);
+
+			return true;
+		});
+
+		$mock->createSignedUrl('exampleFolder/exampleFile.png', 60);
+	}
+
+	/**
+	 * Test Creates a signed URL. Use a signed URL to share a file for a fixed amount of time.
+	 */
+	public function testCreateSignedUrls()
+	{
+		$mock = \Mockery::mock(
+			'Supabase\Storage\StorageFile[__request]',
+			['123123123', 'mmmmderm', 'someBucket']
+		);
+
+		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
+			$this->assertEquals('POST', $scheme);
+			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/sign/someBucket', $url);
+			$this->assertEquals(
+				[
+					'X-Client-Info' => 'storage-php/0.0.1',
+					'Authorization' => 'Bearer 123123123',
+					'content-type' => 'application/json',
+				],
+				$headers
+			);
+			$this->assertEquals('{"paths":"exampleFolder\/exampleFile.png","expiresIn":60,"options":"download"}', $body);
+
+			return true;
+		});
+
+		$mock->createSignedUrls('exampleFolder/exampleFile.png', 60, 'download');
 	}
 
 	/**
@@ -206,5 +302,26 @@ class FileTest extends TestCase
 	 */
 	public function testGetPublicUrl()
 	{
+		$mock = \Mockery::mock(
+			'Supabase\Storage\StorageFile[__request]',
+			['123123123', 'mmmmderm', 'someBucket']
+		);
+
+		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
+			$this->assertEquals('GET', $scheme);
+			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/public/someBucket/exampleFolder/exampleFile.png', $url);
+			$this->assertEquals(
+				[
+					'X-Client-Info' => 'storage-php/0.0.1',
+					'Authorization' => 'Bearer 123123123',
+				],
+				$headers
+			);
+			$this->assertEquals('', $body);
+
+			return true;
+		});
+
+		$mock->getPublicUrl('exampleFolder/exampleFile.png', 'download');
 	}
 }

@@ -43,6 +43,7 @@ final class StorageBucketTest extends TestCase
 		$getValue = json_decode((string) $result->getBody());
 		$obj = $getValue->{'name'};
 		$this->assertEquals('test-bucket-new', $obj);
+		$result = $this->client->deleteBucket('test-bucket-new');
 	}
 
 	/**
@@ -52,12 +53,14 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testGetBucketWithId(): void
 	{
-		$result = $this->client->getBucket('test-bucket');
-		$this->assertEquals('200', $result->getStatusCode());
-		$this->assertEquals('OK', $result->getReasonPhrase());
-		$getValue = json_decode((string) $result->getBody());
+		$result = $this->client->createBucket('test-bucket-new', ['public' => true]);
+		$bucket = $this->client->getBucket('test-bucket-new');
+		$this->assertEquals('200', $bucket->getStatusCode());
+		$this->assertEquals('OK', $bucket->getReasonPhrase());
+		$getValue = json_decode((string) $bucket->getBody());
 		$obj = $getValue->{'id'};
-		$this->assertEquals('test-bucket', $obj);
+		$this->assertEquals('test-bucket-new', $obj);
+		$result = $this->client->deleteBucket('test-bucket-new');
 	}
 
 	/**
