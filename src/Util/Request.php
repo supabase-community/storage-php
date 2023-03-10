@@ -11,8 +11,6 @@ class Request
 		try {
 			$request = new \GuzzleHttp\Psr7\Request($method, $url, $headers, $body);
 			$client = new \GuzzleHttp\Client();
-			print_r($request);
-			ob_flush();
 			$promise = $client->sendAsync($request)->then(function ($response) {
 				return $response;
 			});

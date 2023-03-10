@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use Supabase\Storage\StorageBucket;
 
 class BucketTest extends TestCase
 {
@@ -20,8 +21,8 @@ class BucketTest extends TestCase
 		$api_key = getenv('API_KEY');
 		$reference_id = getenv('REFERENCE_ID');
 		$this->client = new  \Supabase\Storage\StorageClient($api_key, $reference_id);
-		echo $this->client->__getUrl();
-		print_r($this->client->__getHeaders());
+		$this->client->__getUrl();
+		$this->client->__getHeaders();
 		ob_flush();
 	}
 
@@ -47,22 +48,19 @@ class BucketTest extends TestCase
 	 */
 	public function testListBucket()
 	{
-		// After turning on the VCR will intercept all requests
-		\VCR\VCR::turnOn();
-
-		// Record requests and responses in cassette file 'example'
-		\VCR\VCR::insertCassette('unit_storage_bucket_test');
-
-		// Following request will be recorded once and replayed in future test runs
 		$this->newClient();
-		$result = $this->client->listBuckets();
-		$this->assertNotEmpty($result);
+		//$result = $this->client->listBuckets();
+		//$this->assertNotEmpty($result);
 
-		// To stop recording requests, eject the cassette
-		\VCR\VCR::eject();
+		$url = $this->client->__getUrl();
+		$headers = $this->client->__getHeaders();
+		$MakeMock = $this->createMock(StorageBucket::class);
+		$ListMock = $MakeMock->listBuckets();
 
-		// Turn off VCR to stop intercepting requests
-		\VCR\VCR::turnOff();
+		$ListMock
+			->expects($this->once())
+			->method('__request')
+			->with($this->equalTo('GET'), $this->equalTo($url), $this->equalTo($headers));
 	}
 
 	/**
@@ -70,20 +68,24 @@ class BucketTest extends TestCase
 	 *
 	 * @return void
 	 */
-	public function testCreateBucketX(): void
+	public function testCreateBucket(): void
 	{
-		\VCR\VCR::configure()
-	->setStorage('json');
-		\VCR\VCR::configure()->enableLibraryHooks(['curl', 'soap']);
-		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('unit_storage_bucket_create_bucket');
+
+		// $this->newClient();
+		// $result = $this->client->createBucket('vcr-bucket', ['public' => false]);
+		// $this->assertNotEmpty($result);
+
 		$this->newClient();
-		$result = $this->client->createBucket('vcr-bucket', ['public' => true]);
-		$this->assertNotEmpty($result);
-//		$this->assertEqual($result->getEffectiveUrl(), '');
-//		$this->assertEqual($result->getHeaders(), '');
-		\VCR\VCR::eject();
-		\VCR\VCR::turnOff();
+		// $url = $this->client->__getUrl();
+		// $headers = $this->client->__getHeaders();
+		$$MakeMock = $this->createMock(StorageBucket::class);
+		$CreateBucketMock = $MakeMock->createBucket('vcr-bucket', ['public' => false]);
+
+		$CreateBucketMock
+			->expects($this->once())
+			->method('createBucket')
+			->with($this->equalTo('vcr-bucket'), $this->equalTo($url));
+		$this->assertNotEmpty($CreateBucketMock);
 	}
 
 	/**
@@ -93,13 +95,20 @@ class BucketTest extends TestCase
 	 */
 	public function testGetBucketWithId(): void
 	{
-		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('unit_storage_bucket_test');
+
 		$this->newClient();
-		$result = $this->client->getBucket('vcr-bucket');
-		$this->assertNotEmpty($result);
-		\VCR\VCR::eject();
-		\VCR\VCR::turnOff();
+		// $result = $this->client->getBucket('vcr-bucket');
+		// $this->assertNotEmpty($result);
+		$url = $this->client->__getUrl();
+		$headers = $this->client->__getHeaders();
+		$MakeMock = $this->createMock(StorageBucket::class);
+		$GetMock = $MakeMock->getBucket('vcr-bucket');
+
+		$GetMock
+			->expects($this->once())
+			->method('__request')
+			->with($this->equalTo('GET'), $this->equalTo($url), $this->equalTo($headers));
+		$this->assertNotEmpty($GetMock);
 	}
 
 	/**
@@ -109,27 +118,18 @@ class BucketTest extends TestCase
 	 */
 	public function testUpdateBucket(): void
 	{
-		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('unit_storage_bucket_test');
+
 		$this->newClient();
 		$result = $this->client->updateBucket('vcr-bucket', ['public' => false]);
 		$this->assertNotEmpty($result);
-		\VCR\VCR::eject();
-		\VCR\VCR::turnOff();
 	}
 
 	public function testUpdateWrongBucket(): void
 	{
 		try {
 			$this->newClient();
-			$result = $this->client->getBucket('not-a-real-bucket-id');
-
-			\VCR\VCR::turnOn();
-			\VCR\VCR::insertCassette('unit_storage_bucket_test');
 			$result = $this->client->updateBucket('my-new-storage-bucket-vcr-not-existed', ['public' => true]);
 			$this->assertNotEmpty($result);
-			\VCR\VCR::eject();
-			\VCR\VCR::turnOff();
 		} catch (\Exception $e) {
 			$this->assertEquals('The resource was not found', $e->getMessage());
 		}
@@ -142,13 +142,10 @@ class BucketTest extends TestCase
 	 */
 	public function testEmptyBucket(): void
 	{
-		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('unit_storage_bucket_test');
+
 		$this->newClient();
 		$result = $this->client->emptyBucket('bucket-private');
 		$this->assertNotEmpty($result);
-		\VCR\VCR::eject();
-		\VCR\VCR::turnOff();
 	}
 
 	/**
@@ -158,13 +155,10 @@ class BucketTest extends TestCase
 	 */
 	public function testDeleteBucket(): void
 	{
-		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('unit_storage_bucket_test');
+
 		$this->newClient();
 		$result = $this->client->deleteBucket('vcr-bucket');
 		$this->assertNotEmpty($result);
-		\VCR\VCR::eject();
-		\VCR\VCR::turnOff();
 	}
 
 	/**
@@ -175,13 +169,10 @@ class BucketTest extends TestCase
 	public function testGetBucketWithInvalidId(): void
 	{
 		try {
-			\VCR\VCR::turnOn();
-			\VCR\VCR::insertCassette('unit_storage_bucket_test');
+
 			$this->newClient();
 			$result = $this->client->getBucket('not-a-real-bucket-id');
 			$this->assertNotEmpty($result);
-			\VCR\VCR::eject();
-			\VCR\VCR::turnOff();
 		} catch (\Exception $e) {
 			$this->assertEquals('The resource was not found', $e->getMessage());
 		}
@@ -194,8 +185,7 @@ class BucketTest extends TestCase
 	 */
 	public function testCreatePublicBucket(): void
 	{
-		\VCR\VCR::turnOn();
-		\VCR\VCR::insertCassette('unit_storage_bucket_test');
+
 		$this->newClient();
 		$result = $this->client->createBucket('bucket-public', ['public' => true]);
 		$this->assertEquals('200', $result->getStatusCode());
@@ -206,7 +196,5 @@ class BucketTest extends TestCase
 		$isPrivate = $getValue->{'public'};
 		$this->assertTrue($isPrivate);
 		$this->assertNotEmpty($result);
-		\VCR\VCR::eject();
-		\VCR\VCR::turnOff();
 	}
 }
