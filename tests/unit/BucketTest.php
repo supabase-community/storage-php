@@ -95,7 +95,6 @@ class BucketTest extends TestCase
 	 */
 	public function testGetBucketWithId(): void
 	{
-
 		$this->newClient();
 		// $result = $this->client->getBucket('vcr-bucket');
 		// $this->assertNotEmpty($result);
@@ -118,7 +117,6 @@ class BucketTest extends TestCase
 	 */
 	public function testUpdateBucket(): void
 	{
-
 		$this->newClient();
 		$result = $this->client->updateBucket('vcr-bucket', ['public' => false]);
 		$this->assertNotEmpty($result);
@@ -142,7 +140,6 @@ class BucketTest extends TestCase
 	 */
 	public function testEmptyBucket(): void
 	{
-
 		$this->newClient();
 		$result = $this->client->emptyBucket('bucket-private');
 		$this->assertNotEmpty($result);
@@ -155,7 +152,6 @@ class BucketTest extends TestCase
 	 */
 	public function testDeleteBucket(): void
 	{
-
 		$this->newClient();
 		$result = $this->client->deleteBucket('vcr-bucket');
 		$this->assertNotEmpty($result);
@@ -169,7 +165,6 @@ class BucketTest extends TestCase
 	public function testGetBucketWithInvalidId(): void
 	{
 		try {
-
 			$this->newClient();
 			$result = $this->client->getBucket('not-a-real-bucket-id');
 			$this->assertNotEmpty($result);
@@ -185,7 +180,6 @@ class BucketTest extends TestCase
 	 */
 	public function testCreatePublicBucket(): void
 	{
-
 		$this->newClient();
 		$result = $this->client->createBucket('bucket-public', ['public' => true]);
 		$this->assertEquals('200', $result->getStatusCode());
