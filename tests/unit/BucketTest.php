@@ -80,10 +80,9 @@ class BucketTest extends TestCase
 				'Content-Type' => 'application/json',
 			), $headers);
 			$this->assertEquals('{"name":"test","id":"test","public":"true"}', $body);
-		ob_flush();
+
 			return true;
 		});
-
 
 		$mock->createBucket('test', array('public' => true));
 	}
