@@ -82,7 +82,7 @@ class FileTest extends TestCase
 					'Authorization' => 'Bearer 123123123',
 					'Content-Type' => 'application/json',
 					'x-upsert' => 'false',
-					'content-type' => 'text/plain;charset=UTF-8'
+					'content-type' => 'text/plain;charset=UTF-8',
 				],
 				$headers
 			);

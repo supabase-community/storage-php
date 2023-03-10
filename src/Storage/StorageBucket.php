@@ -84,7 +84,7 @@ class StorageBucket
 			'id' => $bucketId,
 			'public' => $options['public'] ? 'true' : 'false',
 		]);
-		$url = $this->url . '/bucket';
+		$url = $this->url.'/bucket';
 		$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 		//$headers = $this->__getHeaders();
 		try {
@@ -108,7 +108,7 @@ class StorageBucket
 	public function getBucket($bucketId): ResponseInterface
 	{
 		try {
-			$url = $this->url . '/bucket/' . $bucketId;
+			$url = $this->url.'/bucket/'.$bucketId;
 			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 			$data = $this->__request('GET', $url, $headers);
 
@@ -127,7 +127,7 @@ class StorageBucket
 	 */
 	public function listBuckets(): ResponseInterface
 	{
-		$url = $this->url . '/bucket';
+		$url = $this->url.'/bucket';
 		$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 		try {
 			$data = $this->__request('GET', $url, $headers);
@@ -157,7 +157,7 @@ class StorageBucket
 				'name' => $bucketId,
 				'public' => $options['public'] ? 'true' : 'false',
 			]);
-			$url = $this->url . '/bucket/' . $bucketId;
+			$url = $this->url.'/bucket/'.$bucketId;
 			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 			$data = $this->__request('POST', $url, $headers, $body);
 
@@ -179,7 +179,7 @@ class StorageBucket
 	public function deleteBucket($bucketId): ResponseInterface
 	{
 		try {
-			$url = $this->url . '/bucket/' . $bucketId;
+			$url = $this->url.'/bucket/'.$bucketId;
 			$headers = $this->__getHeaders();
 			$data = $this->__request('DELETE', $url, $headers);
 
@@ -200,7 +200,7 @@ class StorageBucket
 	public function emptyBucket($bucketId): ResponseInterface
 	{
 		try {
-			$url = $this->url . '/bucket/' . $bucketId . '/empty';
+			$url = $this->url.'/bucket/'.$bucketId.'/empty';
 			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 			$data = $this->__request('POST', $url, $headers);
 
