@@ -67,24 +67,24 @@ class BucketTest extends TestCase
 	 */
 	public function testCreateBucket(): void
 	{
-		$mock = \Mockery::mock('Supabase\Storage\StorageBucket[__request]', 
-			array('123123123', 'mmmmderm')
+		$mock = \Mockery::mock('Supabase\Storage\StorageBucket[__request]',
+			['123123123', 'mmmmderm']
 		);
 
-		$mock->shouldReceive('__request')->withArgs(function($scheme, $url, $headers, $body) { 
+		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
 			$this->assertEquals('POST', $scheme);
 			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/bucket', $url);
-			$this->assertEquals(array(
+			$this->assertEquals([
 				'X-Client-Info' => 'storage-php/0.0.1',
 				'Authorization' => 'Bearer 123123123',
 				'Content-Type' => 'application/json',
-			), $headers);
+			], $headers);
 			$this->assertEquals('{"name":"test","id":"test","public":"true"}', $body);
 
 			return true;
 		});
 
-		$mock->createBucket('test', array('public' => true));
+		$mock->createBucket('test', ['public' => true]);
 	}
 
 	/**
