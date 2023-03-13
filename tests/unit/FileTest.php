@@ -281,12 +281,10 @@ class FileTest extends TestCase
 		);
 		$mockResponse->shouldReceive('getBody')->andReturn('[]');
 
-
 		$mock = \Mockery::mock(
 			'Supabase\Storage\StorageFile[__request]',
 			['123123123', 'mmmmderm', 'someBucket']
 		);
-
 
 		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
 			$this->assertEquals('POST', $scheme);

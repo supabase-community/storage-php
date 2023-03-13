@@ -136,7 +136,7 @@ final class StorageFileTest extends TestCase
 		$resultDelete = $this->client->remove($path);
 		$this->assertEquals('200', $resultDelete->getStatusCode());
 		$this->assertEquals('OK', $resultDelete->getReasonPhrase());
-		$getValue = json_decode((string)$resultDelete->getBody());
+		$getValue = json_decode((string) $resultDelete->getBody());
 		$this->assertNotEmpty($getValue);
 	}
 

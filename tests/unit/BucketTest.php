@@ -94,8 +94,6 @@ class BucketTest extends TestCase
 
 	/**
 	 * Test the request parameters needed for Retrieving the details of an existing Storage bucket function.
-	 *
-	 * 
 	 */
 	public function testGetBucketWithId()
 	{
@@ -120,8 +118,6 @@ class BucketTest extends TestCase
 
 	/**
 	 * Test the request parameters needed for updating a Storage bucket function.
-	 *
-	 * 
 	 */
 	public function testUpdateBucket()
 	{
@@ -148,7 +144,6 @@ class BucketTest extends TestCase
 
 	/**
 	 * Test the request parameters needed for updating a Storage bucket function with error handling for wrong IDs.
-	 * 
 	 */
 	public function testUpdateWrongBucket()
 	{
