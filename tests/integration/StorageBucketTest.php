@@ -37,7 +37,7 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testCreateBucket(): void
 	{
-		$bucketName = 'bucket' . microtime(false);
+		$bucketName = 'bucket'.microtime(false);
 		$result = $this->client->createBucket($bucketName, ['public' => true]);
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
@@ -54,7 +54,7 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testGetBucketWithId(): void
 	{
-		$bucketName = 'bucket' . microtime(false);
+		$bucketName = 'bucket'.microtime(false);
 		$this->client->createBucket($bucketName, ['public' => true]);
 		$bucket = $this->client->getBucket($bucketName);
 		$this->assertEquals('200', $bucket->getStatusCode());
@@ -72,7 +72,7 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testUpdateBucket(): void
 	{
-		$bucketName = 'bucket' . microtime(false);
+		$bucketName = 'bucket'.microtime(false);
 		$result = $this->client->createBucket($bucketName, ['public' => true]);
 		$result = $this->client->updateBucket($bucketName, ['public' => true]);
 		$this->assertEquals('200', $result->getStatusCode());
@@ -88,7 +88,7 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testEmptyBucket()
 	{
-		$bucketName = 'bucket' . microtime(false);
+		$bucketName = 'bucket'.microtime(false);
 		$result = $this->client->createBucket($bucketName, ['public' => true]);
 		$result = $this->client->emptyBucket($bucketName);
 		$this->assertEquals('200', $result->getStatusCode());
@@ -104,7 +104,7 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testDeleteBucket()
 	{
-		$bucketName = 'bucket' . microtime(false);
+		$bucketName = 'bucket'.microtime(false);
 		$result = $this->client->createBucket($bucketName, ['public' => true]);
 		$result = $this->client->deleteBucket($bucketName);
 		$this->assertEquals('200', $result->getStatusCode());
@@ -133,11 +133,11 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testCreatePrivateBucket(): void
 	{
-		$bucketName = 'bucket' . microtime(false);
+		$bucketName = 'bucket'.microtime(false);
 		$result = $this->client->createBucket($bucketName, ['public' => false]);
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
-		$this->assertJsonStringEqualsJsonString('{"name":"' . $bucketName . '"}', (string) $result->getBody());
+		$this->assertJsonStringEqualsJsonString('{"name":"'.$bucketName.'"}', (string) $result->getBody());
 		$resultInfo = $this->client->getBucket($bucketName);
 		$getValue = json_decode((string) $resultInfo->getBody());
 		$isPrivate = $getValue->{'public'};
