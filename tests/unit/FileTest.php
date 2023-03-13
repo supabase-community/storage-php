@@ -315,7 +315,7 @@ class FileTest extends TestCase
 			['123123123', 'mmmmderm', 'someBucket']
 		);
 
-		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
+		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers) {
 			$this->assertEquals('GET', $scheme);
 			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/public/someBucket/exampleFolder/exampleFile.png', $url);
 			$this->assertEquals(
@@ -325,7 +325,6 @@ class FileTest extends TestCase
 				],
 				$headers
 			);
-			$this->assertEquals('', $body);
 
 			return true;
 		});
