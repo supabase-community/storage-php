@@ -24,7 +24,7 @@ class FileTest extends TestCase
 	}
 
 	/**
-	 * Test new storage file.
+	 * Test the request parameters for new storage file.
 	 */
 	public function testNewStorageFile()
 	{
@@ -37,6 +37,9 @@ class FileTest extends TestCase
 		$this->assertEquals($client->__getBucketId(), 'someBucket');
 	}
 
+	/**
+	 * Test the request parameters for a list cket response.
+	 */
 	public function testList()
 	{
 		$mock = \Mockery::mock(
@@ -64,7 +67,7 @@ class FileTest extends TestCase
 	}
 
 	/**
-	 * Test uploads a file to an existing bucket.
+	 * Test the request parameters for uploads a file to an existing bucket.
 	 */
 	public function testUpload()
 	{
@@ -95,7 +98,7 @@ class FileTest extends TestCase
 	}
 
 	/**
-	 * Test Downloads a file from a private bucket.
+	 * Test the request parameters for Downloading a file from a private bucket.
 	 */
 	public function testDownload(): void
 	{
@@ -123,7 +126,7 @@ class FileTest extends TestCase
 	}
 
 	/**
-	 * Test Replaces an existing file at the specified path with a new one.
+	 * Test the request parameters for replacing an existing file at the specified path with a new one.
 	 */
 	public function testUpdate()
 	{
@@ -153,7 +156,7 @@ class FileTest extends TestCase
 	}
 
 	/**
-	 * Test Moves an existing file to a new path in the same bucket.
+	 * Test the request parameters for moving an existing file to a new path in the same bucket.
 	 */
 	public function testMove()
 	{
@@ -182,7 +185,7 @@ class FileTest extends TestCase
 	}
 
 	/**
-	 * Test Copies an existing file to a new path in the same bucket.
+	 * Test the request parameters needed for copying an existing file to a new path in the same bucket.
 	 */
 	public function testCopy()
 	{
@@ -211,7 +214,7 @@ class FileTest extends TestCase
 	}
 
 	/**
-	 * Test Deletes files within the same bucket.
+	 * Test the request parameters needed for deleting files within the same bucket.
 	 */
 	public function testRemove()
 	{
@@ -240,7 +243,7 @@ class FileTest extends TestCase
 	}
 
 	/**
-	 * Test Creates a signed URL. Use a signed URL to share a file for a fixed amount of time.
+	 * Test the request parameters needed for creating a signed URL. Use a signed URL to share a file for a fixed amount of time.
 	 */
 	public function testCreateSignedUrl()
 	{
@@ -269,14 +272,21 @@ class FileTest extends TestCase
 	}
 
 	/**
-	 * Test Creates a signed URL. Use a signed URL to share a file for a fixed amount of time.
+	 * Test the request parameters needed for creating a signed URL. Use a signed URL to share a file for a fixed amount of time.
 	 */
 	public function testCreateSignedUrls()
 	{
+		$mockResponse = \Mockery::mock(
+			'Psr\Http\Message\ResponseInterface[getBody]'
+		);
+		$mockResponse->shouldReceive('getBody')->andReturn('[]');
+
+
 		$mock = \Mockery::mock(
 			'Supabase\Storage\StorageFile[__request]',
 			['123123123', 'mmmmderm', 'someBucket']
 		);
+
 
 		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
 			$this->assertEquals('POST', $scheme);
@@ -292,13 +302,13 @@ class FileTest extends TestCase
 			$this->assertEquals('{"paths":"exampleFolder\/exampleFile.png","expiresIn":60,"options":"download"}', $body);
 
 			return true;
-		});
+		})->andReturn($mockResponse);
 
-		$mock->createSignedUrls('exampleFolder/exampleFile.png', 60, 'download');
+		$data = $mock->createSignedUrls('exampleFolder/exampleFile.png', 60, 'download');
 	}
 
 	/**
-	 * Test Creates a public URL. Use a signed URL to share a file for a fixed amount of time.
+	 * Test the request parameters needed for creating a public URL. Use a signed URL to share a file for a fixed amount of time.
 	 */
 	public function testGetPublicUrl()
 	{

@@ -39,7 +39,7 @@ class BucketTest extends TestCase
 	}
 
 	/**
-	 * Test Retrieves the details of all Storage buckets within an existing project function.
+	 * Test the request parameters needed for Retrieving the details of all Storage buckets within an existing project function.
 	 *
 	 * @return void
 	 */
@@ -65,7 +65,7 @@ class BucketTest extends TestCase
 	}
 
 	/**
-	 * Test Creates a new Storage bucket function.
+	 * Test the request parameters needed for creating a new Storage bucket function.
 	 *
 	 * @return void
 	 */
@@ -93,9 +93,9 @@ class BucketTest extends TestCase
 	}
 
 	/**
-	 * Test Retrieves the details of an existing Storage bucket function.
+	 * Test the request parameters needed for Retrieving the details of an existing Storage bucket function.
 	 *
-	 * @return void
+	 * 
 	 */
 	public function testGetBucketWithId()
 	{
@@ -119,9 +119,9 @@ class BucketTest extends TestCase
 	}
 
 	/**
-	 * Test Updates a Storage bucket function.
+	 * Test the request parameters needed for updating a Storage bucket function.
 	 *
-	 * @return void
+	 * 
 	 */
 	public function testUpdateBucket()
 	{
@@ -146,6 +146,10 @@ class BucketTest extends TestCase
 		$mock->updateBucket('test', ['public' => true]);
 	}
 
+	/**
+	 * Test the request parameters needed for updating a Storage bucket function with error handling for wrong IDs.
+	 * 
+	 */
 	public function testUpdateWrongBucket()
 	{
 		try {
@@ -174,7 +178,7 @@ class BucketTest extends TestCase
 	}
 
 	/**
-	 * Test Removes all objects inside a single bucket function.
+	 * Test the request parameters needed for removing all objects inside a single bucket function.
 	 *
 	 * @return void
 	 */
@@ -200,7 +204,7 @@ class BucketTest extends TestCase
 	}
 
 	/**
-	 * Test Deletes an existing bucket function.
+	 * Test the request parameters needed for removing  an existing bucket function.
 	 *
 	 * @return void
 	 */
@@ -226,7 +230,7 @@ class BucketTest extends TestCase
 	}
 
 	/**
-	 * Test Invailid bucket id function.
+	 * Test error handling for getting an Invailid bucket id function.
 	 *
 	 * @return void
 	 */
@@ -255,23 +259,4 @@ class BucketTest extends TestCase
 			$this->assertEquals('Failed asserting that two strings are equal.', $e->getMessage());
 		}
 	}
-
-	// /**  REVIEW IF THIS IS NEEDED
-	//  * Test Creates a new Storage public bucket function.
-	//  *
-	//  * @return void
-	//  */
-	// public function testCreatePublicBucket(): void
-	// {
-	// 	$this->newClient();
-	// 	$result = $this->client->createBucket('bucket-public', ['public' => true]);
-	// 	$this->assertEquals('200', $result->getStatusCode());
-	// 	$this->assertEquals('OK', $result->getReasonPhrase());
-	// 	$this->assertJsonStringEqualsJsonString('{"name":"bucket-public"}', (string) $result->getBody());
-	// 	$resultInfo = $this->client->getBucket('bucket-public');
-	// 	$getValue = json_decode((string) $resultInfo->getBody());
-	// 	$isPrivate = $getValue->{'public'};
-	// 	$this->assertTrue($isPrivate);
-	// 	$this->assertNotEmpty($result);
-	// }
 }

@@ -136,7 +136,8 @@ final class StorageFileTest extends TestCase
 		$resultDelete = $this->client->remove($path);
 		$this->assertEquals('200', $resultDelete->getStatusCode());
 		$this->assertEquals('OK', $resultDelete->getReasonPhrase());
-		//$this->assertJsonStringEqualsJsonString('{"message": "Successfully deleted"}', (string) $resultDelete->getBody());
+		$getValue = json_decode((string)$resultDelete->getBody());
+		$this->assertNotEmpty($getValue);
 	}
 
 	/**
@@ -156,6 +157,9 @@ final class StorageFileTest extends TestCase
 		$result = $this->client->remove('testFile.png');
 	}
 
+	/**
+	 * Test Creates a signed URL. Use a signed URL to share a file for a fixed amount of time from a public bucket.
+	 */
 	public function testGetPublicUrl(): void
 	{
 		$path = 'testFile.png';
