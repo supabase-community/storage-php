@@ -279,7 +279,9 @@ class FileTest extends TestCase
 		$mockResponse = \Mockery::mock(
 			'Psr\Http\Message\ResponseInterface[getBody]'
 		);
-		$mockResponse->shouldReceive('getBody')->andReturn('[]');
+		$mockResponse->shouldReceive('getBody')->andReturn('
+			[{"error":null,"path":"test-file.jpg","signedURL":"/object/sign/test-bucket/test-file.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0ZXN0LWJ1Y2tldC90ZXN0LWZpbGUuanBnIiwiaWF0IjoxNjc4NzQ1ODY4LCJleHAiOjE2Nzg3NDU5Mjh9.47gIm3sPofALRdJEy3nR-cgnie2boloezGJkDnKy_5g"},{"error":"Either the object does not exist or you do not have access to it","path":"path/to/file-base64.png","signedURL":null}]
+		');
 
 		$mock = \Mockery::mock(
 			'Supabase\Storage\StorageFile[__request]',
@@ -303,6 +305,11 @@ class FileTest extends TestCase
 		})->andReturn($mockResponse);
 
 		$data = $mock->createSignedUrls('exampleFolder/exampleFile.png', 60, 'download');
+		$this->assertCount(2, $data);
+		$this->assertCount(3, $data[0]);
+		$this->assertCount(3, $data[1]);
+		$this->assertEqualsCanonicalizing([null, 'https://mmmmderm.supabase.co/storage/v1/object/sign/test-bucket/test-file.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0ZXN0LWJ1Y2tldC90ZXN0LWZpbGUuanBnIiwiaWF0IjoxNjc4NzQ1ODY4LCJleHAiOjE2Nzg3NDU5Mjh9.47gIm3sPofALRdJEy3nR-cgnie2boloezGJkDnKy_5g', 'test-file.jpg'], $data[0]);
+		$this->assertEqualsCanonicalizing('Either the object does not exist or you do not have access to it', 'Either the object does not exist or you do not have access to it',  '', $data[1]);
 	}
 
 	/**
