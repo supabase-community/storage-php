@@ -309,7 +309,7 @@ class FileTest extends TestCase
 		$this->assertCount(3, $data[0]);
 		$this->assertCount(3, $data[1]);
 		$this->assertEqualsCanonicalizing([null, 'https://mmmmderm.supabase.co/storage/v1/object/sign/test-bucket/test-file.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0ZXN0LWJ1Y2tldC90ZXN0LWZpbGUuanBnIiwiaWF0IjoxNjc4NzQ1ODY4LCJleHAiOjE2Nzg3NDU5Mjh9.47gIm3sPofALRdJEy3nR-cgnie2boloezGJkDnKy_5g', 'test-file.jpg'], $data[0]);
-		$this->assertEqualsCanonicalizing('Either the object does not exist or you do not have access to it', 'Either the object does not exist or you do not have access to it',  '', $data[1]);
+		$this->assertEqualsCanonicalizing('Either the object does not exist or you do not have access to it', 'Either the object does not exist or you do not have access to it', '', $data[1]);
 	}
 
 	/**
