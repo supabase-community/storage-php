@@ -27,6 +27,10 @@
         {
             "name": "Adolfo",
             "email": "adolfo@zerocopylabs.com"
+        },
+        {
+            "name": "Luis",
+            "email": "luis@zerocopylabs.com"
         }
     ],
     "require-dev": {
