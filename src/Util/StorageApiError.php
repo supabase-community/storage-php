@@ -5,6 +5,7 @@ namespace Supabase\Util;
 class StorageApiError extends StorageError
 {
 	protected int $status;
+	public string $name = 'StorageError';
 
 	public function __construct($message, $status)
 	{

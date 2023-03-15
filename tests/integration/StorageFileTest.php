@@ -24,137 +24,150 @@ final class StorageFileTest extends TestCase
 
 	/**
 	 * Test uploads a file to an existing bucket.
-	 *
-	 * @dataProvider additionProvider
 	 */
-	public function testUpload(string $path, string $file_path, array $options): void
+	public function testUpload(): void
 	{
-		//add try catch and throw error
+		$path = 'testFile.png'.microtime(false);
+		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
+		$options = ['public' => true];
 		$result = $this->client->upload($path, $file_path, $options);
-		echo $result->getStatusCode()."\n";
-		echo $result->getReasonPhrase()."\n";
-		var_dump((string) $result->getBody());
-		var_dump(json_decode((string) $result->getBody()));
-
-		ob_flush();
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
-		$this->assertJsonStringEqualsJsonString('{"Key":"test-bucket/testFile.png"}', (string) $result->getBody());
-		// $this->assertNull($result); //['error']
-		// $this->assertArrayHasKey('data', $result);
+		$this->assertJsonStringEqualsJsonString('{"Key":"test-bucket/'.$path.'"}', (string) $result->getBody());
+		$result = $this->client->remove($path);
 	}
 
 	/**
 	 * Test Downloads a file from a private bucket.
-	 *
-	 * @dataProvider additionProvider
 	 */
-	public function testDownload(string $path, string $file_path, array $options): void
+	public function testDownload(): void
 	{
+		$path = 'testFile.png'.microtime(false);
+		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
+		$options = ['public' => true];
+		$result = $this->client->upload($path, $file_path, $options);
 		$result = $this->client->download($path, $options);
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		// $output = $result->getBody()->getContents();
+		// file_put_contents('file.png', $output);
+		$result = $this->client->remove($path);
 	}
 
 	/**
 	 * Test Downloads a file from a private bucket.
-	 *
-	 * @dataProvider additionProviderList
 	 */
-	public function testList(string $path): void
+	public function testList(): void
 	{
+		$path = '';
 		$result = $this->client->list($path);
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertNotEmpty($result->getBody());
 	}
 
 	/**
 	 * Test Replaces an existing file at the specified path with a new one.
-	 *
-	 * @dataProvider additionProvider
 	 */
-	public function testUpdate(string $path, string $file_path, array $options): void
+	public function testUpdate(): void
 	{
+		$path = 'testFile.png'.microtime(false);
+		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
+		$options = ['public' => true];
+		$result = $this->client->upload($path, $file_path, $options);
 		$result = $this->client->update($path, $file_path, $options);
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"Key":"test-bucket/'.$path.'"}', (string) $result->getBody());
+		$result = $this->client->remove($path);
 	}
 
 	/**
 	 * Test Moves an existing file to a new path in the same bucket.
-	 *
-	 * @dataProvider additionProvider
 	 */
-	public function testMove(string $from_path, string $to_path): void
+	public function testMove(): void
 	{
-		$result = $this->client->move($from_path, $to_path);
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
+		$path = 'testFile.png'.microtime(false);
+		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
+		$options = ['public' => true];
+		$result = $this->client->upload($path, $file_path, $options);
+		$bucket_id = 'test-bucket';
+		$from_path = $path;
+		$to_path = 'path/'.$path;
+		$result = $this->client->move($bucket_id, $from_path, $to_path);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"message": "Successfully moved"}', (string) $result->getBody());
+		$result = $this->client->remove($path);
 	}
 
 	/**
 	 * Test Copies an existing file to a new path in the same bucket.
-	 *
-	 * @dataProvider additionProvider
 	 */
-	public function testCopy(string $from_path, string $to_path): void
+	public function testCopy(): void
 	{
-		$result = $this->client->copy($from_path, $to_path);
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
+		$path = 'testFile.png'.microtime(false);
+		$bucket_id = 'test-bucket';
+		$to_path = 'path/'.$path;
+		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
+		$options = ['public' => true];
+		$result = $this->client->upload($path, $file_path, $options);
+		$result = $this->client->copy($path, $bucket_id, $to_path);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"Key": "test-bucket/path/'.$path.'"}', (string) $result->getBody());
+		$result = $this->client->remove($path);
+		$result = $this->client->remove($to_path);
 	}
 
 	/**
 	 * Test Deletes files within the same bucket.
-	 *
-	 * @dataProvider additionProvider
 	 */
-	public function testRemove($path): void
+	public function testRemove(): void
 	{
-		$result = $this->client->remove($path);
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
+		$path = 'testFile.png'.microtime(false);
+		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
+		$options = ['public' => true];
+		$result = $this->client->upload($path, $file_path, $options);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$resultDelete = $this->client->remove($path);
+		$this->assertEquals('200', $resultDelete->getStatusCode());
+		$this->assertEquals('OK', $resultDelete->getReasonPhrase());
+		$getValue = json_decode((string) $resultDelete->getBody());
+		$this->assertNotEmpty($getValue);
 	}
 
 	/**
 	 * Test Creates a signed URL. Use a signed URL to share a file for a fixed amount of time.
-	 *
-	 * @dataProvider additionProviderSignedUrl
 	 */
-	public function testCreateSignedUrl($path, $expires, $options): void
+	public function testCreateSignedUrl(): void
 	{
-		$result = $this->client->createSignedUrl($path, $expires, $options);
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
-	}
-
-	public function testGetPublicUrl($path, $expires, $options): void
-	{
-		$result = $this->client->getPublicUrl($path, $options);
-		$this->assertArrayHasKey('data', $result);
-	}
-
-	public static function additionProvider(): array
-	{
-		return [
-			['testFile.png', 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w', ['public' => true]],
-		];
-	}
-
-	public static function additionProviderSignedUrl(): array
-	{
-		return [
-			['public/image.jpg', 60, ['public' => true]],
-		];
+		$path = 'testFile.png'.microtime(false);
+		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
+		$options = ['public' => true];
+		$result = $this->client->upload($path, $file_path, $options);
+		$expires = 60;
+		$result = $this->client->createSignedUrl($path, $expires);
+		echo (string) $result->getBody();
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$result = $this->client->remove($path);
 	}
 
 	/**
-	 * Additional data provider for List.
+	 * Test Creates a signed URL. Use a signed URL to share a file for a fixed amount of time from a public bucket.
 	 */
-	public static function additionProviderList(): array
+	public function testGetPublicUrl(): void
 	{
-		return [
-			['new-directory'],
-		];
+		$path = 'testFile.png'.microtime(false);
+		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
+		$options = ['public' => true];
+		$result = $this->client->upload($path, $file_path, $options);
+		$options = ['download'];
+		$result = $this->client->getPublicUrl($path, $options);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$result = $this->client->remove($path);
 	}
 }

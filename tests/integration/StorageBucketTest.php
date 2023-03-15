@@ -15,7 +15,7 @@ final class StorageBucketTest extends TestCase
 		$dotenv->load();
 		$api_key = getenv('API_KEY');
 		$reference_id = getenv('REFERENCE_ID');
-		$this->client = new  \Supabase\Storage\StorageClient($api_key, $reference_id);
+		$this->client = new  \Supabase\Storage\StorageBucket($api_key, $reference_id);
 	}
 
 	/**
@@ -26,7 +26,8 @@ final class StorageBucketTest extends TestCase
 	public function testListBucket(): void
 	{
 		$result = $this->client->listBuckets();
-		$this->assertGreaterThan(0, count($result));
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
 	}
 
 	/**
@@ -36,10 +37,14 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testCreateBucket(): void
 	{
-		$result = $this->client->createBucket('my-new-storage-bucket');
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
-		$this->assertEquals($result['data']['id'], 'my-new-storage-bucket');
+		$bucketName = 'bucket'.microtime(false);
+		$result = $this->client->createBucket($bucketName, ['public' => true]);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$getValue = json_decode((string) $result->getBody());
+		$obj = $getValue->{'name'};
+		$this->assertEquals($bucketName, $obj);
+		$result = $this->client->deleteBucket($bucketName);
 	}
 
 	/**
@@ -49,9 +54,15 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testGetBucketWithId(): void
 	{
-		$result = $this->client->getBucket('test');
-		$this->assertArrayHasKey('data', $result);
-		$this->assertNull($result);
+		$bucketName = 'bucket'.microtime(false);
+		$this->client->createBucket($bucketName, ['public' => true]);
+		$bucket = $this->client->getBucket($bucketName);
+		$this->assertEquals('200', $bucket->getStatusCode());
+		$this->assertEquals('OK', $bucket->getReasonPhrase());
+		$getValue = json_decode((string) $bucket->getBody());
+		$obj = $getValue->{'id'};
+		$this->assertEquals($bucketName, $obj);
+		$this->client->deleteBucket($bucketName);
 	}
 
 	/**
@@ -61,22 +72,13 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testUpdateBucket(): void
 	{
-		$result = $this->client->updateBucket('my-new-storage-bucket-public', ['public' => false]);
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
-		$this->assertEquals($result['data'], 'my-new-storage-bucket-public');
-	}
-
-	/**
-	 * Test Deletes an existing bucket function.
-	 *
-	 * @return void
-	 */
-	public function testDeleteBucket()
-	{
-		$storage = new \Supabase\Storage\StorageClient();
-		$result = $storage->deleteBucket('my-new-storage-bucket-public');
-		$this->assertNull($result['error']);
+		$bucketName = 'bucket'.microtime(false);
+		$result = $this->client->createBucket($bucketName, ['public' => true]);
+		$result = $this->client->updateBucket($bucketName, ['public' => true]);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"message":"Successfully updated"}', (string) $result->getBody());
+		$result = $this->client->deleteBucket($bucketName);
 	}
 
 	/**
@@ -86,10 +88,28 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testEmptyBucket()
 	{
-		$result = $this->client->emptyBucket('my-new-storage-bucket-public');
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
-		$this->assertEquals($result['data'], 'my-new-storage-bucket-public');
+		$bucketName = 'bucket'.microtime(false);
+		$result = $this->client->createBucket($bucketName, ['public' => true]);
+		$result = $this->client->emptyBucket($bucketName);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"message":"Successfully emptied"}', (string) $result->getBody());
+		$result = $this->client->deleteBucket($bucketName);
+	}
+
+	/**
+	 * Test Deletes an existing bucket function.
+	 *
+	 * @return void
+	 */
+	public function testDeleteBucket()
+	{
+		$bucketName = 'bucket'.microtime(false);
+		$result = $this->client->createBucket($bucketName, ['public' => true]);
+		$result = $this->client->deleteBucket($bucketName);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"message":"Successfully deleted"}', (string) $result->getBody());
 	}
 
 	/**
@@ -99,9 +119,11 @@ final class StorageBucketTest extends TestCase
 	 */
 	public function testGetBucketWithInvalidId(): void
 	{
-		$result = $this->client->getBucket('not-a-real-bucket-id');
-		$this->assertArrayHasKey('error', $result);
-		$this->assertNull($result['data']);
+		try {
+			$this->client->getBucket('not-a-real-bucket-id');
+		} catch (\Exception $e) {
+			$this->assertEquals('The resource was not found', $e->getMessage());
+		}
 	}
 
 	/**
@@ -109,11 +131,17 @@ final class StorageBucketTest extends TestCase
 	 *
 	 * @return void
 	 */
-	public function testCreatePublicBucket(): void
+	public function testCreatePrivateBucket(): void
 	{
-		$result = $this->client->createBucket('my-new-storage-bucket-public', ['public' => true]);
-		$this->assertNull($result['error']);
-		$this->assertArrayHasKey('data', $result);
-		$this->assertEquals($result['data'], 'my-new-storage-bucket-public');
+		$bucketName = 'bucket'.microtime(false);
+		$result = $this->client->createBucket($bucketName, ['public' => false]);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"name":"'.$bucketName.'"}', (string) $result->getBody());
+		$resultInfo = $this->client->getBucket($bucketName);
+		$getValue = json_decode((string) $resultInfo->getBody());
+		$isPrivate = $getValue->{'public'};
+		$this->assertFalse($isPrivate);
+		$result = $this->client->deleteBucket($bucketName);
 	}
 }

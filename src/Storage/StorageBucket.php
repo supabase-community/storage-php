@@ -1,4 +1,5 @@
 <?php
+
 /**
  * A PHP  class  client library to interact with Supabase Storage.
  *
@@ -33,6 +34,22 @@ class StorageBucket
 	protected array $headers = [];
 
 	/**
+	 * Get the url.
+	 */
+	public function __getUrl(): string
+	{
+		return $this->url;
+	}
+
+	/**
+	 * Get the headers.
+	 */
+	public function __getHeaders(): array
+	{
+		return $this->headers;
+	}
+
+	/**
 	 * StorageBucket constructor.
 	 *
 	 * @throws Exception
@@ -42,6 +59,11 @@ class StorageBucket
 		$headers = ['Authorization' => "Bearer {$api_key}"];
 		$this->url = "https://{$reference_id}.supabase.co/storage/v1";
 		$this->headers = array_merge(Constants::getDefaultHeaders(), $headers);
+	}
+
+	public function __request($method, $url, $headers, $body = null): ResponseInterface
+	{
+		return Request::request($method, $url, $headers, $body);
 	}
 
 	/**
@@ -55,21 +77,22 @@ class StorageBucket
 	 *
 	 * @throws Exception
 	 */
-	public function createBucket($bucketId, $options = ['public' => false]): ResponseInterface
+	public function createBucket($bucketId, $options): ResponseInterface
 	{
+		$body = json_encode([
+			'name' => $bucketId,
+			'id' => $bucketId,
+			'public' => $options['public'] ? 'true' : 'false',
+		]);
+		$url = $this->url.'/bucket';
+		$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
+		//$headers = $this->__getHeaders();
 		try {
-			$url = $this->url.'/bucket';
-			$body = json_encode([
-				'id' => $bucketId,
-				'name' => $bucketId,
-				'public' => $options['public'],
-			]);
-			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
-			$data = Request::request('POST', $url, $headers, $body);
+			$data = $this->__request('POST', $url, $headers, $body);
 
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 
@@ -86,11 +109,12 @@ class StorageBucket
 	{
 		try {
 			$url = $this->url.'/bucket/'.$bucketId;
-			$data = Request::request('GET', $url, $this->headers);
+			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
+			$data = $this->__request('GET', $url, $headers);
 
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 
@@ -104,13 +128,13 @@ class StorageBucket
 	public function listBuckets(): ResponseInterface
 	{
 		$url = $this->url.'/bucket';
-
+		$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 		try {
-			$data = Request::request('GET', $url, $this->headers);
+			$data = $this->__request('GET', $url, $headers);
 
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 
@@ -135,11 +159,11 @@ class StorageBucket
 			]);
 			$url = $this->url.'/bucket/'.$bucketId;
 			$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
-			$data = Request::request('PUT', $url, $headers, $body);
+			$data = $this->__request('PUT', $url, $headers, $body);
 
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 
@@ -156,11 +180,12 @@ class StorageBucket
 	{
 		try {
 			$url = $this->url.'/bucket/'.$bucketId;
-			$data = Request::request('DELETE', $url, $this->headers);
+			$headers = $this->__getHeaders();
+			$data = $this->__request('DELETE', $url, $headers);
 
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 
@@ -176,11 +201,12 @@ class StorageBucket
 	{
 		try {
 			$url = $this->url.'/bucket/'.$bucketId.'/empty';
-			$data = Request::request('POST', $url, $this->headers);
+			$headers = $this->__getHeaders();
+			$data = $this->__request('POST', $url, $headers);
 
 			return $data;
 		} catch (\Exception $e) {
-			return $e;
+			throw $e;
 		}
 	}
 }
