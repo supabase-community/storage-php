@@ -5,7 +5,7 @@ use Supabase\Storage\StorageFile;
 
 $bucket_id = 'test-bucket';
 
-$client = new StorageFile($api_key, $reference_id, $bucket_id);
+$client = new StorageFile($api_key, $reference_id, $bucket_id, $domain, $scheme, $path);
 $result = $client->download('path/to/file.png');
 $output = $result->getBody()->getContents();
 file_put_contents('file.png', $output);

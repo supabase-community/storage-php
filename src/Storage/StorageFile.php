@@ -81,10 +81,10 @@ class StorageFile
 	 *
 	 * @throws Exception
 	 */
-	public function __construct($api_key, $reference_id, $bucketId)
+	public function __construct($api_key, $reference_id, $bucketId, $domain, $scheme, $path)
 	{
 		$headers = ['Authorization' => "Bearer {$api_key}"];
-		$this->url = "https://{$reference_id}.supabase.co/storage/v1";
+		$this->url = !empty($reference_id) ? "{$scheme}://{$reference_id}.{$domain}{$path}" : "{$scheme}://{$domain}{$path}";
 		$this->headers = array_merge(Constants::getDefaultHeaders(), $headers);
 		$this->bucketId = $bucketId;
 	}

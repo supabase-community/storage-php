@@ -54,10 +54,10 @@ class StorageBucket
 	 *
 	 * @throws Exception
 	 */
-	public function __construct($api_key, $reference_id)
+	public function __construct($api_key, $reference_id, $domain, $scheme, $path)
 	{
 		$headers = ['Authorization' => "Bearer {$api_key}"];
-		$this->url = "https://{$reference_id}.supabase.co/storage/v1";
+		$this->url = !empty($reference_id) ? "{$scheme}://{$reference_id}.{$domain}{$path}" : "{$scheme}://{$domain}{$path}";
 		$this->headers = array_merge(Constants::getDefaultHeaders(), $headers);
 	}
 
@@ -85,6 +85,7 @@ class StorageBucket
 			'public' => $options['public'] ? 'true' : 'false',
 		]);
 		$url = $this->url.'/bucket';
+		print_r($url);
 		$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
 		//$headers = $this->__getHeaders();
 		try {

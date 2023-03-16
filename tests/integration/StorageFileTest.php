@@ -19,7 +19,10 @@ final class StorageFileTest extends TestCase
 		$api_key = getenv('API_KEY');
 		$reference_id = getenv('REFERENCE_ID');
 		$bucket_id = 'test-bucket';
-		$this->client = new  \Supabase\Storage\StorageFile($api_key, $reference_id, $bucket_id);
+		$scheme = 'https';
+		$domain = 'supabase.co';
+		$path = '/storage/v1';
+		$this->client = new  \Supabase\Storage\StorageFile($api_key, $reference_id, $bucket_id, $domain, $scheme, $path);
 	}
 
 	/**

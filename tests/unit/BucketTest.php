@@ -20,7 +20,10 @@ class BucketTest extends TestCase
 	{
 		$api_key = getenv('API_KEY');
 		$reference_id = getenv('REFERENCE_ID');
-		$this->client = new  \Supabase\Storage\StorageClient($api_key, $reference_id);
+		$scheme = 'https';
+		$domain = 'supabase.co';
+		$path = '/storage/v1';
+		$this->client = new  \Supabase\Storage\StorageClient($api_key, $reference_id, $domain, $scheme, $path);
 	}
 
 	/**
