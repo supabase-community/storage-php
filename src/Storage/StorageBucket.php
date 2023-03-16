@@ -57,7 +57,7 @@ class StorageBucket
 	public function __construct($api_key, $reference_id, $domain, $scheme, $path)
 	{
 		$headers = ['Authorization' => "Bearer {$api_key}"];
-		$this->url = !empty($reference_id) ? "{$scheme}://{$reference_id}.{$domain}{$path}" : "{$scheme}://{$domain}{$path}";
+		$this->url = ! empty($reference_id) ? "{$scheme}://{$reference_id}.{$domain}{$path}" : "{$scheme}://{$domain}{$path}";
 		$this->headers = array_merge(Constants::getDefaultHeaders(), $headers);
 	}
 
