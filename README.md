@@ -21,10 +21,7 @@ use Supabase\Storage;
 
 $api_key = getenv('API_KEY');
 $reference_id = getenv('REFERENCE_ID');
-$scheme = 'http';
-$domain = 'localhost';
-$path = '';
-$client = new  StorageClient($api_key, $reference_id, $domain, $scheme, $path);
+$client = new  StorageClient($api_key, $reference_id);
 ```
 
 ### Handling resources
@@ -81,10 +78,7 @@ use Supabase\Storage\StorageFile;
 $api_key = getenv('API_KEY');
 $reference_id = getenv('REFERENCE_ID');
 $bucket_id = 'test-bucket';
-$scheme = 'http';
-$domain = 'localhost';
-$path = '';
-$client = new  StorageFile($api_key, $reference_id, $bucket_id, $domain, $scheme, $path);
+$client = new  StorageFile($api_key, $reference_id, $bucket_id);
 ```
 
 - Upload a file to an existing bucket:

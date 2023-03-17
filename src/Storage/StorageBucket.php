@@ -51,10 +51,16 @@ class StorageBucket
 
 	/**
 	 * StorageBucket constructor.
-	 *
+	 * 
+	 * @param string $api_key The anon or service role key
+	 * @param string $reference_id Reference ID
+	 * @param string $domain The domain pointing to api
+	 * @param string $scheme The api sheme
+	 * @param string $path The path to api
+	 * 
 	 * @throws Exception
 	 */
-	public function __construct($api_key, $reference_id, $domain, $scheme, $path)
+	public function __construct($api_key, $reference_id, $domain = 'supabase.co', $scheme = 'https', $path = '/storage/v1')
 	{
 		$headers = ['Authorization' => "Bearer {$api_key}"];
 		$this->url = ! empty($reference_id) ? "{$scheme}://{$reference_id}.{$domain}{$path}" : "{$scheme}://{$domain}{$path}";
@@ -85,9 +91,7 @@ class StorageBucket
 			'public' => $options['public'] ? 'true' : 'false',
 		]);
 		$url = $this->url.'/bucket';
-		print_r($url);
 		$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
-		//$headers = $this->__getHeaders();
 		try {
 			$data = $this->__request('POST', $url, $headers, $body);
 

@@ -15,10 +15,7 @@ final class StorageBucketTest extends TestCase
 		$dotenv->load();
 		$api_key = getenv('API_KEY');
 		$reference_id = getenv('REFERENCE_ID');
-		$scheme = 'https';
-		$domain = 'supabase.co';
-		$path = '/storage/v1';
-		$this->client = new  \Supabase\Storage\StorageBucket($api_key, $reference_id, $domain, $scheme, $path);
+		$this->client = new  \Supabase\Storage\StorageBucket($api_key, $reference_id);
 	}
 
 	/**
