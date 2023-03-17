@@ -51,13 +51,13 @@ class StorageBucket
 
 	/**
 	 * StorageBucket constructor.
-	 * 
-	 * @param string $api_key The anon or service role key
-	 * @param string $reference_id Reference ID
-	 * @param string $domain The domain pointing to api
-	 * @param string $scheme The api sheme
-	 * @param string $path The path to api
-	 * 
+	 *
+	 * @param  string  $api_key  The anon or service role key
+	 * @param  string  $reference_id  Reference ID
+	 * @param  string  $domain  The domain pointing to api
+	 * @param  string  $scheme  The api sheme
+	 * @param  string  $path  The path to api
+	 *
 	 * @throws Exception
 	 */
 	public function __construct($api_key, $reference_id, $domain = 'supabase.co', $scheme = 'https', $path = '/storage/v1')
