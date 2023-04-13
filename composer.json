@@ -41,6 +41,8 @@
     },
     "require": {
         "guzzlehttp/guzzle": "7.5",
-        "vlucas/phpdotenv": "5.5"
+        "vlucas/phpdotenv": "5.5",
+        "bayfrontmedia/php-mime-types": "^2.0",
+        "league/uri": "^6.0"
     }
 }

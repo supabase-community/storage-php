@@ -16,6 +16,11 @@ class BucketTest extends TestCase
 		$dotenv->load();
 	}
 
+	public function tearDown(): void {
+		parent::tearDown();
+		\Mockery::close();
+	}
+
 	public function newClient()
 	{
 		$api_key = getenv('API_KEY');
@@ -34,6 +39,7 @@ class BucketTest extends TestCase
 		$this->assertEquals($client->__getUrl(), 'https://some_ref_id.supabase.co/storage/v1');
 		$this->assertEquals($client->__getHeaders(), [
 			'X-Client-Info' => 'storage-php/0.0.1',
+			'Content-Type' => 'application/json',
 			'Authorization' => 'Bearer somekey',
 		]);
 	}
@@ -190,6 +196,7 @@ class BucketTest extends TestCase
 			$this->assertEquals([
 				'X-Client-Info' => 'storage-php/0.0.1',
 				'Authorization' => 'Bearer 123123123',
+				'Content-Type' => 'application/json',
 			], $headers);
 
 			return true;
@@ -215,6 +222,7 @@ class BucketTest extends TestCase
 			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/bucket/test', $url);
 			$this->assertEquals([
 				'X-Client-Info' => 'storage-php/0.0.1',
+				'Content-Type' => 'application/json',
 				'Authorization' => 'Bearer 123123123',
 			], $headers);
 
