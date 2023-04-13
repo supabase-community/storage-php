@@ -15,7 +15,8 @@ class FileTest extends TestCase
 		$dotenv->load();
 	}
 
-	public function tearDown(): void {
+	public function tearDown(): void
+	{
 		parent::tearDown();
 		\Mockery::close();
 	}
@@ -120,7 +121,6 @@ class FileTest extends TestCase
 			'Supabase\Storage\StorageFile[__request]',
 			['123123123', 'mmmmderm', 'someBucket']
 		);
-
 
 		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers) {
 			$this->assertEquals('GET', $scheme);

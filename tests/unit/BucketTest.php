@@ -16,7 +16,8 @@ class BucketTest extends TestCase
 		$dotenv->load();
 	}
 
-	public function tearDown(): void {
+	public function tearDown(): void
+	{
 		parent::tearDown();
 		\Mockery::close();
 	}

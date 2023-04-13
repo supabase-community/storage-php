@@ -2,10 +2,9 @@
 
 namespace Supabase\Util;
 
-
-class FileHandler 
+class FileHandler
 {
-	public static function getFileContents($file): String 
+	public static function getFileContents($file): string
 	{
 		return file_get_contents($file);
 	}

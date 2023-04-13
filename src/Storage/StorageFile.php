@@ -8,12 +8,12 @@
 
 namespace Supabase\Storage;
 
-use Psr\Http\Message\ResponseInterface;
-use Supabase\Util\Constants;
-use Supabase\Util\Request;
-use Supabase\Util\FileHandler;
 use Bayfront\MimeTypes\MimeType;
 use League\Uri\Http;
+use Psr\Http\Message\ResponseInterface;
+use Supabase\Util\Constants;
+use Supabase\Util\FileHandler;
+use Supabase\Util\Request;
 
 class StorageFile
 {
@@ -103,7 +103,7 @@ class StorageFile
 	/**
 	 * Lists all the files within a bucket.
 	 *
-	 * @param  string $path The folder path.
+	 * @param  string  $path  The folder path.
 	 * @param  array  $options  The options for list files.
 	 * @return ResponseInterface
 	 *
@@ -120,6 +120,7 @@ class StorageFile
 			$body = array_merge($prefix, $opts);
 
 			$data = $this->__request('POST', $this->url.'/object/list/'.$this->bucketId, $headers, json_encode($body));
+
 			return $data;
 		} catch (\Exception $e) {
 			throw $e;
@@ -131,7 +132,7 @@ class StorageFile
 	 *
 	 * @param  string  $method  The HTTP method to use for the request.
 	 * @param  string  $path  path The file path, including the file name. Should be of
-	 *                        the format `folder/subfolder/filename.png`. 
+	 *                        the format `folder/subfolder/filename.png`.
 	 *                        Bucket must already exist.
 	 * @param  string  $file  The url, file path or contents of the file to store in the bucket.
 	 * @param  array  $options  The options for the upload.
@@ -142,7 +143,7 @@ class StorageFile
 	public function uploadOrUpdate($method, $path, $file, $opts): ResponseInterface
 	{
 		$options = array_merge($this->DEFAULT_FILE_OPTIONS, $opts);
-		$headers = $this->headers; 
+		$headers = $this->headers;
 
 		if ($method == 'POST') {
 			$headers['x-upsert'] = $options['upsert'] ? 'true' : 'false';
@@ -151,9 +152,9 @@ class StorageFile
 		$headers['Content-Type'] = $this->determineFileType($path);
 		$storagePath = $this->_storagePath($path);
 
-		// If the $file exists or is a URL 
-		if(file_exists($file) === true || $this->isUrl($file) === true) {
-			try { 
+		// If the $file exists or is a URL
+		if (file_exists($file) === true || $this->isUrl($file) === true) {
+			try {
 				$body = FileHandler::getFileContents($file);
 			} catch (\Exception $e) {
 				throw $e;
@@ -165,6 +166,7 @@ class StorageFile
 
 		try {
 			$data = $this->__request($method, $this->url.'/object/'.$storagePath, $headers, $body);
+
 			return $data;
 		} catch (\Exception $e) {
 			throw $e;
@@ -174,10 +176,10 @@ class StorageFile
 	/**
 	 * Determine the file type based on file name.
 	 *
-	 * @param  string  $fileName Name of the file 
-	 * @return String 
+	 * @param  string  $fileName  Name of the file
+	 * @return string
 	 */
-	public function determineFileType($fileName): String 
+	public function determineFileType($fileName): string
 	{
 		return MimeType::fromFile($fileName);
 	}
@@ -185,16 +187,17 @@ class StorageFile
 	/**
 	 * Determine if the file is a URL.
 	 *
-	 * @param  string  $fileName Name of the file 
+	 * @param  string  $fileName  Name of the file
 	 * @return bool
 	 */
-	public function isUrl($fileName): Bool 
+	public function isUrl($fileName): bool
 	{
 		try {
 			Http::createFromString($fileName);
 		} catch (\Exception $e) {
 			return false;
 		}
+
 		return true;
 	}
 
@@ -202,7 +205,7 @@ class StorageFile
 	 * Uploads a file to an existing bucket.
 	 *
 	 * @param  string  $path  path The file path, including the file name. Should be of
-	 *                        the format `folder/subfolder/filename.png`. 
+	 *                        the format `folder/subfolder/filename.png`.
 	 *                        Bucket must already exist.
 	 * @param  string  $file  The url, file path or contents of the file to store in the bucket.
 	 * @param  array  $options  The options for the upload.
@@ -219,7 +222,7 @@ class StorageFile
 	 * Replaces an existing file at the specified path with a new one.
 	 *
 	 * @param  string  $path  path The file path, including the file name. Should be of
-	 *                        the format `folder/subfolder/filename.png`. 
+	 *                        the format `folder/subfolder/filename.png`.
 	 *                        Bucket must already exist.
 	 * @param  string  $file  The url, file path or contents of the file to store in the bucket.
 	 * @param  array  $options  The options for the update.
@@ -247,7 +250,7 @@ class StorageFile
 	{
 		$headers = $this->headers;
 		$body = [
-// @TODO - WTF
+			// @TODO - WTF
 			'bucketId' => $bucketId,
 			'sourceKey' => $fromPath,
 			'destinationKey' => $toPath,
@@ -278,7 +281,7 @@ class StorageFile
 		try {
 			$body = [
 				'sourceKey' => $fromPath,
-// @TODO - WTF
+				// @TODO - WTF
 				'bucketId' => $bucketId,
 				'destinationKey' => $toPath,
 			];
@@ -376,7 +379,7 @@ class StorageFile
 	 */
 	public function download($path, $opts = []): ResponseInterface
 	{
-		$headers = array_merge($this->headers, array('stream' => true));
+		$headers = array_merge($this->headers, ['stream' => true]);
 
 		$transformOptions = isset($opts['transform']) ? $opts['transform'] : [];
 		$renderPath = isset($opts['transform']) ? 'render/image/authenticated' : 'object';
