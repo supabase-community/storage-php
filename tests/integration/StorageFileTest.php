@@ -14,10 +14,10 @@ final class StorageFileTest extends TestCase
 	public function setup(): void
 	{
 		parent::setUp();
-		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__, '/../../.env.test');
+		$dotenv = Dotenv::createMutable(__DIR__.'/../../', '.env.test');
 		$dotenv->load();
-		$api_key = getenv('API_KEY');
-		$reference_id = getenv('REFERENCE_ID');
+		$api_key = $_ENV('API_KEY');
+		$reference_id = $_ENV('REFERENCE_ID');
 		$bucket_id = 'test-bucket';
 		$this->client = new  \Supabase\Storage\StorageFile($api_key, $reference_id, $bucket_id);
 	}

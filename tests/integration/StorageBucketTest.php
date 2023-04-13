@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use Dotenv\Dotenv;
 
 final class StorageBucketTest extends TestCase
 {
@@ -11,10 +12,12 @@ final class StorageBucketTest extends TestCase
 	public function setup(): void
 	{
 		parent::setUp();
-		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__, '/../../.env.test');
+		$dotenv = Dotenv::createMutable(__DIR__.'/../../', '.env.test');
 		$dotenv->load();
-		$api_key = getenv('API_KEY');
-		$reference_id = getenv('REFERENCE_ID');
+
+		$api_key = $_ENV('API_KEY');
+		$reference_id = $_ENV('REFERENCE_ID');
+
 		$this->client = new  \Supabase\Storage\StorageBucket($api_key, $reference_id);
 	}
 

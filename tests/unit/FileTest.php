@@ -6,27 +6,10 @@ use PHPUnit\Framework\TestCase;
 
 class FileTest extends TestCase
 {
-	private $client;
-
-	public function setup(): void
-	{
-		parent::setUp();
-		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__, '/../../.env.test');
-		$dotenv->load();
-	}
-
 	public function tearDown(): void
 	{
 		parent::tearDown();
 		\Mockery::close();
-	}
-
-	public function newClient(): void
-	{
-		$api_key = getenv('API_KEY');
-		$reference_id = getenv('REFERENCE_ID');
-		$bucketId = 'test-bucket';
-		$this->client = new  \Supabase\Storage\StorageFile($api_key, $reference_id, $bucketId);
 	}
 
 	/**

@@ -7,34 +7,18 @@ use Supabase\Storage\StorageBucket;
 
 class BucketTest extends TestCase
 {
-	private $client;
-
-	public function setup(): void
-	{
-		parent::setUp();
-		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__, '/../../.env.test');
-		$dotenv->load();
-	}
-
 	public function tearDown(): void
 	{
 		parent::tearDown();
 		\Mockery::close();
 	}
 
-	public function newClient()
-	{
-		$api_key = getenv('API_KEY');
-		$reference_id = getenv('REFERENCE_ID');
-		$this->client = new  \Supabase\Storage\StorageClient($api_key, $reference_id);
-	}
-
 	/**
-	 * Test new StorageBucket().
+	 * Test new StorageClient().
 	 *
 	 * @return void
 	 */
-	public function testNewStorageBucket()
+	public function testNewStorageClient()
 	{
 		$client = new  \Supabase\Storage\StorageClient('somekey', 'some_ref_id');
 		$this->assertEquals($client->__getUrl(), 'https://some_ref_id.supabase.co/storage/v1');
