@@ -21,11 +21,6 @@ class FileTest extends TestCase
 		\Mockery::close();
 	}
 
-// @TODO - Test
-// determineFileType
-// isUrl
-// uploadOrUpdate
-
 	public function newClient(): void
 	{
 		$api_key = getenv('API_KEY');
@@ -181,7 +176,7 @@ class FileTest extends TestCase
 	{
 		$mock = \Mockery::mock(
 			'Supabase\Storage\StorageFile[__request]',
-			['123123123', 'mmmmderm', 'someBucket']
+			['123123123', 'mmmmderm', 'moveBucket']
 		);
 
 		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
@@ -195,12 +190,12 @@ class FileTest extends TestCase
 				],
 				$headers
 			);
-			$this->assertEquals('{"bucketId":"someBucket","sourceKey":"fromBucket","destinationKey":"toBucket"}', $body);
+			$this->assertEquals('{"bucketId":"moveBucket","sourceKey":"existing\/path\/file.png","destinationKey":"new\/path\/ink.png"}', $body);
 
 			return true;
 		});
 
-		$mock->move('someBucket', 'fromBucket', 'toBucket');
+		$mock->move('existing/path/file.png', 'new/path/ink.png');
 	}
 
 	/**
@@ -210,7 +205,7 @@ class FileTest extends TestCase
 	{
 		$mock = \Mockery::mock(
 			'Supabase\Storage\StorageFile[__request]',
-			['123123123', 'mmmmderm', 'someBucket']
+			['123123123', 'mmmmderm', 'copyBucket']
 		);
 
 		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
@@ -224,12 +219,12 @@ class FileTest extends TestCase
 				],
 				$headers
 			);
-			$this->assertEquals('{"sourceKey":"fromBucket","bucketId":"someBucket","destinationKey":"toBucket"}', $body);
+			$this->assertEquals('{"bucketId":"copyBucket","sourceKey":"existing\/path\/file.png","destinationKey":"new\/path\/copy.png"}', $body);
 
 			return true;
 		});
 
-		$mock->copy('fromBucket', 'someBucket', 'toBucket');
+		$mock->copy('existing/path/file.png', 'new/path/copy.png');
 	}
 
 	/**

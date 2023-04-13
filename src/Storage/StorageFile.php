@@ -246,12 +246,11 @@ class StorageFile
 	 *
 	 * @throws Exception
 	 */
-	public function move($bucketId, $fromPath, $toPath): ResponseInterface
+	public function move($fromPath, $toPath): ResponseInterface
 	{
 		$headers = $this->headers;
 		$body = [
-			// @TODO - WTF
-			'bucketId' => $bucketId,
+			'bucketId' => $this->bucketId,
 			'sourceKey' => $fromPath,
 			'destinationKey' => $toPath,
 		];
@@ -275,14 +274,13 @@ class StorageFile
 	 *
 	 * @throws Exception
 	 */
-	public function copy($fromPath, $bucketId, $toPath): ResponseInterface
+	public function copy($fromPath, $toPath): ResponseInterface
 	{
 		$headers = $this->headers;
 		try {
 			$body = [
+				'bucketId' => $this->bucketId,
 				'sourceKey' => $fromPath,
-				// @TODO - WTF
-				'bucketId' => $bucketId,
 				'destinationKey' => $toPath,
 			];
 
