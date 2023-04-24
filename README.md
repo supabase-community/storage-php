@@ -8,6 +8,7 @@ PHP Client library to interact with Supabase Storage.
 ### TODO
 
 - [ ] Support for PHP 7.4 
+- [ ] Running unit and integration tests together results in test failures 
 
 
 ## Quick Start Guide
