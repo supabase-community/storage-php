@@ -320,6 +320,6 @@ class FileTest extends TestCase
 		);
 
 		$url = $mock->getPublicUrl('exampleFolder/exampleFile.png', ['download' => true]);
-		$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/public/someBucket/exampleFolder/exampleFile.png', $url);
+		$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/public/someBucket/exampleFolder/exampleFile.png?download=true', $url);
 	}
 }

@@ -5,10 +5,7 @@ include __DIR__.'/../header.php';
 use Supabase\Storage\StorageFile;
 
 $bucket_id = 'test-bucket';
-$scheme = 'http';
-$domain = 'localhost:3000';
-$path = '/storage/v1';
-$client = new StorageFile($api_key, $reference_id, $bucket_id, $domain, $scheme, $path);
+$client = new StorageFile($api_key, $reference_id, $bucket_id);
 $result = $client->copy('path/to/file.png', 'test-bucket', 'path/to/file-copy.png');
 $output = json_decode($result->getBody(), true);
 print_r($output);
