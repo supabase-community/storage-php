@@ -17,11 +17,17 @@ class StorageClient extends StorageBucket
 	 */
 	public function __construct($api_key, $reference_id, $domain = 'supabase.co', $scheme = 'https', $path = '/storage/v1')
 	{
-		parent::__construct($api_key, $reference_id, $domain, $scheme, $path);
+		parent::__construct($api_key, $reference_id, '', $domain, $scheme, $path);
+
+		$this->domain = $domain;
+		$this->scheme = $scheme;
+		$this->path = $path;
+		$this->api_key = $api_key;
+		$this->reference_id = $reference_id;
 	}
 
 	public function from($bucketId)
 	{
-		return new StorageBucket($this->api_key, $this->reference_id, $this->$domain, $this->$scheme, $this->$path, $bucketId);
+		return new StorageBucket($this->api_key, $this->reference_id, $bucketId, $this->domain, $this->scheme, $this->path);
 	}
 }

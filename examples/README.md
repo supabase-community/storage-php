@@ -28,23 +28,20 @@ Clone the repository locally.
 
 Install the dependencies `composer install` 
 
-### API Access Details
+### Setup the Env
 To obtain the API Access Details, please sign into your Supabase account. 
 
-#### For the `PROJECT_REF`
+```
+cp .env.example examples/.env
+```
+
+#### For the `REFERENCE_ID`
 Once signed on to the dashboard, navigate to, Project >> Project Settings >> General settings. Copy the Reference ID for use in the `.env`.
 
 #### For the `API_KEY`
 Once signed on to the dashboard, navigate to, Project >> Project Settings >> API >> Project API keys. Choose either the `anon` `public` or the `service_role` key.
 
-### Setup the Env
-
-```
-cd examples
-cp .env.example .env
-```
-
-Populate the `.env` to include `REFERENCE_ID` and `API_KEY`.
+Populate the `examples/.env` to include `REFERENCE_ID` and `API_KEY`.
 
 ## Running Examples
 

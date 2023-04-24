@@ -319,21 +319,7 @@ class FileTest extends TestCase
 			['123123123', 'mmmmderm', 'someBucket']
 		);
 
-		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers) {
-			$this->assertEquals('GET', $scheme);
-			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/public/someBucket/exampleFolder/exampleFile.png', $url);
-			$this->assertEquals(
-				[
-					'X-Client-Info' => 'storage-php/0.0.1',
-					'Authorization' => 'Bearer 123123123',
-					'Content-Type' => 'application/json',
-				],
-				$headers
-			);
-
-			return true;
-		});
-
-		$mock->getPublicUrl('exampleFolder/exampleFile.png', 'download');
+		$url = $mock->getPublicUrl('exampleFolder/exampleFile.png', ['download' => true]);
+		$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/public/someBucket/exampleFolder/exampleFile.png', $url);
 	}
 }

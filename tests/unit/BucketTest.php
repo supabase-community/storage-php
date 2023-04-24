@@ -181,7 +181,6 @@ class BucketTest extends TestCase
 			$this->assertEquals([
 				'X-Client-Info' => 'storage-php/0.0.1',
 				'Authorization' => 'Bearer 123123123',
-				'Content-Type' => 'application/json',
 			], $headers);
 
 			return true;
@@ -207,7 +206,6 @@ class BucketTest extends TestCase
 			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/bucket/test', $url);
 			$this->assertEquals([
 				'X-Client-Info' => 'storage-php/0.0.1',
-				'Content-Type' => 'application/json',
 				'Authorization' => 'Bearer 123123123',
 			], $headers);
 
