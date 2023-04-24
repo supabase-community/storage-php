@@ -1,7 +1,6 @@
 <?php
 
 include __DIR__.'/../vendor/autoload.php';
-use Supabase\Util\EnvSetup;
 
 $keys = TestSetup::env(__DIR__);
 $api_key = $keys['API_KEY'];
