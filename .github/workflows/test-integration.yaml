@@ -19,6 +19,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Setup .env 
+        run: cp .env.example ../tests/.env 
+
       - name: Setup PHP ${{ matrix.php-version }} on ${{ matrix.os }}
         uses: shivammathur/setup-php@v2
         with:
