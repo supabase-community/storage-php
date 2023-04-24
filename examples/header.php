@@ -1,10 +1,8 @@
 <?php
 
 include __DIR__.'/../vendor/autoload.php';
-use Dotenv\Dotenv;
+use Supabase\Util\EnvSetup;
 
-$dotenv = Dotenv::createMutable(__DIR__);
-$dotenv->load();
-
-$api_key = $_ENV['API_KEY'];
-$reference_id = $_ENV['REFERENCE_ID'];
+$keys = TestSetup::env(__DIR__);
+$api_key = $keys['API_KEY'];
+$reference_id = $keys['REFERENCE_ID'];

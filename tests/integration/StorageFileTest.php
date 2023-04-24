@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
+use Supabase\Util\EnvSetup;
 
 final class StorageFileTest extends TestCase
 {
@@ -39,12 +39,10 @@ final class StorageFileTest extends TestCase
 	public function setup(): void
 	{
 		parent::setUp();
-		$dotenv = Dotenv::createMutable(__DIR__.'/../');
-		$dotenv->required(['REFERENCE_ID', 'API_KEY'])->notEmpty();
-		$dotenv->load();
+		$keys = EnvSetup::env(__DIR__.'/../');
+		$api_key = $keys['API_KEY'];
+		$reference_id = $keys['REFERENCE_ID'];
 
-		$api_key = $_ENV['API_KEY'];
-		$reference_id = $_ENV['REFERENCE_ID'];
 		$c = new \Supabase\Storage\StorageClient($api_key, $reference_id);
 		$this->client = $c->from('test-bucket');
 	}
