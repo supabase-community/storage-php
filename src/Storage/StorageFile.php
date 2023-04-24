@@ -4,16 +4,15 @@
  * A PHP  class  client library to interact with Supabase Storage.
  *
  * Provides functions for handling storage buckets Files.
- *
- * @author    Zero Copy Labs
- * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
- * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
 namespace Supabase\Storage;
 
+use Bayfront\MimeTypes\MimeType;
+use League\Uri\Http;
 use Psr\Http\Message\ResponseInterface;
 use Supabase\Util\Constants;
+use Supabase\Util\FileHandler;
 use Supabase\Util\Request;
 
 class StorageFile
@@ -79,13 +78,20 @@ class StorageFile
 	/**
 	 * StorageFile constructor.
 	 *
+	 * @param  string  $api_key  The anon or service role key
+	 * @param  string  $reference_id  Reference ID
+	 * @param  string  $domain  The domain pointing to api
+	 * @param  string  $scheme  The api sheme
+	 * @param  string  $path  The path to api
+	 *
 	 * @throws Exception
 	 */
-	public function __construct($api_key, $reference_id, $bucketId)
+	public function __construct($api_key, $reference_id, $bucketId, $domain = 'supabase.co', $scheme = 'https', $path = '/storage/v1')
 	{
 		$headers = ['Authorization' => "Bearer {$api_key}"];
-		$this->url = "https://{$reference_id}.supabase.co/storage/v1";
 		$this->headers = array_merge(Constants::getDefaultHeaders(), $headers);
+
+		$this->url = "{$scheme}://{$reference_id}.{$domain}{$path}";
 		$this->bucketId = $bucketId;
 	}
 
@@ -97,7 +103,7 @@ class StorageFile
 	/**
 	 * Lists all the files within a bucket.
 	 *
-	 * @param $path The folder path.
+	 * @param  string  $path  The folder path.
 	 * @param  array  $options  The options for list files.
 	 * @return ResponseInterface
 	 *
@@ -106,7 +112,6 @@ class StorageFile
 	public function list($path, $opts = []): ResponseInterface
 	{
 		$headers = $this->headers;
-		$headers['content-type'] = 'application/json';
 		try {
 			$prefix = [
 				'prefix' => $path,
@@ -115,7 +120,7 @@ class StorageFile
 			$body = array_merge($prefix, $opts);
 
 			$data = $this->__request('POST', $this->url.'/object/list/'.$this->bucketId, $headers, json_encode($body));
-			//acording to Swagger you need auth bearer key, check on monday to see if bearer is required.
+
 			return $data;
 		} catch (\Exception $e) {
 			throw $e;
@@ -126,8 +131,10 @@ class StorageFile
 	 * Uploads a file to an object storage bucket creating or replacing the file if it already exists.
 	 *
 	 * @param  string  $method  The HTTP method to use for the request.
-	 * @param  string  $path  The path to the file in the bucket.
-	 * @param  string  $file  The body of the file to be stored in the bucket.
+	 * @param  string  $path  path The file path, including the file name. Should be of
+	 *                        the format `folder/subfolder/filename.png`.
+	 *                        Bucket must already exist.
+	 * @param  string  $file  The url, file path or contents of the file to store in the bucket.
 	 * @param  array  $options  The options for the upload.
 	 * @return ResponseInterface
 	 *
@@ -135,25 +142,31 @@ class StorageFile
 	 */
 	public function uploadOrUpdate($method, $path, $file, $opts): ResponseInterface
 	{
-		//change to path instead of fileContent verify the path is there with a try catch.
 		$options = array_merge($this->DEFAULT_FILE_OPTIONS, $opts);
-		$headers = array_merge($this->headers, ['Content-Type' => 'application/json']);
+		$headers = $this->headers;
 
 		if ($method == 'POST') {
 			$headers['x-upsert'] = $options['upsert'] ? 'true' : 'false';
 		}
 
-		if (base64_decode($file, true) === false) {
-			$body = file_get_contents($file);
+		$headers['Content-Type'] = $this->determineFileType($path);
+		$storagePath = $this->_storagePath($path);
+
+		// If the $file exists or is a URL
+		if (file_exists($file) === true || $this->isUrl($file) === true) {
+			try {
+				$body = FileHandler::getFileContents($file);
+			} catch (\Exception $e) {
+				throw $e;
+			}
 		} else {
-			$body = base64_decode($file);
-			$headers['content-type'] = $options['contentType'];
+			// Assume the $file is string of file contents
+			$body = $file;
 		}
 
-		$storagePath = $this->_storagePath($path);
 		try {
 			$data = $this->__request($method, $this->url.'/object/'.$storagePath, $headers, $body);
-			// we should just mock this request instead of all of the function
+
 			return $data;
 		} catch (\Exception $e) {
 			throw $e;
@@ -161,12 +174,40 @@ class StorageFile
 	}
 
 	/**
+	 * Determine the file type based on file name.
+	 *
+	 * @param  string  $fileName  Name of the file
+	 * @return string
+	 */
+	public function determineFileType($fileName): string
+	{
+		return MimeType::fromFile($fileName);
+	}
+
+	/**
+	 * Determine if the file is a URL.
+	 *
+	 * @param  string  $fileName  Name of the file
+	 * @return bool
+	 */
+	public function isUrl($fileName): bool
+	{
+		try {
+			Http::createFromString($fileName);
+		} catch (\Exception $e) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Uploads a file to an existing bucket.
 	 *
 	 * @param  string  $path  path The file path, including the file name. Should be of
-	 *                        the format `folder/subfolder/filename.png`. The bucket must already exist before
-	 *                        attempting to upload.
-	 * @param  string  $file  The body of the file to be stored in the bucket.
+	 *                        the format `folder/subfolder/filename.png`.
+	 *                        Bucket must already exist.
+	 * @param  string  $file  The url, file path or contents of the file to store in the bucket.
 	 * @param  array  $options  The options for the upload.
 	 * @return ResponseInterface
 	 *
@@ -180,9 +221,10 @@ class StorageFile
 	/**
 	 * Replaces an existing file at the specified path with a new one.
 	 *
-	 * @param  string  $path  The relative file path. Should be of the
-	 *                        format `folder/subfolder/filename.png`. The bucket must already exist before attempting to update.
-	 * @param  string  $file  The body of the file to be stored in the bucket.
+	 * @param  string  $path  path The file path, including the file name. Should be of
+	 *                        the format `folder/subfolder/filename.png`.
+	 *                        Bucket must already exist.
+	 * @param  string  $file  The url, file path or contents of the file to store in the bucket.
 	 * @param  array  $options  The options for the update.
 	 * @return ResponseInterface
 	 *
@@ -204,12 +246,11 @@ class StorageFile
 	 *
 	 * @throws Exception
 	 */
-	public function move($bucketId, $fromPath, $toPath): ResponseInterface
+	public function move($fromPath, $toPath): ResponseInterface
 	{
 		$headers = $this->headers;
-		$headers['content-type'] = 'application/json';
 		$body = [
-			'bucketId' => $bucketId,
+			'bucketId' => $this->bucketId,
 			'sourceKey' => $fromPath,
 			'destinationKey' => $toPath,
 		];
@@ -233,14 +274,13 @@ class StorageFile
 	 *
 	 * @throws Exception
 	 */
-	public function copy($fromPath, $bucketId, $toPath): ResponseInterface
+	public function copy($fromPath, $toPath): ResponseInterface
 	{
 		$headers = $this->headers;
-		$headers['content-type'] = 'application/json';
 		try {
 			$body = [
+				'bucketId' => $this->bucketId,
 				'sourceKey' => $fromPath,
-				'bucketId' => $bucketId,
 				'destinationKey' => $toPath,
 			];
 
@@ -266,7 +306,6 @@ class StorageFile
 	public function createSignedUrl($path, $expires): ResponseInterface
 	{
 		$headers = $this->headers;
-		$headers['content-type'] = 'application/json';
 
 		try {
 			$body = [
@@ -302,9 +341,9 @@ class StorageFile
 	 */
 	public function createSignedUrls($paths, $expiresIn, $opts): array
 	{
+		$headers = $this->headers;
+
 		try {
-			$headers = $this->headers;
-			$headers['content-type'] = 'application/json';
 			$body = [
 				'paths' => $paths,
 				'expiresIn' => $expiresIn,
@@ -338,18 +377,16 @@ class StorageFile
 	 */
 	public function download($path, $opts = []): ResponseInterface
 	{
-		$headers = $this->headers;
+		$headers = array_merge($this->headers, ['stream' => true]);
+
 		$transformOptions = isset($opts['transform']) ? $opts['transform'] : [];
 		$renderPath = isset($opts['transform']) ? 'render/image/authenticated' : 'object';
 		$transformationQuery = $this->transformOptsToQueryString($transformOptions);
 		$queryString = ($transformationQuery != '') ? '?'.$transformationQuery : '';
 		$url = $this->url.'/'.$renderPath.'/'.$this->bucketId.'/'.$path.$queryString;
-		$headers['stream'] = true;
 
 		try {
-			$data = $this->__request('GET', $url, $headers);
-
-			return $data;
+			return $this->__request('GET', $url, $headers);
 		} catch (\Exception $e) {
 			throw $e;
 		}
@@ -373,7 +410,7 @@ class StorageFile
 	 *                                       it to the client.
 	 * @return string
 	 */
-	public function getPublicUrl($path, $opts = []): ResponseInterface
+	public function getPublicUrl($path, $opts = []): string
 	{
 		$storagePath = $this->_storagePath($path);
 		$_queryString = [];
@@ -396,10 +433,8 @@ class StorageFile
 		if ($queryString !== '') {
 			$queryString = '?'.$queryString;
 		}
-		$url = urldecode($this->url.'/'.$renderPath.'/public/'.$storagePath.$queryString);
-		$data = $this->__request('GET', $url, $headers);
 
-		return $data;
+		return urldecode($this->url.'/'.$renderPath.'/public/'.$storagePath.$queryString);
 	}
 
 	/**
@@ -414,7 +449,6 @@ class StorageFile
 	public function remove($paths): ResponseInterface
 	{
 		$headers = $this->headers;
-		$headers['content-type'] = 'application/json';
 		try {
 			$body = ['prefixes' => $paths];
 			$fullUrl = $this->url.'/object/'.$this->bucketId;

@@ -6,12 +6,12 @@ on:
 jobs:
   phpunit:
     runs-on: ${{ matrix.os }} 
-    continue-on-error: true
+    continue-on-error: false 
 
     strategy:
       matrix:
         os: ["ubuntu-latest", "windows-latest", "macos-latest"]
-        php-version: ["7.4", "8.0", "8.1", "8.2"]
+        php-version: ["8.0", "8.1", "8.2"]
         phpunit-versions: ["latest"]
 
 
@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: composer install 
 
-      - name: Run Unit tests
+      - name: Run Intergation tests
         run: ./vendor/bin/phpunit --testsuite test-int
         env:
           REFERENCE_ID: ${{ secrets.SB_TEST_REFERENCE_ID }}

@@ -10,6 +10,7 @@ class Constants
 	{
 		return [
 			'X-Client-Info' => 'storage-php/'.self::$VERSION,
+			'Content-Type' => 'application/json',
 		];
 	}
 }

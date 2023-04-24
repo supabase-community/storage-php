@@ -6,21 +6,10 @@ use PHPUnit\Framework\TestCase;
 
 class FileTest extends TestCase
 {
-	private $client;
-
-	public function setup(): void
+	public function tearDown(): void
 	{
-		parent::setUp();
-		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__, '/../../.env.test');
-		$dotenv->load();
-	}
-
-	public function newClient(): void
-	{
-		$api_key = getenv('API_KEY');
-		$reference_id = getenv('REFERENCE_ID');
-		$bucketId = 'test-bucket';
-		$this->client = new  \Supabase\Storage\StorageFile($api_key, $reference_id, $bucketId);
+		parent::tearDown();
+		\Mockery::close();
 	}
 
 	/**
@@ -33,6 +22,7 @@ class FileTest extends TestCase
 		$this->assertEquals($client->__getHeaders(), [
 			'X-Client-Info' => 'storage-php/0.0.1',
 			'Authorization' => 'Bearer somekey',
+			'Content-Type' => 'application/json',
 		]);
 		$this->assertEquals($client->__getBucketId(), 'someBucket');
 	}
@@ -54,7 +44,7 @@ class FileTest extends TestCase
 				[
 					'X-Client-Info' => 'storage-php/0.0.1',
 					'Authorization' => 'Bearer 123123123',
-					'content-type' => 'application/json',
+					'Content-Type' => 'application/json',
 				],
 				$headers
 			);
@@ -71,6 +61,9 @@ class FileTest extends TestCase
 	 */
 	public function testUpload()
 	{
+		$mockFile = \Mockery::mock('alias:Supabase\Util\FileHandler');
+		$mockFile->shouldReceive('getFileContents')->andReturn('Bruno Estera');
+
 		$mock = \Mockery::mock(
 			'Supabase\Storage\StorageFile[__request]',
 			['123123123', 'mmmmderm', 'someBucket']
@@ -83,13 +76,13 @@ class FileTest extends TestCase
 				[
 					'X-Client-Info' => 'storage-php/0.0.1',
 					'Authorization' => 'Bearer 123123123',
-					'Content-Type' => 'application/json',
+					'Content-Type' => 'image/png',
 					'x-upsert' => 'false',
-					'content-type' => 'text/plain;charset=UTF-8',
 				],
 				$headers
 			);
-			//$this->assertEquals('{"name":"test","id":"test","public":"true"}', $body);
+
+			$this->assertEquals('Bruno Estera', $body);
 
 			return true;
 		});
@@ -114,6 +107,7 @@ class FileTest extends TestCase
 				[
 					'X-Client-Info' => 'storage-php/0.0.1',
 					'Authorization' => 'Bearer 123123123',
+					'Content-Type' => 'application/json',
 					'stream' => true,
 				],
 				$headers
@@ -130,6 +124,9 @@ class FileTest extends TestCase
 	 */
 	public function testUpdate()
 	{
+		$mockFile = \Mockery::mock('alias:Supabase\Util\FileHandler');
+		$mockFile->shouldReceive('getFileContents')->andReturn('Isla Ian');
+
 		$mock = \Mockery::mock(
 			'Supabase\Storage\StorageFile[__request]',
 			['123123123', 'mmmmderm', 'someBucket']
@@ -137,22 +134,22 @@ class FileTest extends TestCase
 
 		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
 			$this->assertEquals('PUT', $scheme);
-			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/someBucket/testFile.png', $url);
+			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/someBucket/testFile.jpeg', $url);
 			$this->assertEquals(
 				[
 					'X-Client-Info' => 'storage-php/0.0.1',
 					'Authorization' => 'Bearer 123123123',
-					'Content-Type' => 'application/json',
-					'content-type' => 'text/plain;charset=UTF-8',
+					'Content-Type' => 'image/jpeg',
 				],
 				$headers
 			);
-			//$this->assertEquals('', $body);
+
+			$this->assertEquals('Isla Ian', $body);
 
 			return true;
 		});
 
-		$mock->update('testFile.png', 'exampleFile', ['public' => true]);
+		$mock->update('testFile.jpeg', 'exampleFile', ['public' => true]);
 	}
 
 	/**
@@ -162,7 +159,7 @@ class FileTest extends TestCase
 	{
 		$mock = \Mockery::mock(
 			'Supabase\Storage\StorageFile[__request]',
-			['123123123', 'mmmmderm', 'someBucket']
+			['123123123', 'mmmmderm', 'moveBucket']
 		);
 
 		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
@@ -172,16 +169,16 @@ class FileTest extends TestCase
 				[
 					'X-Client-Info' => 'storage-php/0.0.1',
 					'Authorization' => 'Bearer 123123123',
-					'content-type' => 'application/json',
+					'Content-Type' => 'application/json',
 				],
 				$headers
 			);
-			$this->assertEquals('{"bucketId":"someBucket","sourceKey":"fromBucket","destinationKey":"toBucket"}', $body);
+			$this->assertEquals('{"bucketId":"moveBucket","sourceKey":"existing\/path\/file.png","destinationKey":"new\/path\/ink.png"}', $body);
 
 			return true;
 		});
 
-		$mock->move('someBucket', 'fromBucket', 'toBucket');
+		$mock->move('existing/path/file.png', 'new/path/ink.png');
 	}
 
 	/**
@@ -191,7 +188,7 @@ class FileTest extends TestCase
 	{
 		$mock = \Mockery::mock(
 			'Supabase\Storage\StorageFile[__request]',
-			['123123123', 'mmmmderm', 'someBucket']
+			['123123123', 'mmmmderm', 'copyBucket']
 		);
 
 		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers, $body) {
@@ -201,16 +198,16 @@ class FileTest extends TestCase
 				[
 					'X-Client-Info' => 'storage-php/0.0.1',
 					'Authorization' => 'Bearer 123123123',
-					'content-type' => 'application/json',
+					'Content-Type' => 'application/json',
 				],
 				$headers
 			);
-			$this->assertEquals('{"sourceKey":"fromBucket","bucketId":"someBucket","destinationKey":"toBucket"}', $body);
+			$this->assertEquals('{"bucketId":"copyBucket","sourceKey":"existing\/path\/file.png","destinationKey":"new\/path\/copy.png"}', $body);
 
 			return true;
 		});
 
-		$mock->copy('fromBucket', 'someBucket', 'toBucket');
+		$mock->copy('existing/path/file.png', 'new/path/copy.png');
 	}
 
 	/**
@@ -230,7 +227,7 @@ class FileTest extends TestCase
 				[
 					'X-Client-Info' => 'storage-php/0.0.1',
 					'Authorization' => 'Bearer 123123123',
-					'content-type' => 'application/json',
+					'Content-Type' => 'application/json',
 				],
 				$headers
 			);
@@ -259,7 +256,7 @@ class FileTest extends TestCase
 				[
 					'X-Client-Info' => 'storage-php/0.0.1',
 					'Authorization' => 'Bearer 123123123',
-					'content-type' => 'application/json',
+					'Content-Type' => 'application/json',
 				],
 				$headers
 			);
@@ -295,7 +292,7 @@ class FileTest extends TestCase
 				[
 					'X-Client-Info' => 'storage-php/0.0.1',
 					'Authorization' => 'Bearer 123123123',
-					'content-type' => 'application/json',
+					'Content-Type' => 'application/json',
 				],
 				$headers
 			);
@@ -322,20 +319,7 @@ class FileTest extends TestCase
 			['123123123', 'mmmmderm', 'someBucket']
 		);
 
-		$mock->shouldReceive('__request')->withArgs(function ($scheme, $url, $headers) {
-			$this->assertEquals('GET', $scheme);
-			$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/public/someBucket/exampleFolder/exampleFile.png', $url);
-			$this->assertEquals(
-				[
-					'X-Client-Info' => 'storage-php/0.0.1',
-					'Authorization' => 'Bearer 123123123',
-				],
-				$headers
-			);
-
-			return true;
-		});
-
-		$mock->getPublicUrl('exampleFolder/exampleFile.png', 'download');
+		$url = $mock->getPublicUrl('exampleFolder/exampleFile.png', ['download' => true]);
+		$this->assertEquals('https://mmmmderm.supabase.co/storage/v1/object/public/someBucket/exampleFolder/exampleFile.png?download=true', $url);
 	}
 }

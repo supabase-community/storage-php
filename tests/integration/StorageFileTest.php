@@ -3,10 +3,35 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use Supabase\Util\EnvSetup;
 
 final class StorageFileTest extends TestCase
 {
 	private $client;
+
+	public function uploadFile($public = true, $file_path = null): array
+	{
+		$path = 'testFile-'.uniqid().'.png';
+		$file_path = $file_path ? $file_path : __DIR__.'/../fixtures/test-file.png';
+		$result = $this->client->upload($path, $file_path, ['public' => $public]);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$this->assertJsonStringEqualsJsonString('{"Key":"test-bucket/'.$path.'"}', (string) $result->getBody());
+
+		return [
+			$result,
+			$path,
+		];
+	}
+
+	private function deleteFile($file): void
+	{
+		$result = $this->client->remove([$file]);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		// @TODO - understand why there is no response for this call
+//		$this->assertJsonStringEqualsJsonString('{"message":"Successfully deleted"}', (string) $result->getBody());
+	}
 
 	/**
 	 * The setUp runs for each fuction.
@@ -14,12 +39,12 @@ final class StorageFileTest extends TestCase
 	public function setup(): void
 	{
 		parent::setUp();
-		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__, '/../../.env.test');
-		$dotenv->load();
-		$api_key = getenv('API_KEY');
-		$reference_id = getenv('REFERENCE_ID');
-		$bucket_id = 'test-bucket';
-		$this->client = new  \Supabase\Storage\StorageFile($api_key, $reference_id, $bucket_id);
+		$keys = EnvSetup::env(__DIR__.'/../');
+		$api_key = $keys['API_KEY'];
+		$reference_id = $keys['REFERENCE_ID'];
+
+		$c = new \Supabase\Storage\StorageClient($api_key, $reference_id);
+		$this->client = $c->from('test-bucket');
 	}
 
 	/**
@@ -27,14 +52,14 @@ final class StorageFileTest extends TestCase
 	 */
 	public function testUpload(): void
 	{
-		$path = 'testFile.png'.microtime(false);
+		// Upload from URL
 		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
-		$options = ['public' => true];
-		$result = $this->client->upload($path, $file_path, $options);
-		$this->assertEquals('200', $result->getStatusCode());
-		$this->assertEquals('OK', $result->getReasonPhrase());
-		$this->assertJsonStringEqualsJsonString('{"Key":"test-bucket/'.$path.'"}', (string) $result->getBody());
-		$result = $this->client->remove($path);
+		[ $result, $path ] = $this->uploadFile(true, $file_path);
+		$this->deleteFile($path);
+
+		// Upload from local fixture
+		[ $result, $path ] = $this->uploadFile();
+		$this->deleteFile($path);
 	}
 
 	/**
@@ -42,16 +67,14 @@ final class StorageFileTest extends TestCase
 	 */
 	public function testDownload(): void
 	{
-		$path = 'testFile.png'.microtime(false);
-		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
-		$options = ['public' => true];
-		$result = $this->client->upload($path, $file_path, $options);
-		$result = $this->client->download($path, $options);
+		[ $setup, $path ] = $this->uploadFile();
+		$result = $this->client->download($path);
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
-		// $output = $result->getBody()->getContents();
-		// file_put_contents('file.png', $output);
-		$result = $this->client->remove($path);
+		$output = $result->getBody()->getContents();
+		$this->assertEquals(11830, strlen($output));
+		$this->assertEquals('650928b71c38af56610adcd1d78bbcb3', md5($output));
+		$this->deleteFile($path);
 	}
 
 	/**
@@ -59,11 +82,12 @@ final class StorageFileTest extends TestCase
 	 */
 	public function testList(): void
 	{
-		$path = '';
-		$result = $this->client->list($path);
+		$result = $this->client->list('');
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
-		$this->assertNotEmpty($result->getBody());
+		$body = $result->getBody()->getContents();
+		$this->assertNotEmpty($body);
+		// @TODO - test for a thing in the list
 	}
 
 	/**
@@ -71,15 +95,23 @@ final class StorageFileTest extends TestCase
 	 */
 	public function testUpdate(): void
 	{
-		$path = 'testFile.png'.microtime(false);
-		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
-		$options = ['public' => true];
-		$result = $this->client->upload($path, $file_path, $options);
-		$result = $this->client->update($path, $file_path, $options);
+		[ $setup, $path ] = $this->uploadFile();
+
+		$newFile = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
+
+		$result = $this->client->update($path, $newFile, ['public' => true]);
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
 		$this->assertJsonStringEqualsJsonString('{"Key":"test-bucket/'.$path.'"}', (string) $result->getBody());
-		$result = $this->client->remove($path);
+
+		$result = $this->client->download($path);
+		$this->assertEquals('200', $result->getStatusCode());
+		$this->assertEquals('OK', $result->getReasonPhrase());
+		$output = $result->getBody()->getContents();
+
+		$this->assertEquals(11830, strlen($output));
+		$this->assertEquals('650928b71c38af56610adcd1d78bbcb3', md5($output));
+		$this->deleteFile($path);
 	}
 
 	/**
@@ -87,18 +119,14 @@ final class StorageFileTest extends TestCase
 	 */
 	public function testMove(): void
 	{
-		$path = 'testFile.png'.microtime(false);
-		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
-		$options = ['public' => true];
-		$result = $this->client->upload($path, $file_path, $options);
-		$bucket_id = 'test-bucket';
+		[ $setup, $path ] = $this->uploadFile();
 		$from_path = $path;
-		$to_path = 'path/'.$path;
-		$result = $this->client->move($bucket_id, $from_path, $to_path);
+		$to_path = 'new-path/'.$path;
+		$result = $this->client->move($from_path, $to_path);
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
 		$this->assertJsonStringEqualsJsonString('{"message": "Successfully moved"}', (string) $result->getBody());
-		$result = $this->client->remove($path);
+		$this->deleteFile($to_path);
 	}
 
 	/**
@@ -106,18 +134,14 @@ final class StorageFileTest extends TestCase
 	 */
 	public function testCopy(): void
 	{
-		$path = 'testFile.png'.microtime(false);
-		$bucket_id = 'test-bucket';
+		[ $setup, $path ] = $this->uploadFile();
 		$to_path = 'path/'.$path;
-		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
-		$options = ['public' => true];
-		$result = $this->client->upload($path, $file_path, $options);
-		$result = $this->client->copy($path, $bucket_id, $to_path);
+		$result = $this->client->copy($path, $to_path);
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
 		$this->assertJsonStringEqualsJsonString('{"Key": "test-bucket/path/'.$path.'"}', (string) $result->getBody());
-		$result = $this->client->remove($path);
-		$result = $this->client->remove($to_path);
+		$this->deleteFile($path);
+		$this->deleteFile($to_path);
 	}
 
 	/**
@@ -125,17 +149,12 @@ final class StorageFileTest extends TestCase
 	 */
 	public function testRemove(): void
 	{
-		$path = 'testFile.png'.microtime(false);
-		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
-		$options = ['public' => true];
-		$result = $this->client->upload($path, $file_path, $options);
-		$this->assertEquals('200', $result->getStatusCode());
-		$this->assertEquals('OK', $result->getReasonPhrase());
+		[ $setup, $path ] = $this->uploadFile();
 		$resultDelete = $this->client->remove($path);
 		$this->assertEquals('200', $resultDelete->getStatusCode());
 		$this->assertEquals('OK', $resultDelete->getReasonPhrase());
-		$getValue = json_decode((string) $resultDelete->getBody());
-		$this->assertNotEmpty($getValue);
+		$payload = json_decode((string) $resultDelete->getBody());
+		$this->assertNotEmpty($payload);
 	}
 
 	/**
@@ -143,16 +162,17 @@ final class StorageFileTest extends TestCase
 	 */
 	public function testCreateSignedUrl(): void
 	{
-		$path = 'testFile.png'.microtime(false);
-		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
-		$options = ['public' => true];
-		$result = $this->client->upload($path, $file_path, $options);
+		[ $setup, $path ] = $this->uploadFile();
 		$expires = 60;
 		$result = $this->client->createSignedUrl($path, $expires);
-		echo (string) $result->getBody();
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
-		$result = $this->client->remove($path);
+		$payload = json_decode((string) $result->getBody());
+		$this->assertStringContainsString(
+			"/render/image/sign/test-bucket/{$path}?token=",
+			$payload->{'signedURL'}
+		);
+		$this->deleteFile($path);
 	}
 
 	/**
@@ -160,14 +180,12 @@ final class StorageFileTest extends TestCase
 	 */
 	public function testGetPublicUrl(): void
 	{
-		$path = 'testFile.png'.microtime(false);
-		$file_path = 'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png?format=1500w';
-		$options = ['public' => true];
-		$result = $this->client->upload($path, $file_path, $options);
-		$options = ['download'];
-		$result = $this->client->getPublicUrl($path, $options);
-		$this->assertEquals('200', $result->getStatusCode());
-		$this->assertEquals('OK', $result->getReasonPhrase());
-		$result = $this->client->remove($path);
+		[ $setup, $path ] = $this->uploadFile();
+		$url = $this->client->getPublicUrl($path);
+		$this->assertStringContainsString(
+			"/storage/v1/object/public/test-bucket/{$path}",
+			$url
+		);
+		$this->deleteFile($path);
 	}
 }

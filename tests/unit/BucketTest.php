@@ -3,37 +3,27 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use Supabase\Storage\StorageBucket;
 
 class BucketTest extends TestCase
 {
-	private $client;
-
-	public function setup(): void
+	public function tearDown(): void
 	{
-		parent::setUp();
-		$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__, '/../../.env.test');
-		$dotenv->load();
-	}
-
-	public function newClient()
-	{
-		$api_key = getenv('API_KEY');
-		$reference_id = getenv('REFERENCE_ID');
-		$this->client = new  \Supabase\Storage\StorageClient($api_key, $reference_id);
+		parent::tearDown();
+		\Mockery::close();
 	}
 
 	/**
-	 * Test new StorageBucket().
+	 * Test new StorageClient().
 	 *
 	 * @return void
 	 */
-	public function testNewStorageBucket()
+	public function testNewStorageClient()
 	{
 		$client = new  \Supabase\Storage\StorageClient('somekey', 'some_ref_id');
 		$this->assertEquals($client->__getUrl(), 'https://some_ref_id.supabase.co/storage/v1');
 		$this->assertEquals($client->__getHeaders(), [
 			'X-Client-Info' => 'storage-php/0.0.1',
+			'Content-Type' => 'application/json',
 			'Authorization' => 'Bearer somekey',
 		]);
 	}
