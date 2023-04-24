@@ -35,7 +35,7 @@ final class StorageBucketTest extends TestCase
 	public function setup(): void
 	{
 		parent::setUp();
-var_dump($_ENV);
+		var_dump($_ENV);
 		$dotenv = Dotenv::createMutable(__DIR__.'/../');
 		$dotenv->required(['REFERENCE_ID', 'API_KEY'])->notEmpty();
 		$dotenv->load();
