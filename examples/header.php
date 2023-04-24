@@ -2,7 +2,7 @@
 
 use Supabase\Util\EnvSetup;
 
-include __DIR__ . '/../vendor/autoload.php';
+include __DIR__.'/../vendor/autoload.php';
 
 $keys = EnvSetup::env(__DIR__);
 $api_key = $keys['API_KEY'];
