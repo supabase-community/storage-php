@@ -410,7 +410,7 @@ class StorageFile
 	 *                                       it to the client.
 	 * @return string
 	 */
-	public function getPublicUrl($path, $opts = []): String 
+	public function getPublicUrl($path, $opts = []): string
 	{
 		$storagePath = $this->_storagePath($path);
 		$_queryString = [];
@@ -433,6 +433,7 @@ class StorageFile
 		if ($queryString !== '') {
 			$queryString = '?'.$queryString;
 		}
+
 		return urldecode($this->url.'/'.$renderPath.'/public/'.$storagePath.$queryString);
 	}
 

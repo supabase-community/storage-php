@@ -15,14 +15,14 @@ use Supabase\Util\Request;
 class StorageBucket extends StorageFile
 {
 	/**
-	 * Fully qualified URL to the Supabase instance REST endpoint(s)
+	 * Fully qualified URL to the Supabase instance REST endpoint(s).
 	 *
 	 * @var string
 	 */
 	protected string $url;
 
 	/**
-	 * Bucket in question 
+	 * Bucket in question.
 	 *
 	 * @var string
 	 */
@@ -57,7 +57,7 @@ class StorageBucket extends StorageFile
 	 *
 	 * @param  string  $api_key  The anon or service role key
 	 * @param  string  $reference_id  Reference ID
-	 * @param  string  $bucket_id ID for the bucket 
+	 * @param  string  $bucket_id  ID for the bucket
 	 * @param  string  $domain  The domain pointing to api
 	 * @param  string  $scheme  The api sheme
 	 * @param  string  $path  The path to api
@@ -66,7 +66,6 @@ class StorageBucket extends StorageFile
 	 */
 	public function __construct($api_key, $reference_id, $bucket_id = '', $domain = 'supabase.co', $scheme = 'https', $path = '/storage/v1')
 	{
-
 		parent::__construct($api_key, $reference_id, $bucket_id, $domain, $scheme, $path);
 
 		$headers = ['Authorization' => "Bearer {$api_key}"];

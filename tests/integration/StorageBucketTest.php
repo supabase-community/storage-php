@@ -2,27 +2,30 @@
 
 declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
 use Dotenv\Dotenv;
+use PHPUnit\Framework\TestCase;
 
 final class StorageBucketTest extends TestCase
 {
 	private $client;
 
-	private function createBucket($public = true): array {
+	private function createBucket($public = true): array
+	{
 		$bucketName = 'bucket'.uniqid();
 		$result = $this->client->createBucket($bucketName, ['public' => $public]);
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
 		$payload = (string) $result->getBody();
 		$this->assertJsonStringEqualsJsonString(
-			json_encode(['name' => $bucketName]), 
+			json_encode(['name' => $bucketName]),
 			$payload
 		);
-		return [ $bucketName, $result ];
+
+		return [$bucketName, $result];
 	}
 
-	private function deleteBucket($bucketName): void{
+	private function deleteBucket($bucketName): void
+	{
 		$result = $this->client->deleteBucket($bucketName);
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
