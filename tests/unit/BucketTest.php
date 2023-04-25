@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use Supabase\Storage\StorageClient;
 
 class BucketTest extends TestCase
 {
@@ -19,7 +20,7 @@ class BucketTest extends TestCase
 	 */
 	public function testNewStorageClient()
 	{
-		$client = new  \Supabase\Storage\StorageClient('somekey', 'some_ref_id');
+		$client = new  StorageClient('somekey', 'some_ref_id');
 		$this->assertEquals($client->__getUrl(), 'https://some_ref_id.supabase.co/storage/v1');
 		$this->assertEquals($client->__getHeaders(), [
 			'X-Client-Info' => 'storage-php/0.0.1',

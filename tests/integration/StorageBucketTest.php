@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use Supabase\Util\EnvSetup;
+use Supabase\Storage\Util\EnvSetup;
 
 final class StorageBucketTest extends TestCase
 {
