@@ -8,15 +8,13 @@ use Supabase\Storage\StorageFile;
 $bucket_id = 'test-bucket';
 //Also creating file with unique ID.
 $testFile = 'file' . uniqid();
-$testFile2 = 'file' . uniqid();
 //Creating our StorageFile instance to upload files.
 $file = new StorageFile($api_key, $reference_id, $bucket_id);
-//We will upload a test file to retrieve the URL. 
+//We will upload a test file. 
 $file->upload($testFile, 'https://www.shorturl.at/img/shorturl-icon.png', ['public' => false]);
-$file->upload($testFile2, 'https://www.shorturl.at/img/shorturl-icon.png', ['public' => false]);
-//print out the URL of the examples file.
-$result = $file->createSignedUrls([$testFile, $testFile2], 60, ['public' => true]);
-print_r($result);
-//delete example files.
+//print out result.
+$result = $file->download($testFile, ['transform' => ['width' => 50, 'height' => 50]]);
+$output = $result->getBody()->getContents();
+file_put_contents('file.png', $output);
+//delete example files. 
 $file->remove(["$testFile"]);
-$file->remove(["$testFile2"]);
