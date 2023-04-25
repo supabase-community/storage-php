@@ -25,9 +25,11 @@ composer require supabase/storage-php
 
 use Supabase\Storage;
 
-$api_key = getenv('API_KEY');
-$reference_id = getenv('REFERENCE_ID');
-$client = new StorageClient($api_key, $reference_id);
+include __DIR__.'/vendor/autoload.php';
+
+use Supabase\Storage;
+
+$client = new StorageClient('API_KEY', 'REFERENCE_ID');
 ```
 
 ### Examples
