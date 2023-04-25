@@ -25,11 +25,11 @@ class EnvSetup
 		}
 
 		if (empty($apiKey)) {
-			throw new Error('Could not loade API_KEY');
+			throw new Exception('Could not loade API_KEY');
 		}
 
 		if (empty($refId)) {
-			throw new Error('Could not loade API_KEY');
+			throw new Exception('Could not loade API_KEY');
 		}
 
 		return [
