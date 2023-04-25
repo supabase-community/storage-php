@@ -25,11 +25,11 @@ class EnvSetup
 		}
 
 		if (empty($apiKey)) {
-			throw new \Exception('Could not loaded API_KEY');
+			throw new \Exception('Could not load API_KEY');
 		}
 
 		if (empty($refId)) {
-			throw new \Exception('Could not loaded API_KEY');
+			throw new \Exception('Could not load REFERENCE_ID');
 		}
 
 		return [
