@@ -1,20 +1,20 @@
 <?php
 
-include __DIR__.'/../header.php';
+include __DIR__ . '/../header.php';
 
 use Supabase\Storage\StorageFile;
 
 //Selecting an already created bucket for our test.
-$bucket_id = 'test-bucket';
+$bucket_id = 'examples-bucket';
 //Also creating file with unique ID.
-$testFile = 'file'.uniqid().'.png';
+$testFile = 'file' . uniqid() . '.png';
 //Creating our StorageFile instance to upload files.
 $file = new StorageFile($api_key, $reference_id, $bucket_id);
 //We will upload a test file to update it.
-$file->upload($testFile, 'https://www.shorturl.at/img/shorturl-icon.png', ['public' => false]);
+$file->upload($testFile, 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/object/public/examples-bucket/supabase-logo.png', ['public' => false]);
 //Now we will update the file using the update method. And get the image and convert into string
 $img = file_get_contents(
-	'https://images.squarespace-cdn.com/content/v1/6351e8dab3ca291bb37a18fb/c097a247-cbdf-4e92-a5bf-6b52573df920/1666314646844.png'
+	'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/object/public/examples-bucket/supabase-logo.png'
 );
 $data = (string) $img;
 $result = $file->update($testFile, $data, ['contentType' => 'image/png']);
