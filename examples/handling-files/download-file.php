@@ -1,12 +1,20 @@
 <?php
 
 include __DIR__.'/../header.php';
+
 use Supabase\Storage\StorageFile;
 
+//Selecting an already created bucket for our test.
 $bucket_id = 'test-bucket';
-
-$client = new StorageFile($api_key, $reference_id, $bucket_id);
-$result = $client->download('path/to/file.png');
+//Also creating file with unique ID.
+$testFile = 'file'.uniqid().'.png';
+//Creating our StorageFile instance to upload files.
+$file = new StorageFile($api_key, $reference_id, $bucket_id);
+//We will upload a test file.
+$file->upload($testFile, 'https://www.shorturl.at/img/shorturl-icon.png', ['public' => false]);
+//we will download the file to our directory using the download method.
+$result = $file->download($testFile);
 $output = $result->getBody()->getContents();
 file_put_contents('file.png', $output);
-print_r($output);
+//delete example files.
+$file->remove(["$testFile"]);
