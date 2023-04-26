@@ -4,7 +4,6 @@ namespace Supabase\Storage;
 
 class StorageClient extends StorageBucket
 {
-
 	private mixed $domain;
 	private mixed $scheme;
 	private mixed $path;
