@@ -46,7 +46,7 @@ jobs:
 
 
       - name: Push release to packagist
-        uses: mnavarrocarter/packagist-update@v1.0
+        uses: mnavarrocarter/packagist-update@v1
         with:
           username: "zlcnorm"
           api_token: ${{ secrets.PACKAGIST_TOKEN }}
