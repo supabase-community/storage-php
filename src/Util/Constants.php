@@ -1,6 +1,6 @@
 <?php
 
-namespace Supabase\Util;
+namespace Supabase\Storage\Util;
 
 class Constants
 {

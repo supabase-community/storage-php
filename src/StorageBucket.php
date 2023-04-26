@@ -9,8 +9,8 @@
 namespace Supabase\Storage;
 
 use Psr\Http\Message\ResponseInterface;
-use Supabase\Util\Constants;
-use Supabase\Util\Request;
+use Supabase\Storage\Util\Constants;
+use Supabase\Storage\Util\Request;
 
 class StorageBucket extends StorageFile
 {
