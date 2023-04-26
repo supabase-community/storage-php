@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__ . '/../vendor/autoload.php';
+include __DIR__.'/../vendor/autoload.php';
 
 use Supabase\Storage\Util\EnvSetup;
 
