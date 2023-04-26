@@ -12,7 +12,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Supabase\\Test\\": "tests/"
+            "Supabase\\Storage\\Test\\": "tests/"
         }
     },
     "authors": [

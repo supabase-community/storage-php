@@ -1,6 +1,6 @@
 <?php
 
-namespace Supabase\Util;
+namespace Supabase\Storage\Util;
 
 use Dotenv\Dotenv;
 
@@ -25,11 +25,11 @@ class EnvSetup
 		}
 
 		if (empty($apiKey)) {
-			throw new Error('Could not loade API_KEY');
+			throw new \Exception('Could not load API_KEY');
 		}
 
 		if (empty($refId)) {
-			throw new Error('Could not loade API_KEY');
+			throw new \Exception('Could not load REFERENCE_ID');
 		}
 
 		return [

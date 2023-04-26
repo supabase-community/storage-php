@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use Supabase\Storage\StorageFile;
 
 class FileTest extends TestCase
 {
@@ -17,7 +18,7 @@ class FileTest extends TestCase
 	 */
 	public function testNewStorageFile()
 	{
-		$client = new  \Supabase\Storage\StorageFile('somekey', 'some_ref_id', 'someBucket');
+		$client = new StorageFile('somekey', 'some_ref_id', 'someBucket');
 		$this->assertEquals($client->__getUrl(), 'https://some_ref_id.supabase.co/storage/v1');
 		$this->assertEquals($client->__getHeaders(), [
 			'X-Client-Info' => 'storage-php/0.0.1',
@@ -61,7 +62,7 @@ class FileTest extends TestCase
 	 */
 	public function testUpload()
 	{
-		$mockFile = \Mockery::mock('alias:Supabase\Util\FileHandler');
+		$mockFile = \Mockery::mock('alias:Supabase\Storage\Util\FileHandler');
 		$mockFile->shouldReceive('getFileContents')->andReturn('Bruno Estera');
 
 		$mock = \Mockery::mock(
@@ -124,7 +125,7 @@ class FileTest extends TestCase
 	 */
 	public function testUpdate()
 	{
-		$mockFile = \Mockery::mock('alias:Supabase\Util\FileHandler');
+		$mockFile = \Mockery::mock('alias:Supabase\Storage\Util\FileHandler');
 		$mockFile->shouldReceive('getFileContents')->andReturn('Isla Ian');
 
 		$mock = \Mockery::mock(
