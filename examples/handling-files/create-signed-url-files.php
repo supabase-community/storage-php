@@ -4,9 +4,19 @@ include __DIR__.'/../header.php';
 
 use Supabase\Storage\StorageFile;
 
+//Selecting an already created bucket for our test.
 $bucket_id = 'test-bucket';
-
-$client = new StorageFile($api_key, $reference_id, $bucket_id);
-$options = ['public' => true];
-$result = $client->createSignedUrls(['test-file.jpg', 'path/to/file-base64.png'], 60, $options);
+//Also creating file with unique ID.
+$testFile = 'file'.uniqid().'.png';
+$testFile2 = 'file'.uniqid().'.png';
+//Creating our StorageFile instance to upload files.
+$file = new StorageFile($api_key, $reference_id, $bucket_id);
+//We will upload a test file to retrieve the URL.
+$file->upload($testFile, 'https://www.shorturl.at/img/shorturl-icon.png', ['public' => false]);
+$file->upload($testFile2, 'https://www.shorturl.at/img/shorturl-icon.png', ['public' => false]);
+//print out the URL of the examples file.
+$result = $file->createSignedUrls([$testFile, $testFile2], 60, ['public' => true]);
 print_r($result);
+//delete example files.
+$file->remove(["$testFile"]);
+$file->remove(["$testFile2"]);
