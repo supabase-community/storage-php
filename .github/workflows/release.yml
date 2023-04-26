@@ -7,7 +7,7 @@ on:
 
 jobs:
   run:
-    if: github.repository == 'supabase-community/supabase-php'
+    if: github.repository == 'supabase-community/storage-php'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
