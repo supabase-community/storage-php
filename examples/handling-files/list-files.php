@@ -11,9 +11,9 @@ $testFile = 'file'.uniqid().'.png';
 // Creating our StorageFile instance to upload files.
 $file = new StorageFile($api_key, $reference_id, $bucket_id);
 // We will upload a test file to copy it.
-$file->upload($testFile, 'https://www.shorturl.at/img/shorturl-icon.png', ['public' => false]);
+$file->upload($testFile, 'https://gpdefvsxamnscceccczu.supabase.co/storage/v1/object/public/examples-bucket/supabase-logo.png', ['public' => false]);
 // Print out the list of results.
-$result = $file->list('test-bucket', ['limit' => 100, 'offset' => 0, 'sortBy' => ['column' => 'name', 'order' => 'asc']]);
+$result = $file->list('examples-bucket', ['limit' => 100, 'offset' => 0, 'sortBy' => ['column' => 'name', 'order' => 'asc']]);
 $output = json_decode($result->getBody(), true);
 print_r($output);
 //delete example files.
