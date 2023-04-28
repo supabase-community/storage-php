@@ -8,6 +8,7 @@ PHP Client library to interact with Supabase Storage.
 ### TODO
 
 - [ ] Support for PHP 7.4 
+- [ ] Adjust response interface to be closer to `postgrest-php` so manual parsing of response payloads is not needed 
 - [ ] Running unit and integration tests together results in test failures 
 
 
