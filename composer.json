@@ -40,7 +40,7 @@
         "mockery/mockery": "^1.5"
     },
     "require": {
-        "guzzlehttp/guzzle": "7.5",
+        "guzzlehttp/guzzle": "7.9.2",
         "vlucas/phpdotenv": "5.5",
         "bayfrontmedia/php-mime-types": "^2.0",
         "league/uri": "^6.0"
