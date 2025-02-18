@@ -16,7 +16,8 @@ final class StorageFileTest extends TestCase
 		$result = $this->client->upload($path, $file_path, ['public' => $public]);
 		$this->assertEquals('200', $result->getStatusCode());
 		$this->assertEquals('OK', $result->getReasonPhrase());
-		$this->assertJsonStringEqualsJsonString('{"Key":"test-bucket/'.$path.'"}', (string) $result->getBody());
+		$this->assertArrayHasKey('Key', json_decode((string) $result->getBody(), true));
+		$this->assertEquals('test-bucket/'.$path, json_decode((string) $result->getBody(), true)['Key']);
 
 		return [
 			$result,
